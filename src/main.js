@@ -1,8 +1,19 @@
-import Vue from "vue";
-import App from "./App.vue";
+import ChatMode from '@/components/ChatMode'
+import { EVENT_NAMES, NODE_TYPES, consume, state } from './enums'
+import TextBubble from '@/components/ChatMode/components/TextBubble'
+import CurrentMultiSelect from '@/components/ChatMode/overrides/Current_MultiSelect'
+import CurrentSelect from '@/components/ChatMode/overrides/Current_Select'
+import CurrentTemplate from '@/components/ChatMode/overrides/Current_Template'
+import { substituteNodeText } from './utils'
 
-Vue.config.productionTip = false;
+const ChatBot = {
+  ChatMode,
+  TextBubble,
+  overrides: {
+    CurrentMultiSelect,
+    CurrentSelect,
+    CurrentTemplate
+  }
+}
 
-new Vue({
-  render: h => h(App)
-}).$mount("#app");
+export { EVENT_NAMES, NODE_TYPES, consume, state, ChatBot, substituteNodeText }
