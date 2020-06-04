@@ -1,9 +1,6 @@
-// import { ChatBot } from '../dist/vue-userpil-plugin.common'
 import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import TruffleLogo from './truffle_logo.png'
-
-// const { ChatMode } = ChatBot
 
 export default { title: 'Basic' }
 
@@ -14,7 +11,7 @@ export const basic = () => {
       "What's your name?"
       >>name
       /TEMPLATE
-      TEMPLATE "Welcome ${name}"
+      TEMPLATE "Welcome \${name}"
     /DIALOG
     RUN icecream
   `

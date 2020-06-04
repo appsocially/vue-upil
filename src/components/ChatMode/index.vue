@@ -259,13 +259,13 @@ export default {
   white-space: pre-line;
 }
 
-#conversation-container >>> *::selection {
+/* #conversation-container >>> *::selection {
   background: yellow;
 }
 
 #conversation-container >>> * {
   -webkit-tap-highlight-color: yellow;
-}
+} */
 
 #conversation-container >>> .v-sheet {
   border-radius: 15px;
