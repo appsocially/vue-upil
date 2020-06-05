@@ -1,7 +1,8 @@
 {
   "name": "vue-upil",
   "version": "0.1.0",
-  "private": true,
+  "license": "ISC",
+  "private": false,
   "main": "./dist/vue-userpil-plugin.common.js",
   "files": [
     "dist/*"
