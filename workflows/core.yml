@@ -1,0 +1,25 @@
+on: 
+  release:
+    types: 
+      - published
+name: Build and Publish
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: core
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: '10.x'
+          registry-url: 'https://registry.npmjs.org/'
+      - name: install npm packages
+        run: yarn
+      - name: build core
+        run: yarn build
+      - name: publish npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: yarn publish --access public --new-version ${{ github.event.release.tag_name }} --no-git-tag-version
