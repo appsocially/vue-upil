@@ -11268,17 +11268,6 @@ vue-template-es2015-compiler@^1.9.0:
   resolved "https://registry.yarnpkg.com/vue-template-es2015-compiler/-/vue-template-es2015-compiler-1.9.1.tgz#1ee3bc9a16ecbf5118be334bb15f9c46f82f5825"
   integrity sha512-4gDntzrifFnCEvyoO8PqyJDmguXgVPxKiIxrBKjIowvL9l+N66196+72XVYR8BBf1Uv1Fgt3bGevJ+sEmxfZzw==
 
-"vue-upil@file:.":
-  version "0.1.0"
-  dependencies:
-    "@appsocially/userpil-core" "^1.1.5"
-    core-js "^3.6.4"
-    dot-object "^2.1.3"
-    linkifyjs "^2.1.9"
-    lodash.debounce "^4.0.8"
-    vue "^2.6.11"
-    vue-upil "file:./../../../AppData/Local/Yarn/Cache/v6/npm-vue-upil-0.1.0-0ad083d1-e9da-416b-8edd-4d076503a729-1591329848560/node_modules/vue-upil"
-
 vue@^2.6.11:
   version "2.6.11"
   resolved "https://registry.yarnpkg.com/vue/-/vue-2.6.11.tgz#76594d877d4b12234406e84e35275c6d514125c5"
