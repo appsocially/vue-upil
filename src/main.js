@@ -5,6 +5,7 @@ import CurrentMultiSelect from '@/components/ChatMode/overrides/Current_MultiSel
 import CurrentSelect from '@/components/ChatMode/overrides/Current_Select'
 import CurrentTemplate from '@/components/ChatMode/overrides/Current_Template'
 import { substituteNodeText } from '@/utils'
+import FormMode from '@/components/FormMode'
 
 const ChatBot = {
   ChatMode,
@@ -16,4 +17,12 @@ const ChatBot = {
   }
 }
 
-export { EVENT_NAMES, NODE_TYPES, consume, state, ChatBot, substituteNodeText }
+export {
+  EVENT_NAMES,
+  NODE_TYPES,
+  consume,
+  state,
+  ChatBot,
+  substituteNodeText,
+  FormMode
+}
