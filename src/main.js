@@ -4,7 +4,7 @@ import TextBubble from '@/components/ChatMode/components/TextBubble'
 import CurrentMultiSelect from '@/components/ChatMode/overrides/Current_MultiSelect'
 import CurrentSelect from '@/components/ChatMode/overrides/Current_Select'
 import CurrentTemplate from '@/components/ChatMode/overrides/Current_Template'
-import { substituteNodeText } from './utils'
+import { substituteNodeText } from '@/utils'
 
 const ChatBot = {
   ChatMode,
