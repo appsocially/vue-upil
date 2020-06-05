@@ -1,13 +1,15 @@
-import ChatMode from '@/components/ChatMode'
+import FormMode from '@/components/FormMode'
 import { UPILCore } from '@appsocially/userpil-core'
-import TruffleLogo from './truffle_logo.png'
 
-export default { title: 'Basic' }
+export default { title: 'Formmode' }
 
 export const basic = () => {
   const simpleTemplate = `
     DIALOG icecream
       TEMPLATE 
+      {
+        formText: "Name"
+      }
       "What's your name?"
       >>name
       /TEMPLATE
@@ -18,17 +20,19 @@ export const basic = () => {
   const upil = new UPILCore()
   return {
     components: {
-      ChatMode
+      FormMode
     },
-    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo"/>`,
+    template: ` <FormMode :upil="upil" />`,
     data() {
       return {
-        upil,
-        TruffleLogo
+        upil
       }
     },
     mounted() {
-      this.upil.startRaw(simpleTemplate)
+      this.upil.startRaw(simpleTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true
+      })
     }
   }
 }
