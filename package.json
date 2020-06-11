@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "license": "ISC",
   "private": false,
-  "main": "./dist/vue-userpil-plugin.common.js",
+  "main": "./dist/vue-upil.common.js",
   "files": [
     "dist/*"
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --target lib --name vue-userpil-plugin ./src/main.js",
+    "build": "vue-cli-service build --target lib --name vue-upil ./src/main.js",
     "lint": "vue-cli-service lint",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook"
