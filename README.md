@@ -8,4 +8,5 @@ This repository provides two main components for interacting with your UPIL scri
 
 # Example starter projects
 
-See a ChatMode starter project here: https://codesandbox.io/s/vue-upil-chat-mode-example-t4zxp
+- See a `ChatMode` starter project here: https://codesandbox.io/s/vue-upil-chat-mode-example-t4zxp
+- See a `FormMode` starter project here: https://codesandbox.io/s/vue-upil-form-mode-example-lkf2c
