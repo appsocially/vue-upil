@@ -1,24 +1,11 @@
 # vue-upil
 
-## Project setup
-```
-yarn install
-```
+This repository provides vue components that allow you to easily use UPIL in your vue projects! See https://upil.org/ for details about the UPIL language and application development.
 
-### Compiles and hot-reloads for development
-```
-yarn serve
-```
+# Components
 
-### Compiles and minifies for production
-```
-yarn build
-```
+This repository provides two main components for interacting with your UPIL scripts in either ChatMode or FormMode. See examples here: https://appsocially.github.io/vue-upil
 
-### Lints and fixes files
-```
-yarn lint
-```
+# Example starter projects
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+See a ChatMode starter project here: https://codesandbox.io/s/vue-upil-chat-mode-example-t4zxp
