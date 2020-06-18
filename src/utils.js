@@ -10,7 +10,7 @@ import dot from 'dot-object'
  * @param {boolean} searchForLinks - Finds links in text and makes them links if necessary
  * @returns {string} - Text that was updated if necessary
  */
-export function substituteNodeText (inputState, text, searchForLinks) {
+export function substituteNodeText(inputState, text, searchForLinks) {
   if (text) {
     // Regex used to parse for tokens in nodes' text
     const nodeTextRegex = /\$\{([^}]+)\}/gm
@@ -44,7 +44,7 @@ export function substituteNodeText (inputState, text, searchForLinks) {
   }
 }
 
-export function setupListeners ({ listeners, upil }) {
+export function setupListeners({ listeners, upil }) {
   const unsubscribeArray = Object.keys(listeners).map(event => {
     const handler = listeners[event]
     return upil.on(event, handler)
