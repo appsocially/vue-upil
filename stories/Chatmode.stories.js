@@ -18,17 +18,17 @@ export const basic = () => {
   const upil = new UPILCore()
   return {
     components: {
-      ChatMode
+      ChatMode,
     },
     template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo"/>`,
     data() {
       return {
         upil,
-        TruffleLogo
+        TruffleLogo,
       }
     },
     mounted() {
       this.upil.startRaw(simpleTemplate)
-    }
+    },
   }
 }

@@ -20,19 +20,19 @@ export const basic = () => {
   const upil = new UPILCore()
   return {
     components: {
-      FormMode
+      FormMode,
     },
     template: ` <FormMode :upil="upil" />`,
     data() {
       return {
-        upil
+        upil,
       }
     },
     mounted() {
       this.upil.startRaw(simpleTemplate, {
         mode: 'form',
-        resetOnInputUpdate: true
+        resetOnInputUpdate: true,
       })
-    }
+    },
   }
 }
