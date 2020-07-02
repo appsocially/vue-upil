@@ -41,6 +41,7 @@
     "eslint-plugin-vue": "^6.2.2",
     "module": "^1.2.5",
     "prettier": "^2.0.5",
+    "vee-validate": "^3.3.7",
     "vue-template-compiler": "^2.6.11",
     "vuetify": "^2.2.32",
     "webpack": "^4.43.0"
