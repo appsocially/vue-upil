@@ -21,26 +21,25 @@ export default {
   props: {
     rules: {
       type: Array,
-      default: () => []
-    }
+      default: () => [],
+    },
   },
   data() {
     return {
-      isValid: this.rules.length === 0
+      isValid: this.rules.length === 0,
     }
   },
   watch: {
     inputValue(inputValue) {
       this.onSubmit(inputValue)
-    }
+    },
   },
   methods: {
     onUpdateError(hasError) {
       this.isValid = !hasError
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

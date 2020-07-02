@@ -1,5 +1,5 @@
 <template>
-  <TextBubble :reply="reply">{{eventValues}}</TextBubble>
+  <TextBubble :reply="reply">{{ eventValues }}</TextBubble>
 </template>
 
 <script>
@@ -7,33 +7,32 @@ import TextBubble from '@/components/ChatMode/components/TextBubble'
 
 export default {
   components: {
-    TextBubble
+    TextBubble,
   },
   props: {
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     event: {
       type: Object,
-      required: false
+      required: false,
     },
     reply: {
       type: Boolean,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     eventValues() {
       return this.event.value
-        .map(v => v.value)
-        .map(v => this.event.node.options.find(o => o.value.value === v))
-        .map(o => o.text)
+        .map((v) => v.value)
+        .map((v) => this.event.node.options.find((o) => o.value.value === v))
+        .map((o) => o.text)
         .join(', ')
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

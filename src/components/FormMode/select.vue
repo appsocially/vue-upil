@@ -7,22 +7,22 @@ export default {
   props: {
     node: {
       type: Object,
-      required: true
+      required: true,
     },
     upil: {
       type: Object,
-      required: true
+      required: true,
     },
     state: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     items() {
       return this.node.options.map(({ text, value }) => ({
         text,
-        value: JSON.stringify(value)
+        value: JSON.stringify(value),
       }))
     },
     inputName() {
@@ -38,8 +38,8 @@ export default {
           this.state[this.inputName]
         )
         return this.items[index]
-      }
-    }
+      },
+    },
   },
   methods: {
     getOriginalValues() {
@@ -48,10 +48,9 @@ export default {
     },
     onSubmit(input) {
       return this.upil.consume(this.node.event, JSON.parse(input))
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

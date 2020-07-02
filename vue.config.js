@@ -5,11 +5,11 @@ module.exports = {
   configureWebpack: {
     plugins: [
       new webpack.optimize.LimitChunkCountPlugin({
-        maxChunks: 1
-      })
-    ]
+        maxChunks: 1,
+      }),
+    ],
   },
-  chainWebpack: config => {
+  chainWebpack: (config) => {
     config.optimization.delete('splitChunks')
-  }
+  },
 }

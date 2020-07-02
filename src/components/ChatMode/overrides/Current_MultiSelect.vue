@@ -15,43 +15,51 @@
 </template>
 
 <script>
-
 export default {
   props: {
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     sendInput: {
       type: Function,
-      required: false
+      required: false,
     },
     labelOverride: {
       type: String,
-      default: '選んでください'
-    }
+      default: '選んでください',
+    },
   },
-  data () {
+  data() {
     return {
-      userInput: ''
+      userInput: '',
     }
   },
   computed: {
-    simpleOptions () {
-      return this.options.map(({ text, value: { value, name } }) => ({ text, value: name === undefined ? value : name }))
-    }
+    simpleOptions() {
+      return this.options.map(({ text, value: { value, name } }) => ({
+        text,
+        value: name === undefined ? value : name,
+      }))
+    },
   },
   methods: {
-    getOriginalValues (userInput) {
-      return userInput.map(i => this.options.find(o => (o.value.name === undefined ? o.value.value : o.value.name) === i))
-        .map(i => i.value)
+    getOriginalValues(userInput) {
+      return userInput
+        .map((i) =>
+          this.options.find(
+            (o) =>
+              (o.value.name === undefined ? o.value.value : o.value.name) === i
+          )
+        )
+        .map((i) => i.value)
     },
-    onSubmit () {
+    onSubmit() {
       if (this.userInput !== undefined) {
         this.sendInput(this.getOriginalValues(this.userInput))
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

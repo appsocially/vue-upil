@@ -13,8 +13,8 @@ const ChatBot = {
   overrides: {
     CurrentMultiSelect,
     CurrentSelect,
-    CurrentTemplate
-  }
+    CurrentTemplate,
+  },
 }
 
 export {
@@ -25,5 +25,5 @@ export {
   ChatBot,
   substituteNodeText,
   setupListeners,
-  FormMode
+  FormMode,
 }

@@ -14,42 +14,44 @@
 </template>
 
 <script>
-
 export default {
   props: {
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     sendInput: {
       type: Function,
-      required: false
+      required: false,
     },
     labelOverride: {
       type: String,
-      default: '選んでください'
+      default: '選んでください',
     },
     upil: {
-      type: Object
-    }
+      type: Object,
+    },
   },
-  data () {
+  data() {
     return {
-      userInput: undefined
+      userInput: undefined,
     }
   },
   computed: {
-    items () {
-      return this.options.map(({ text, value }) => ({ text, value: JSON.stringify(value) }))
-    }
+    items() {
+      return this.options.map(({ text, value }) => ({
+        text,
+        value: JSON.stringify(value),
+      }))
+    },
   },
   methods: {
-    onSubmit () {
+    onSubmit() {
       if (this.userInput !== undefined) {
         this.sendInput(JSON.parse(this.userInput))
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

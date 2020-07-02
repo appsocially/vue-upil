@@ -1,5 +1,5 @@
 <template>
-  <TextBubble :reply="reply">{{selectedOption}}</TextBubble>
+  <TextBubble :reply="reply">{{ selectedOption }}</TextBubble>
 </template>
 
 <script>
@@ -7,24 +7,24 @@ import TextBubble from '@/components/ChatMode/components/TextBubble'
 
 export default {
   components: {
-    TextBubble
+    TextBubble,
   },
   props: {
     options: {
       type: Array,
-      required: true
+      required: true,
     },
     event: {
       type: Object,
-      required: false
+      required: false,
     },
     reply: {
       type: Boolean,
-      required: true
+      required: true,
     },
     upil: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
     selectedOption() {
@@ -33,10 +33,9 @@ export default {
         : -1
       const selectedOption = this.options[index]
       return selectedOption.text
-    }
-  }
+    },
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

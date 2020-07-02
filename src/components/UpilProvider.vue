@@ -33,30 +33,30 @@ export default {
   props: {
     upil: {
       Object: true,
-      required: true
+      required: true,
     },
     override: {
       type: Function,
-      default: (context, node, component) => component
+      default: (context, node, component) => component,
     },
     overrideCurrent: {
       type: Function,
       // default: () => () => import('@/components/DefaultTemplate')
-      default: () => () => null
+      default: () => () => null,
     },
     listeners: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     searchForLinks: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   provide() {
     return {
       [consume]: this.upil.consume,
-      [state]: this.stateWrapper
+      [state]: this.stateWrapper,
     }
   },
   data() {
@@ -64,16 +64,16 @@ export default {
       emittedEvents: [],
       nodes: [],
       stateWrapper: {
-        inputState: {}
+        inputState: {},
       },
       store: null,
       listenerUnsubscribeArray: [],
-      scenarioEnded: false
+      scenarioEnded: false,
     }
   },
   computed: {
     allNodes() {
-      const all = this.nodes ? this.nodes.map(n => this.setupNode(n)) : []
+      const all = this.nodes ? this.nodes.map((n) => this.setupNode(n)) : []
       return all
     },
     history() {
@@ -83,7 +83,7 @@ export default {
       const currentNode = this.allNodes
         .concat([])
         .reverse()
-        .find(n => n.reply !== true && n.node.input)
+        .find((n) => n.reply !== true && n.node.input)
       return currentNode ? this.setupNode(currentNode.rawNode, true) : null
     },
     currentEventWithLabel() {
@@ -103,23 +103,23 @@ export default {
       return hasEmittedEvent
         ? this.emittedEvents[this.emittedEvents.length - 1]
         : null
-    }
+    },
   },
   watch: {
     currentNode: {
       immediate: true,
       handler(currentNode) {
         this.$emit('update:current', currentNode)
-      }
+      },
     },
     currentEvent: {
       immediate: true,
       handler(currentEvent) {
         this.$emit('update:currentEvent', {
           event: currentEvent,
-          inputState: this.stateWrapper.inputState
+          inputState: this.stateWrapper.inputState,
         })
-      }
+      },
     },
     upil: {
       immediate: true,
@@ -127,7 +127,7 @@ export default {
         if (upil && upil !== oldUpil) {
           this.runSetup(upil)
         }
-      }
+      },
     },
     currentEventWithLabel: {
       immediate: true,
@@ -135,11 +135,11 @@ export default {
         if (currentEventWithLabel) {
           return this.$emit('eventWithLabel', {
             event: currentEventWithLabel,
-            inputState: this.stateWrapper.inputState
+            inputState: this.stateWrapper.inputState,
           })
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     transferState() {
@@ -147,7 +147,7 @@ export default {
       this.stateWrapper.inputState = this.store.getState().input
       this.updateNodes(this.store.getState().nodes)
     },
-    updateNodes: debounce(function(nodes) {
+    updateNodes: debounce(function (nodes) {
       this.nodes = nodes
     }, 100),
     calculateComponentType(node, current = false) {
@@ -192,14 +192,14 @@ export default {
 
       if (type === NODE_TYPES.GROUP) {
         const { nodes, ...rest } = node
-        const newNodes = nodes.map(n => this.setupNode(n))
+        const newNodes = nodes.map((n) => this.setupNode(n))
         return {
           node: {
             nodes: newNodes,
-            ...rest
+            ...rest,
           },
           rawNode: node,
-          componentType
+          componentType,
         }
       } else {
         const { text, id, reply, ...rest } = node
@@ -214,15 +214,15 @@ export default {
             ),
             id: reply === true ? `${id}-r` : id,
             reply,
-            ...rest
+            ...rest,
           },
           rawNode: node,
-          componentType
+          componentType,
         }
       }
     },
     createSendInput({ event }) {
-      return input => this.upil.consume(event, input)
+      return (input) => this.upil.consume(event, input)
     },
     runSetup(upil) {
       this.store = upil.UpilStore
@@ -230,7 +230,7 @@ export default {
       setupListeners({ listeners: defaultListeners(this.$data), upil })
       this.listenerUnsubscribeArray = setupListeners({
         listeners: this.listeners,
-        upil
+        upil,
       })
 
       // Begin state syncing between upil core and provider
@@ -238,7 +238,7 @@ export default {
       this.store.subscribe(() => {
         this.transferState()
       })
-    }
-  }
+    },
+  },
 }
 </script>

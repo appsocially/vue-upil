@@ -5,22 +5,22 @@ export default {
   props: {
     node: {
       type: Object,
-      required: true
+      required: true,
     },
     upil: {
       type: Object,
-      required: true
+      required: true,
     },
     state: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   data() {
     return {
       inputValue: this.stateInputValue,
       waitingOnIme: false,
-      onSubmit: debounce(function(input) {
+      onSubmit: debounce(function (input) {
         if (this.isValid && !this.waitingOnIme) {
           const trimmedInput = (input || '').trim()
           const finalInput =
@@ -29,7 +29,7 @@ export default {
               : trimmedInput
           return this.upil.consume(this.node.event, finalInput)
         }
-      }, 100)
+      }, 100),
     }
   },
   computed: {
@@ -39,7 +39,7 @@ export default {
     stateInputValue() {
       const inputValue = this.state[this.inputName]
       return inputValue === symbols.UNRESOLVED ? '' : inputValue
-    }
+    },
   },
   watch: {
     stateInputValue: {
@@ -52,13 +52,13 @@ export default {
             this.$refs.text.focus()
           }
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     compositionEnded() {
       this.waitingOnIme = false
       this.onSubmit(this.inputValue)
-    }
-  }
+    },
+  },
 }

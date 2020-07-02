@@ -1,8 +1,8 @@
-export const defaultListeners = providerState => ({
+export const defaultListeners = (providerState) => ({
   'scenario-end': () => {
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       providerState.scenarioEnded = true
       resolve()
     })
-  }
+  },
 })

@@ -11,14 +11,14 @@ export default {
   props: {
     reply: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
   computed: {
-    cardColor () {
+    cardColor() {
       return this.reply === true ? 'secondary' : 'primary'
-    }
-  }
+    },
+  },
 }
 </script>
 

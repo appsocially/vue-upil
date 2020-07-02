@@ -3,13 +3,11 @@
 </template>
 
 <script>
-
 export default {
-  mounted () {
+  mounted() {
     this.$emit('adjust:height', -70)
-  }
+  },
 }
 </script>
 
-<style>
-</style>
+<style></style>

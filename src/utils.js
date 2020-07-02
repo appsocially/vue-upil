@@ -45,7 +45,7 @@ export function substituteNodeText(inputState, text, searchForLinks) {
 }
 
 export function setupListeners({ listeners, upil }) {
-  const unsubscribeArray = Object.keys(listeners).map(event => {
+  const unsubscribeArray = Object.keys(listeners).map((event) => {
     const handler = listeners[event]
     return upil.on(event, handler)
   })

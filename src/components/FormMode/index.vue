@@ -3,7 +3,14 @@
     <v-row no-gutters v-for="node in finalNodes" :key="node.id">
       <v-col cols="12" :class="`elevation-${node.isMissingValue ? 10 : 0}`">
         <v-sheet :color="node.isMissingValue ? 'info darken-2' : null">
-          <v-alert dense type="info" class="my-0" tile v-if="node.isMissingValue">未記入</v-alert>
+          <v-alert
+            dense
+            type="info"
+            class="my-0"
+            tile
+            v-if="node.isMissingValue"
+            >未記入</v-alert
+          >
           <div class="alert-placeholder" v-else />
           <v-card-text class="pt-1">
             <v-row justify="center" no-gutters class="no-wrap">
@@ -60,7 +67,7 @@ function calculateComponent({ type, label }) {
   return componentByLabel({ label }, byTypeComponent)
 }
 
-const isLoadingEventType = event => {
+const isLoadingEventType = (event) => {
   const isPending = event.status === 'PENDING'
   const isExternalEvent = event.node && event.node.type === 'external'
 
@@ -85,49 +92,49 @@ export default {
        * instances of this component will share the same method, and thus
        * it will be debounced across all instances of this component
        */
-      transferStateDebounced: debounce(function(upil) {
+      transferStateDebounced: debounce(function (upil) {
         this.transferState(upil)
-      }, 200)
+      }, 200),
     }
   },
   props: {
     upil: {
       type: Object,
-      required: true
+      required: true,
     },
     types: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     override: {
       type: Function,
-      default: (_, component) => component
-    }
+      default: (_, component) => component,
+    },
   },
   watch: {
     upil: {
       immediate: true,
       handler(upil) {
         this.runSetup(upil)
-      }
+      },
     },
     isMissingValues: {
       immediate: true,
       handler(isMissingValues) {
         this.$emit('update:isMissingValue', isMissingValues)
-      }
+      },
     },
     initializingUpil: {
       immediate: true,
       handler(initializingUpil) {
         this.$emit('update:initializingUpil', initializingUpil)
         this.$emit('update:isMissingValue', this.isMissingValues)
-      }
-    }
+      },
+    },
   },
   computed: {
     missingValueNodes() {
-      return this.inputNodes.filter(n => isMissingValue(n, this.state))
+      return this.inputNodes.filter((n) => isMissingValue(n, this.state))
     },
     isMissingValues() {
       return this.missingValueNodes && this.missingValueNodes.length > 0
@@ -136,7 +143,7 @@ export default {
       return this.events.length === 0 || this.events.some(isLoadingEventType)
     },
     inputNodes() {
-      return this.nodes.filter(n => !!n.input && n.reply !== true)
+      return this.nodes.filter((n) => !!n.input && n.reply !== true)
     },
     finalNodes() {
       return this.inputNodes.map(({ text, args, ...rest }) => ({
@@ -151,9 +158,9 @@ export default {
           false
         ),
         args,
-        ...rest
+        ...rest,
       }))
-    }
+    },
   },
   methods: {
     updateNodes(nodes) {
@@ -183,8 +190,8 @@ export default {
       } else {
         return []
       }
-    }
-  }
+    },
+  },
 }
 </script>
 

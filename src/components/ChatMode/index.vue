@@ -37,7 +37,11 @@
                       <img height="40" width="40" :src="avatar" mr-1 />
                     </v-flex>
                     <v-flex class="chat-bubble" shrink>
-                      <component v-bind:is="componentType" v-bind="node" :upil="upil" />
+                      <component
+                        v-bind:is="componentType"
+                        v-bind="node"
+                        :upil="upil"
+                      />
                     </v-flex>
                   </v-layout>
                 </v-flex>
@@ -75,64 +79,64 @@ import goTo from 'vuetify/es5/services/goto'
 const defaultStatementComponentsMap = {
   [NODE_TYPES.TEMPLATE]: () => import('./overrides/Template'),
   [NODE_TYPES.SELECT]: () => import('./overrides/Template'),
-  [NODE_TYPES.MULTISELECT]: () => import('./overrides/Template')
+  [NODE_TYPES.MULTISELECT]: () => import('./overrides/Template'),
 }
 
 const defaultReplyComponentsMap = {
   [NODE_TYPES.TEMPLATE]: () => import('./overrides/Template'),
   [NODE_TYPES.SELECT]: () => import('./overrides/Reply_Select'),
-  [NODE_TYPES.MULTISELECT]: () => import('./overrides/Reply_MultiSelect')
+  [NODE_TYPES.MULTISELECT]: () => import('./overrides/Reply_MultiSelect'),
 }
 
 export default {
   components: {
-    UpilProvider
+    UpilProvider,
   },
   data() {
     return {
       userInput: '',
       // calculatedHeight: '100vh',
       windowHeight: null,
-      currentNodeAdditionalHeight: 0
+      currentNodeAdditionalHeight: 0,
     }
   },
   props: {
     upil: {
       type: Object,
-      required: true
+      required: true,
     },
     avatar: {
       type: String,
-      required: true
+      required: true,
     },
     override: {
       type: Function,
-      default: (context, node, component) => component
+      default: (context, node, component) => component,
     },
     overrideCurrent: {
       type: Function,
-      default: (context, node, component) => component
+      default: (context, node, component) => component,
     },
     listeners: {
       type: Object,
-      default: () => ({})
+      default: () => ({}),
     },
     wrapperStyleOverride: {
       type: Object,
-      default: () => null
+      default: () => null,
     },
     removeBottomBar: {
       type: Boolean,
-      default: false
+      default: false,
     },
     searchForLinks: {
       type: Boolean,
-      default: true
+      default: true,
     },
     types: {
       type: Object,
-      default: () => ({})
-    }
+      default: () => ({}),
+    },
   },
   computed: {
     wrapperStyle() {
@@ -144,10 +148,12 @@ export default {
       const extraIOSHeight = CSS.supports('(-webkit-overflow-scrolling: touch)')
         ? 60
         : 0
-      return `${(this.windowHeight || '100vh') -
+      return `${
+        (this.windowHeight || '100vh') -
         extraIOSHeight -
-        this.currentNodeAdditionalHeight}px`
-    }
+        this.currentNodeAdditionalHeight
+      }px`
+    },
   },
   mounted() {
     this.calculateWindowHeight()
@@ -192,7 +198,7 @@ export default {
     chatbubbleColor(node) {
       return this.fromUser(node) ? 'secondary' : 'primary'
     },
-    scrollToBottom: debounce(function() {
+    scrollToBottom: debounce(function () {
       this.$nextTick(() => {
         const conversationContainer = this.$refs.conversationContainer
         if (conversationContainer) {
@@ -201,7 +207,7 @@ export default {
           goTo(conversationContainer.scrollHeight, {
             duration,
             easing: 'easeInOutCubic',
-            container: conversationContainer
+            container: conversationContainer,
           })
         }
       })
@@ -226,8 +232,8 @@ export default {
       } else {
         return []
       }
-    }
-  }
+    },
+  },
 }
 </script>
 
