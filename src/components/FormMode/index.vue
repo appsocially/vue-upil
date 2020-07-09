@@ -1,20 +1,18 @@
 <template>
   <div>
-    <v-row no-gutters v-for="node in finalNodes" :key="node.id">
+    <v-row
+      no-gutters
+      v-for="node in finalNodes"
+      :key="node.id"
+      :class="{'upil-missing-value-node': node.isMissingValue, 'upil-has-value-node': !node.isMissingValue}"
+    >
       <v-col cols="12" :class="`elevation-${node.isMissingValue ? 10 : 0}`">
-        <v-sheet :color="node.isMissingValue ? 'info darken-2' : null">
-          <v-alert
-            dense
-            type="info"
-            class="my-0"
-            tile
-            v-if="node.isMissingValue"
-            >未記入</v-alert
-          >
+        <v-sheet :color="node.isMissingValue ? 'info darken-2' : null" :dark="node.isMissingValue">
+          <v-alert dense type="info" class="my-0" tile v-if="node.isMissingValue">未記入</v-alert>
           <div class="alert-placeholder" v-else />
           <v-card-text class="pt-1">
             <v-row justify="center" no-gutters class="no-wrap">
-              <v-col cols="12">{{ node.text }}</v-col>
+              <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
               <v-col cols="12">
                 <keep-alive>
                   <component

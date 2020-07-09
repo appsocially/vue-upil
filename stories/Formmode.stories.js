@@ -8,12 +8,19 @@ export const basic = () => {
     DIALOG icecream
       TEMPLATE 
       {
-        formText: "Name"
+        formText: "First Name"
       }
-      "What's your name?"
-      >>name
+      "What's your first name?"
+      >>firstName
       /TEMPLATE
-      TEMPLATE "Welcome \${name}"
+      TEMPLATE 
+      {
+        formText: "Last Name"
+      }
+      "What's your last name?"
+      >>lastName
+      /TEMPLATE
+      TEMPLATE "Welcome \${firstName} \${lastName}"
     /DIALOG
     RUN icecream
   `
