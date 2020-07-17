@@ -37,11 +37,12 @@
               </v-row>
             </v-card-text>
           </v-sheet>
-          <v-btn @click="currentNodeIndex--" text>Back</v-btn>
+          <v-btn @click="prevStep" text v-if="currentNodeIndex !== 1">Back</v-btn>
           <v-btn
             color="primary"
+            v-if="currentNodeIndex !== finalNodes.length"
             :disabled="node.isMissingValue"
-            @click="currentNodeIndex++"
+            @click="nextStep"
           >Continue</v-btn>
         </v-stepper-content>
       </v-stepper-items>
@@ -181,6 +182,12 @@ export default {
     },
   },
   methods: {
+    prevStep(){
+      this.currentNodeIndex = Math.max(this.currentNodeIndex - 1, 1)
+    },
+    nextStep(){
+      this.currentNodeIndex = Math.min(this.currentNodeIndex + 1, this.finalNodes.length)
+    },
     updateNodes(nodes) {
       this.nodes = nodes
     },
