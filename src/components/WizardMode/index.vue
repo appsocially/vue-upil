@@ -12,40 +12,44 @@
           <v-divider :key="`${node.id}-divider`"></v-divider>
         </template>
       </v-stepper-header>
+      <v-container>
+        <v-stepper-items>
+          <v-stepper-content
+            v-for="(node, index) in finalNodes"
+            :key="`${node.id}-content`"
+            :step="index+1"
+          >
+            <v-row justify="center">
+              <v-col cols="12" md="8" lg="6">
+                <v-card-text class="pt-1">
+                  <v-row justify="center" no-gutters class="no-wrap">
+                    <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
+                    <v-col cols="12">
+                      <keep-alive>
+                        <component
+                          :is="node.component"
+                          :node="node"
+                          :upil="upil"
+                          :state="state"
+                          :rules="calculateRules(node)"
+                        />
+                      </keep-alive>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
 
-      <v-stepper-items>
-        <v-stepper-content
-          v-for="(node, index) in finalNodes"
-          :key="`${node.id}-content`"
-          :step="index+1"
-        >
-          <v-sheet>
-            <v-card-text class="pt-1">
-              <v-row justify="center" no-gutters class="no-wrap">
-                <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
-                <v-col cols="12">
-                  <keep-alive>
-                    <component
-                      :is="node.component"
-                      :node="node"
-                      :upil="upil"
-                      :state="state"
-                      :rules="calculateRules(node)"
-                    />
-                  </keep-alive>
-                </v-col>
-              </v-row>
-            </v-card-text>
-          </v-sheet>
-          <v-btn @click="prevStep" text v-if="currentNodeIndex !== 1">Back</v-btn>
-          <v-btn
-            color="primary"
-            v-if="currentNodeIndex !== finalNodes.length"
-            :disabled="node.isMissingValue"
-            @click="nextStep"
-          >Continue</v-btn>
-        </v-stepper-content>
-      </v-stepper-items>
+                <v-btn @click="prevStep" text v-if="currentNodeIndex !== 1">Back</v-btn>
+                <v-btn
+                  color="primary"
+                  v-if="currentNodeIndex !== finalNodes.length"
+                  :disabled="node.isMissingValue"
+                  @click="nextStep"
+                >Continue</v-btn>
+              </v-col>
+            </v-row>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-container>
     </v-stepper>
   </div>
 </template>
