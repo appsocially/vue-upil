@@ -1,50 +1,65 @@
 <template>
-  <div>
-    <v-row
-      no-gutters
-      v-for="node in finalNodes"
-      :key="node.id"
-      :class="{
-        'upil-missing-value-node': node.isMissingValue,
-        'upil-has-value-node': !node.isMissingValue,
-      }"
-    >
-      <v-col cols="12" :class="`elevation-${node.isMissingValue ? 10 : 0}`">
-        <v-sheet
-          :color="node.isMissingValue ? 'info darken-2' : null"
-          :dark="node.isMissingValue"
-        >
-          <v-alert
-            dense
-            type="info"
-            class="my-0"
-            tile
-            v-if="node.isMissingValue"
-            >未記入</v-alert
+  <div v-if="finalNodes && finalNodes[0]" id="wizard-container">
+    <v-stepper v-model="currentNodeIndex">
+      <v-stepper-header ref="headerContainer">
+        <template v-for="(node, index) in finalNodes">
+          <v-stepper-step
+            :key="`${node.id}-header`"
+            :complete="!node.isMissingValue"
+            :step="index + 1"
+            >{{ node.headerText }}</v-stepper-step
           >
-          <div class="alert-placeholder" v-else />
-          <v-card-text class="pt-1">
-            <v-row justify="center" no-gutters class="no-wrap">
-              <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
-              <v-col cols="12">
-                <keep-alive>
-                  <component
-                    :is="node.component"
-                    :node="node"
-                    :upil="upil"
-                    :state="state"
-                    :rules="calculateRules(node)"
-                  />
-                </keep-alive>
+
+          <v-divider
+            v-if="index !== finalNodes.length - 1"
+            :key="`${node.id}-divider`"
+          ></v-divider>
+        </template>
+      </v-stepper-header>
+      <v-container>
+        <v-stepper-items>
+          <v-stepper-content
+            v-for="(node, index) in finalNodes"
+            :key="`${node.id}-content`"
+            :step="index + 1"
+          >
+            <v-row justify="center">
+              <v-col cols="12" md="8" lg="6">
+                <v-card-text class="pt-1">
+                  <v-row justify="center" no-gutters class="no-wrap">
+                    <v-col cols="12" class="upil-node-text">
+                      {{ node.text }}
+                    </v-col>
+                    <v-col cols="12">
+                      <keep-alive>
+                        <component
+                          :is="node.component"
+                          :node="node"
+                          :upil="upil"
+                          :state="state"
+                          :rules="calculateRules(node)"
+                        />
+                      </keep-alive>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+
+                <v-btn @click="prevStep" text v-if="currentNodeIndex !== 1"
+                  >Back</v-btn
+                >
+                <v-btn
+                  color="primary"
+                  v-if="currentNodeIndex !== finalNodes.length"
+                  :disabled="node.isMissingValue"
+                  @click="nextStep"
+                  >Continue</v-btn
+                >
               </v-col>
             </v-row>
-          </v-card-text>
-        </v-sheet>
-      </v-col>
-      <v-col cols="12">
-        <v-divider />
-      </v-col>
-    </v-row>
+          </v-stepper-content>
+        </v-stepper-items>
+      </v-container>
+    </v-stepper>
   </div>
 </template>
 
@@ -52,6 +67,7 @@
 import { substituteNodeText } from '@/utils'
 import { symbols } from '@appsocially/userpil-core'
 import debounce from 'lodash.debounce'
+import VueScrollTo from 'vue-scrollto'
 
 function componentByLabel({ label }, component) {
   switch (label) {
@@ -63,11 +79,11 @@ function componentByLabel({ label }, component) {
 function componentByType({ type }, component) {
   switch (type) {
     case 'select':
-      return () => import('./select')
+      return () => import('@/components/FormMode/select')
     case 'multi-select':
-      return () => import('./multi-select')
+      return () => import('@/components/FormMode/multi-select')
     case 'template':
-      return () => import('./text-input')
+      return () => import('@/components/FormMode/text-input')
     default:
       return component
   }
@@ -106,6 +122,7 @@ export default {
       transferStateDebounced: debounce(function (upil) {
         this.transferState(upil)
       }, 200),
+      currentNodeIndex: 1,
     }
   },
   props: {
@@ -142,6 +159,9 @@ export default {
         this.$emit('update:isMissingValue', this.isMissingValues)
       },
     },
+    currentNodeIndex() {
+      this.scrollToActiveHeader()
+    },
   },
   computed: {
     missingValueNodes() {
@@ -163,17 +183,34 @@ export default {
           calculateComponent({ args, ...rest })
         ),
         isMissingValue: isMissingValue(rest, this.state),
-        text: substituteNodeText(
+        headerText: substituteNodeText(
           this.state,
           args && args.formText ? args.formText : text,
           false
         ),
+        text: substituteNodeText(this.state, text, false),
         args,
         ...rest,
       }))
     },
   },
   methods: {
+    scrollToActiveHeader() {
+      VueScrollTo.scrollTo('.v-stepper__step--active', 300, {
+        container: this.$refs.headerContainer,
+        x: true,
+        y: false,
+      })
+    },
+    prevStep() {
+      this.currentNodeIndex = Math.max(this.currentNodeIndex - 1, 1)
+    },
+    nextStep() {
+      this.currentNodeIndex = Math.min(
+        this.currentNodeIndex + 1,
+        this.finalNodes.length
+      )
+    },
     updateNodes(nodes) {
       this.nodes = nodes
     },
@@ -207,7 +244,28 @@ export default {
 </script>
 
 <style scoped>
-.alert-placeholder {
-  height: 40px;
+#wizard-container {
+  width: 100%;
+  height: 100%;
+}
+
+#wizard-container > .v-stepper {
+  width: 100%;
+  height: 100%;
+}
+
+#wizard-container >>> .v-stepper__header {
+  overflow-x: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: left;
+}
+
+#wizard-container >>> .v-stepper__step {
+  min-width: max-content;
+}
+
+#wizard-container >>> .v-stepper__header .v-divider {
+  min-width: 20px;
 }
 </style>
