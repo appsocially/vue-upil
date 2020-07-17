@@ -1,5 +1,5 @@
 <template>
-  <div v-if="finalNodes && finalNodes[0]">
+  <div v-if="finalNodes && finalNodes[0]" class="wizard-container">
     <v-stepper v-model="currentNodeIndex">
       <v-stepper-header>
         <template v-for="(node, index) in finalNodes">
@@ -9,7 +9,7 @@
             :step="index+1"
           >{{node.headerText}}</v-stepper-step>
 
-          <v-divider :key="`${node.id}-divider`"></v-divider>
+          <v-divider v-if="index !== finalNodes.length - 1" :key="`${node.id}-divider`"></v-divider>
         </template>
       </v-stepper-header>
       <v-container>
@@ -225,7 +225,8 @@ export default {
 </script>
 
 <style scoped>
-.alert-placeholder {
-  height: 40px;
+.wizard-container {
+  width: 100%;
+  height: 100%;
 }
 </style>
