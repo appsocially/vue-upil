@@ -6,10 +6,14 @@
           <v-stepper-step
             :key="`${node.id}-header`"
             :complete="!node.isMissingValue"
-            :step="index+1"
-          >{{node.headerText}}</v-stepper-step>
+            :step="index + 1"
+            >{{ node.headerText }}</v-stepper-step
+          >
 
-          <v-divider v-if="index !== finalNodes.length - 1" :key="`${node.id}-divider`"></v-divider>
+          <v-divider
+            v-if="index !== finalNodes.length - 1"
+            :key="`${node.id}-divider`"
+          ></v-divider>
         </template>
       </v-stepper-header>
       <v-container>
@@ -17,13 +21,15 @@
           <v-stepper-content
             v-for="(node, index) in finalNodes"
             :key="`${node.id}-content`"
-            :step="index+1"
+            :step="index + 1"
           >
             <v-row justify="center">
               <v-col cols="12" md="8" lg="6">
                 <v-card-text class="pt-1">
                   <v-row justify="center" no-gutters class="no-wrap">
-                    <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
+                    <v-col cols="12" class="upil-node-text">
+                      {{ node.text }}
+                    </v-col>
                     <v-col cols="12">
                       <keep-alive>
                         <component
@@ -38,13 +44,16 @@
                   </v-row>
                 </v-card-text>
 
-                <v-btn @click="prevStep" text v-if="currentNodeIndex !== 1">Back</v-btn>
+                <v-btn @click="prevStep" text v-if="currentNodeIndex !== 1"
+                  >Back</v-btn
+                >
                 <v-btn
                   color="primary"
                   v-if="currentNodeIndex !== finalNodes.length"
                   :disabled="node.isMissingValue"
                   @click="nextStep"
-                >Continue</v-btn>
+                  >Continue</v-btn
+                >
               </v-col>
             </v-row>
           </v-stepper-content>
@@ -148,7 +157,7 @@ export default {
         this.$emit('update:initializingUpil', initializingUpil)
         this.$emit('update:isMissingValue', this.isMissingValues)
       },
-    }
+    },
   },
   computed: {
     missingValueNodes() {
@@ -175,22 +184,21 @@ export default {
           args && args.formText ? args.formText : text,
           false
         ),
-        text: substituteNodeText(
-          this.state,
-          text,
-          false
-        ),
+        text: substituteNodeText(this.state, text, false),
         args,
         ...rest,
       }))
     },
   },
   methods: {
-    prevStep(){
+    prevStep() {
       this.currentNodeIndex = Math.max(this.currentNodeIndex - 1, 1)
     },
-    nextStep(){
-      this.currentNodeIndex = Math.min(this.currentNodeIndex + 1, this.finalNodes.length)
+    nextStep() {
+      this.currentNodeIndex = Math.min(
+        this.currentNodeIndex + 1,
+        this.finalNodes.length
+      )
     },
     updateNodes(nodes) {
       this.nodes = nodes

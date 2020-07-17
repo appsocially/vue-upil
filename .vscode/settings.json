@@ -1,20 +1,10 @@
 {
-  "eslint.validate": [
-    {
-      "language": "vue",
-      "autoFix": true
-    },
-    {
-      "language": "javascript",
-      "autoFix": true
-    },
-    {
-      "language": "javascriptreact",
-      "autoFix": true
-    }
-  ],
-  "editor.formatOnSave": true,
+  "eslint.validate": ["vue", "javascript", "javascriptreact"],
   "vetur.validation.template": true,
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "editor.tabSize": 2
+  "editor.tabSize": 2,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
+  "editor.formatOnSave": false
 }
