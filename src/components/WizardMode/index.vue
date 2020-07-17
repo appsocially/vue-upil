@@ -229,4 +229,9 @@ export default {
   width: 100%;
   height: 100%;
 }
+
+.wizard-container > .v-stepper {
+  width: 100%;
+  height: 100%;
+}
 </style>
