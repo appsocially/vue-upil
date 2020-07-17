@@ -37,7 +37,11 @@
                       <img height="40" width="40" :src="avatar" mr-1 />
                     </v-flex>
                     <v-flex class="chat-bubble" shrink>
-                      <component v-bind:is="componentType" v-bind="node" :upil="upil" />
+                      <component
+                        v-bind:is="componentType"
+                        v-bind="node"
+                        :upil="upil"
+                      />
                     </v-flex>
                   </v-layout>
                 </v-flex>
