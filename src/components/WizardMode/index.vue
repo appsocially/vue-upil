@@ -1,7 +1,7 @@
 <template>
-  <div v-if="finalNodes && finalNodes[0]" class="wizard-container">
+  <div v-if="finalNodes && finalNodes[0]" id="wizard-container">
     <v-stepper v-model="currentNodeIndex">
-      <v-stepper-header>
+      <v-stepper-header ref="headerContainer">
         <template v-for="(node, index) in finalNodes">
           <v-stepper-step
             :key="`${node.id}-header`"
@@ -67,6 +67,7 @@
 import { substituteNodeText } from '@/utils'
 import { symbols } from '@appsocially/userpil-core'
 import debounce from 'lodash.debounce'
+import VueScrollTo from 'vue-scrollto'
 
 function componentByLabel({ label }, component) {
   switch (label) {
@@ -158,6 +159,9 @@ export default {
         this.$emit('update:isMissingValue', this.isMissingValues)
       },
     },
+    currentNodeIndex() {
+      this.scrollToActiveHeader()
+    },
   },
   computed: {
     missingValueNodes() {
@@ -191,6 +195,13 @@ export default {
     },
   },
   methods: {
+    scrollToActiveHeader() {
+      VueScrollTo.scrollTo('.v-stepper__step--active', 300, {
+        container: this.$refs.headerContainer,
+        x: true,
+        y: false,
+      })
+    },
     prevStep() {
       this.currentNodeIndex = Math.max(this.currentNodeIndex - 1, 1)
     },
@@ -233,13 +244,28 @@ export default {
 </script>
 
 <style scoped>
-.wizard-container {
+#wizard-container {
   width: 100%;
   height: 100%;
 }
 
-.wizard-container > .v-stepper {
+#wizard-container > .v-stepper {
   width: 100%;
   height: 100%;
+}
+
+#wizard-container >>> .v-stepper__header {
+  overflow-x: auto;
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: left;
+}
+
+#wizard-container >>> .v-stepper__step {
+  min-width: max-content;
+}
+
+#wizard-container >>> .v-stepper__header .v-divider {
+  min-width: 20px;
 }
 </style>
