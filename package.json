@@ -23,7 +23,7 @@
     "vue-scrollto": "^2.18.1"
   },
   "devDependencies": {
-    "@appsocially/userpil-core": "^1.1.5",
+    "@appsocially/userpil-core": "^1.1.7",
     "@babel/core": "^7.9.6",
     "@mdi/font": "^5.3.45",
     "@storybook/addon-actions": "^5.3.18",
