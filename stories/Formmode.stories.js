@@ -44,6 +44,39 @@ export const basic = () => {
   }
 }
 
+export const dayMonthYearWidget = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year
+      {
+        formText: "Birthdate"
+      }
+      "What is your birthday?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
 export const longer = () => {
   const longerTemplate = `
   DIALOG mainDialog

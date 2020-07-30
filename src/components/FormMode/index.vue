@@ -55,6 +55,8 @@ import debounce from 'lodash.debounce'
 
 function componentByLabel({ label }, component) {
   switch (label) {
+    case 'day-month-year':
+      return () => import('./day-month-year')
     default:
       return component
   }
