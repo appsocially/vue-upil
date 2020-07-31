@@ -58,10 +58,9 @@ export default {
   },
   data() {
     return {
-      inputValue: this.stateInputValue,
       menu: false,
       isValid: this.rules.length === 0,
-      date: new Date(),
+      date: null,
     }
   },
   computed: {
@@ -70,14 +69,14 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? '' : inputValue
+      return inputValue === symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
       return this.date ? formatTextbox(this.date) : ''
     },
     dateModel: {
       get() {
-        return this.date ? formatAsDate(this.date) : ''
+        return this.date ? formatAsDate(this.date) : null
       },
       set(value) {
         this.date = parseISO(value)
@@ -85,14 +84,14 @@ export default {
     },
   },
   watch: {
-    inputValue(inputValue) {
-      this.onSubmit(inputValue)
+    date(date) {
+      this.onSubmit(date)
     },
     stateInputValue: {
       immediate: true,
       handler(stateInputValue) {
-        if (!this.inputValue) {
-          this.inputValue = stateInputValue
+        if (!this.date) {
+          this.date = stateInputValue
         }
       },
     },
@@ -100,6 +99,10 @@ export default {
   methods: {
     onUpdateError(hasError) {
       this.isValid = !hasError
+    },
+    onSubmit(date) {
+      const submitValue = date ? date : symbols.UNRESOLVED
+      this.upil.consume(this.node.event, submitValue)
     },
   },
 }

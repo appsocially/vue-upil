@@ -1,5 +1,7 @@
+import { parseISO } from 'date-fns'
 import FormMode from '@/components/FormMode'
 import { UPILCore } from '@appsocially/userpil-core'
+import { setupListeners } from '@/utils'
 
 export default { title: 'Formmode' }
 
@@ -58,6 +60,50 @@ export const dayMonthYearWidget = () => {
     RUN birthday
   `
   const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const dayMonthYearWidgetPreloaded = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year
+      {
+        formText: "Birthdate"
+      }
+      "What is your birthday?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+
+  const listeners = {
+    'preload-input': async () => {
+      return {
+        birthday: parseISO('2001-01-01'),
+      }
+    },
+  }
+
+  const upil = new UPILCore()
+  setupListeners({ upil, listeners })
+
   return {
     components: {
       FormMode,
