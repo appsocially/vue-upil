@@ -3,6 +3,7 @@
     <v-menu
       v-model="menu"
       :close-on-content-click="false"
+      :close-on-click="false"
       transition="scale-transition"
       offset-y
       max-width="290px"
@@ -21,11 +22,7 @@
       <div>
         <v-row no-gutters>
           <v-col cols="12">
-            <v-date-picker
-              v-model="dateModel"
-              no-title
-              @input="menu = false"
-            ></v-date-picker>
+            <v-date-picker v-model="tempDateModel" no-title></v-date-picker>
           </v-col>
         </v-row>
         <v-row
@@ -35,14 +32,28 @@
           v-if="timeEnabled"
         >
           <v-col cols="5">
-            <v-select placeholder="何時" :items="hoursItems" v-model="hours" />
+            <v-select
+              placeholder="何時"
+              :items="hoursItems"
+              v-model="tempHoursModel"
+            />
           </v-col>
           <v-col cols="5">
             <v-select
               placeholder="何分"
               :items="minutesItems"
-              v-model="minutes"
+              v-model="tempMinutesModel"
             />
+          </v-col>
+        </v-row>
+      </div>
+      <div>
+        <v-row dense class="mx-1" justify="end">
+          <v-col cols="auto">
+            <v-btn text @click="onCancel">キャンセル</v-btn>
+          </v-col>
+          <v-col cols="auto">
+            <v-btn color="primary" @click="onSubmit">OK</v-btn>
           </v-col>
         </v-row>
       </div>
@@ -52,7 +63,14 @@
 
 <script>
 import { symbols } from '@appsocially/userpil-core'
-import { formatISO, parseISO, parse, format } from 'date-fns'
+import {
+  formatISO,
+  parseISO,
+  parse,
+  format,
+  getHours,
+  getMinutes,
+} from 'date-fns'
 import ja from 'date-fns/locale/ja'
 
 const formatAsDate = (date) => formatISO(date, { representation: 'date' })
@@ -87,9 +105,9 @@ export default {
     return {
       menu: false,
       isValid: this.rules.length === 0,
-      date: null,
-      hours: null,
-      minutes: null,
+      tempDate: null,
+      tempHours: null,
+      tempMinutes: null,
       hoursRaw: Array.from(Array(24).keys()),
       minutesRaw: Array.from(Array(60).keys()),
     }
@@ -120,22 +138,56 @@ export default {
     computedDateFormatted() {
       return this.dateTime ? formatTextbox(this.dateTime, this.timeEnabled) : ''
     },
-    dateModel: {
+    tempDateModel: {
       get() {
-        return this.date ? formatAsDate(this.date) : null
+        return this.tempDate ? formatAsDate(this.tempDate) : this.stateDate
       },
       set(value) {
-        this.date = parseISO(value)
+        this.tempDate = parseISO(value)
       },
+    },
+    tempHoursModel: {
+      get() {
+        return this.tempHours ? this.tempHours : this.stateHours
+      },
+      set(value) {
+        this.tempHours = value
+      },
+    },
+    tempMinutesModel: {
+      get() {
+        return this.tempMinutes ? this.tempMinutes : this.stateMinutes
+      },
+      set(value) {
+        this.tempMinutes = value
+      },
+    },
+    stateDate() {
+      return !this.stateInputValue ||
+        this.stateInputValue === symbols.UNRESOLVED
+        ? null
+        : formatAsDate(this.stateInputValue)
+    },
+    stateHours() {
+      return !this.stateInputValue ||
+        this.stateInputValue === symbols.UNRESOLVED
+        ? null
+        : getHours(this.stateInputValue)
+    },
+    stateMinutes() {
+      return !this.stateInputValue ||
+        this.stateInputValue === symbols.UNRESOLVED
+        ? null
+        : getMinutes(this.stateInputValue)
     },
     dateTimeString() {
       const hasDateTime =
-        this.date && this.hours !== null && this.minutes !== null
+        this.tempDateModel &&
+        this.tempHoursModel !== null &&
+        this.tempMinutesModel !== null
       if (hasDateTime) {
-        const hoursPadded = `${this.hours}`.padStart(2, 0)
-        const minutesPadded = `${this.minutes}`.padStart(2, 0)
         return hasDateTime
-          ? `${this.dateModel}:${hoursPadded}:${minutesPadded}`
+          ? `${this.tempDateModel}:${this.tempHoursModel}:${this.tempMinutesModel}`
           : null
       } else {
         return null
@@ -143,19 +195,16 @@ export default {
     },
     dateTime() {
       return this.dateTimeString
-        ? parse(this.dateTimeString, 'yyyy-MM-dd:HH:mm', new Date())
+        ? parse(this.dateTimeString, 'yyyy-MM-dd:k:m', new Date())
         : null
     },
   },
   watch: {
-    date(date) {
-      this.onSubmit(date)
-    },
     stateInputValue: {
       immediate: true,
       handler(stateInputValue) {
-        if (!this.date) {
-          this.date = stateInputValue
+        if (stateInputValue) {
+          this.resetTempValues(stateInputValue)
         }
       },
     },
@@ -164,9 +213,20 @@ export default {
     onUpdateError(hasError) {
       this.isValid = !hasError
     },
-    onSubmit(date) {
-      const submitValue = date ? date : symbols.UNRESOLVED
-      this.upil.consume(this.node.event, submitValue)
+    onSubmit() {
+      if (this.dateTime) {
+        this.upil.consume(this.node.event, this.dateTime)
+        this.menu = false
+      }
+    },
+    onCancel() {
+      this.resetTempValues()
+      this.menu = false
+    },
+    resetTempValues() {
+      this.tempDate = null
+      this.tempHours = null
+      this.tempMinutes = null
     },
   },
 }
