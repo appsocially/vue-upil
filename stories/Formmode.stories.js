@@ -123,6 +123,40 @@ export const dayMonthYearWidgetPreloaded = () => {
   }
 }
 
+export const dayMonthYearTimeWidget = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year-time
+      {
+        formText: "Birthdate",
+        time: true
+      }
+      "What is your birthday?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
 export const longer = () => {
   const longerTemplate = `
   DIALOG mainDialog
