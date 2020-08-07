@@ -46,10 +46,10 @@ export const basic = () => {
   }
 }
 
-export const dayMonthYearWidget = () => {
+export const dateWidget = () => {
   const birthdayTemplate = `
     DIALOG birthday
-      TEMPLATE day-month-year
+      TEMPLATE date
       {
         formText: "Birthdate"
       }
@@ -79,10 +79,10 @@ export const dayMonthYearWidget = () => {
   }
 }
 
-export const dayMonthYearWidgetPreloaded = () => {
+export const dateWidgetPreloaded = () => {
   const birthdayTemplate = `
     DIALOG birthday
-      TEMPLATE day-month-year
+      TEMPLATE date
       {
         formText: "Birthdate"
       }
@@ -123,10 +123,10 @@ export const dayMonthYearWidgetPreloaded = () => {
   }
 }
 
-export const dayMonthYearTimeWidget = () => {
+export const dateTimeWidget = () => {
   const birthdayTemplate = `
     DIALOG birthday
-      TEMPLATE day-month-year-time
+      TEMPLATE date-time
       {
         formText: "Birthday party"
       }
@@ -157,10 +157,10 @@ export const dayMonthYearTimeWidget = () => {
   }
 }
 
-export const dayMonthYearTimeWidgetPreloaded = () => {
+export const dateTimeWidgetPreloaded = () => {
   const birthdayTemplate = `
     DIALOG birthday
-      TEMPLATE day-month-year-time
+      TEMPLATE date-time
       {
         formText: "Birthday party"
       }
