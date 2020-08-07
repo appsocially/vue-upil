@@ -1270,6 +1270,8 @@ object-assign
 
 /*! exports provided: preset */
 
+/*! exports provided: prevent, default */
+
 /*! exports provided: stack */
 
 /*! exports provided: weekNumber, isLeapYear */
