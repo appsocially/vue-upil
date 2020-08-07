@@ -1,5 +1,7 @@
+import { parseISO, parse } from 'date-fns'
 import FormMode from '@/components/FormMode'
 import { UPILCore } from '@appsocially/userpil-core'
+import { setupListeners } from '@/utils'
 
 export default { title: 'Formmode' }
 
@@ -37,6 +39,244 @@ export const basic = () => {
     },
     mounted() {
       this.upil.startRaw(simpleTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const dayMonthYearWidget = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year
+      {
+        formText: "Birthdate"
+      }
+      "What is your birthday?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const dayMonthYearWidgetPreloaded = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year
+      {
+        formText: "Birthdate"
+      }
+      "What is your birthday?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+
+  const listeners = {
+    'preload-input': async () => {
+      return {
+        birthday: parseISO('2001-01-01'),
+      }
+    },
+  }
+
+  const upil = new UPILCore()
+  setupListeners({ upil, listeners })
+
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const dayMonthYearTimeWidget = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year-time
+      {
+        formText: "Birthday party"
+      }
+      "When is your birthday party?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+
+  const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const dayMonthYearTimeWidgetPreloaded = () => {
+  const birthdayTemplate = `
+    DIALOG birthday
+      TEMPLATE day-month-year-time
+      {
+        formText: "Birthday party"
+      }
+      "When is your birthday party?"
+      >>birthday
+      /TEMPLATE
+    /DIALOG
+    RUN birthday
+  `
+
+  const listeners = {
+    'preload-input': async () => {
+      return {
+        birthday: parse('2019-08-05:15:5', 'yyyy-MM-dd:k:m', new Date()),
+      }
+    },
+  }
+
+  const upil = new UPILCore()
+  setupListeners({ upil, listeners })
+
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(birthdayTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const range = () => {
+  const rangeTemplate = `
+    DIALOG range
+      TEMPLATE range
+      {
+        formText: "Minutes",
+        min: 10,
+        max: 20,
+        unit: "分"
+      }
+      "How long did it take?"
+      >>minutes
+      /TEMPLATE
+    /DIALOG
+    RUN range
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(rangeTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const rangePreloaded = () => {
+  const rangeTemplate = `
+    DIALOG range
+      TEMPLATE range
+      {
+        formText: "Minutes",
+        min: 10,
+        max: 20,
+        unit: "分"
+      }
+      "How long did it take?"
+      >>minutes
+      /TEMPLATE
+    /DIALOG
+    RUN range
+  `
+
+  const listeners = {
+    'preload-input': async () => {
+      return {
+        minutes: 15,
+      }
+    },
+  }
+
+  const upil = new UPILCore()
+  setupListeners({ upil, listeners })
+
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(rangeTemplate, {
         mode: 'form',
         resetOnInputUpdate: true,
       })
