@@ -25,12 +25,7 @@
             <v-date-picker v-model="tempDateModel" no-title></v-date-picker>
           </v-col>
         </v-row>
-        <v-row
-          no-gutters
-          class="mx-1"
-          justify="space-around"
-          v-if="timeEnabled"
-        >
+        <v-row no-gutters class="mx-1" justify="space-around">
           <v-col cols="5">
             <v-select
               placeholder="何時"
@@ -53,7 +48,9 @@
             <v-btn text @click="onCancel">キャンセル</v-btn>
           </v-col>
           <v-col cols="auto">
-            <v-btn color="primary" @click="onSubmit">OK</v-btn>
+            <v-btn color="primary" @click="onSubmit" :disabled="!dateTime"
+              >OK</v-btn
+            >
           </v-col>
         </v-row>
       </div>
@@ -75,10 +72,9 @@ import ja from 'date-fns/locale/ja'
 
 const formatAsDate = (date) => formatISO(date, { representation: 'date' })
 
-const formatStringDateOnly = 'yyyy年MM月dd日(EEEEE)'
 const formatStringDateTime = 'yyyy年MM月dd日(EEEEE) @ HH:mm'
-const formatTextbox = (date, timeEnabled = false) =>
-  format(date, timeEnabled ? formatStringDateTime : formatStringDateOnly, {
+const formatTextbox = (date) =>
+  format(date, formatStringDateTime, {
     locale: ja,
   })
 
@@ -113,9 +109,6 @@ export default {
     }
   },
   computed: {
-    timeEnabled() {
-      return this.node && this.node.args && this.node.args.time
-    },
     hoursItems() {
       return this.hoursRaw.map((i) => ({
         text: `${i}時`.padStart(3, 0),
@@ -136,7 +129,7 @@ export default {
       return inputValue === symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
-      return this.dateTime ? formatTextbox(this.dateTime, this.timeEnabled) : ''
+      return this.dateTime ? formatTextbox(this.dateTime) : ''
     },
     tempDateModel: {
       get() {
