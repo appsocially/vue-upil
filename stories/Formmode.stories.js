@@ -128,14 +128,15 @@ export const dayMonthYearTimeWidget = () => {
     DIALOG birthday
       TEMPLATE day-month-year-time
       {
-        formText: "Birthdate"
+        formText: "Birthday party"
       }
-      "What is your birthday?"
+      "When is your birthday party?"
       >>birthday
       /TEMPLATE
     /DIALOG
     RUN birthday
   `
+
   const upil = new UPILCore()
   return {
     components: {
@@ -161,9 +162,9 @@ export const dayMonthYearTimeWidgetPreloaded = () => {
     DIALOG birthday
       TEMPLATE day-month-year-time
       {
-        formText: "Birthdate"
+        formText: "Birthday party"
       }
-      "What is your birthday?"
+      "When is your birthday party?"
       >>birthday
       /TEMPLATE
     /DIALOG
