@@ -200,6 +200,89 @@ export const dayMonthYearTimeWidgetPreloaded = () => {
   }
 }
 
+export const range = () => {
+  const rangeTemplate = `
+    DIALOG range
+      TEMPLATE range
+      {
+        formText: "Minutes",
+        min: 10,
+        max: 20,
+        unit: "分"
+      }
+      "How long did it take?"
+      >>minutes
+      /TEMPLATE
+    /DIALOG
+    RUN range
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(rangeTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
+export const rangePreloaded = () => {
+  const rangeTemplate = `
+    DIALOG range
+      TEMPLATE range
+      {
+        formText: "Minutes",
+        min: 10,
+        max: 20,
+        unit: "分"
+      }
+      "How long did it take?"
+      >>minutes
+      /TEMPLATE
+    /DIALOG
+    RUN range
+  `
+
+  const listeners = {
+    'preload-input': async () => {
+      return {
+        minutes: 15,
+      }
+    },
+  }
+
+  const upil = new UPILCore()
+  setupListeners({ upil, listeners })
+
+  return {
+    components: {
+      FormMode,
+    },
+    template: ` <FormMode :upil="upil" />`,
+    data() {
+      return {
+        upil,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(rangeTemplate, {
+        mode: 'form',
+        resetOnInputUpdate: true,
+      })
+    },
+  }
+}
+
 export const longer = () => {
   const longerTemplate = `
   DIALOG mainDialog

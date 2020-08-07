@@ -59,6 +59,8 @@ function componentByLabel({ label }, component) {
       return () => import('./day-month-year')
     case 'day-month-year-time':
       return () => import('./day-month-year-time')
+    case 'range':
+      return () => import('./range')
     default:
       return component
   }
