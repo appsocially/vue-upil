@@ -17,37 +17,43 @@
           id="conversation-container"
           ref="conversationContainer"
         >
-          <v-layout justify-space-around wrap>
-            <v-flex>
+          <v-row justify="space-around" class="flex-wrap">
+            <v-col>
               <transition-group
                 @enter="scrollToBottom"
                 name="bubbles"
                 tag="div"
                 class="v-content__wrap fill-height"
               >
-                <v-flex
+                <v-col
                   class="my-1 bubble-container"
-                  xs12
+                  cols="12"
                   v-for="{ node, componentType } in allNodes"
                   :data-side="fromUser(node) ? 'user' : 'bot'"
                   :key="node.id"
                 >
-                  <v-layout pa-1 :reverse="fromUser(node)">
-                    <v-flex shrink v-if="!fromUser(node)">
+                  <v-row
+                    dense
+                    :class="{
+                      'pa-1': true,
+                      'flex-row-reverse': fromUser(node),
+                    }"
+                  >
+                    <v-col cols="auto" v-if="!fromUser(node)">
                       <img height="40" width="40" :src="avatar" mr-1 />
-                    </v-flex>
-                    <v-flex class="chat-bubble" shrink>
+                    </v-col>
+                    <v-col class="chat-bubble" cols="auto">
                       <component
                         v-bind:is="componentType"
                         v-bind="node"
                         :upil="upil"
                       />
-                    </v-flex>
-                  </v-layout>
-                </v-flex>
+                    </v-col>
+                  </v-row>
+                </v-col>
               </transition-group>
-            </v-flex>
-          </v-layout>
+            </v-col>
+          </v-row>
 
           <div id="bottom-bar" v-if="!removeBottomBar && currentNode">
             <component
@@ -71,6 +77,7 @@
 </template>
 
 <script>
+import { VCol, VRow } from 'vuetify/lib'
 import UpilProvider from '@/components/UpilProvider'
 import { NODE_TYPES } from '@/enums'
 import debounce from 'lodash.debounce'
@@ -90,6 +97,8 @@ const defaultReplyComponentsMap = {
 
 export default {
   components: {
+    VCol,
+    VRow,
     UpilProvider,
   },
   data() {
