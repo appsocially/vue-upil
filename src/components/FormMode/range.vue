@@ -5,9 +5,13 @@
 </template>
 
 <script>
+import { VSelect } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
 
 export default {
+  components: {
+    VSelect,
+  },
   props: {
     node: {
       type: Object,

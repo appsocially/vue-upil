@@ -14,10 +14,14 @@
 </template>
 
 <script>
+import { VTextarea } from 'vuetify/lib'
 import textInputMixin from './text-input-mixin'
 
 export default {
   mixins: [textInputMixin],
+  components: {
+    VTextarea,
+  },
   props: {
     rules: {
       type: Array,

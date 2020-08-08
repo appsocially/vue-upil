@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import { VMenu, VTextField, VDatePicker } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
 import { formatISO, parseISO, format } from 'date-fns'
 import ja from 'date-fns/locale/ja'
@@ -38,6 +39,11 @@ const formatString = 'yyyy年MM月dd日(EEEEE)'
 const formatTextbox = (date) => format(date, formatString, { locale: ja })
 
 export default {
+  components: {
+    VMenu,
+    VTextField,
+    VDatePicker,
+  },
   props: {
     node: {
       type: Object,

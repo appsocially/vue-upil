@@ -59,6 +59,15 @@
 </template>
 
 <script>
+import {
+  VMenu,
+  VTextField,
+  VDatePicker,
+  VRow,
+  VCol,
+  VBtn,
+  VSelect,
+} from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
 import {
   formatISO,
@@ -79,6 +88,15 @@ const formatTextbox = (date) =>
   })
 
 export default {
+  components: {
+    VMenu,
+    VTextField,
+    VDatePicker,
+    VRow,
+    VCol,
+    VBtn,
+    VSelect,
+  },
   props: {
     node: {
       type: Object,
