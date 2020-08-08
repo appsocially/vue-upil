@@ -3,7 +3,12 @@
 </template>
 
 <script>
+import { VSelect } from 'vuetify/lib'
+
 export default {
+  components: {
+    VSelect,
+  },
   props: {
     node: {
       type: Object,

@@ -7,7 +7,13 @@
 </template>
 
 <script>
+import { VCard, VCardText } from 'vuetify/lib'
+
 export default {
+  components: {
+    VCard,
+    VCardText,
+  },
   props: {
     reply: {
       type: Boolean,

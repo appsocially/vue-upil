@@ -15,7 +15,12 @@
 </template>
 
 <script>
+import { VTextarea } from 'vuetify/lib'
+
 export default {
+  components: {
+    VTextarea,
+  },
   props: {
     input: {
       type: Object,
