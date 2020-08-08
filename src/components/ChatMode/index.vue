@@ -78,6 +78,7 @@
 
 <script>
 import { VCol, VRow } from 'vuetify/lib'
+import { Resize } from 'vuetify/lib/directives'
 import UpilProvider from '@/components/UpilProvider'
 import { NODE_TYPES } from '@/enums'
 import debounce from 'lodash.debounce'
@@ -100,6 +101,9 @@ export default {
     VCol,
     VRow,
     UpilProvider,
+  },
+  directives: {
+    Resize,
   },
   data() {
     return {
