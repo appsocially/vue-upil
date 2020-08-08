@@ -64,6 +64,18 @@
 </template>
 
 <script>
+import {
+  VRow,
+  VCol,
+  VCardText,
+  VDivider,
+  VStepper,
+  VStepperStep,
+  VStepperHeader,
+  VStepperItems,
+  VStepperContent,
+  VBtn,
+} from 'vuetify/lib'
 import { substituteNodeText } from '@/utils'
 import { symbols } from '@appsocially/userpil-core'
 import debounce from 'lodash.debounce'
@@ -85,6 +97,18 @@ const isMissingValue = (node, state) => {
 }
 
 export default {
+  components: {
+    VRow,
+    VCol,
+    VCardText,
+    VDivider,
+    VStepper,
+    VStepperStep,
+    VStepperHeader,
+    VStepperItems,
+    VStepperContent,
+    VBtn,
+  },
   data() {
     return {
       nodes: [],
