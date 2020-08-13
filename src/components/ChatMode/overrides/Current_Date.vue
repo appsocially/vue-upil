@@ -9,7 +9,7 @@
       />
     </v-col>
     <v-col cols="auto" class="flex-shrink-1">
-      <v-btn icon :disabled="!canConsume">
+      <v-btn icon :disabled="!canConsume" @click="onSend">
         <v-icon>mdi-send</v-icon>
       </v-btn>
     </v-col>
@@ -64,6 +64,9 @@ export default {
     onConsume({ event, value }) {
       this.inputValue = value
       this.event = event
+    },
+    onSend() {
+      this.$emit('consume', { event: this.event, value: this.inputValue })
     },
   },
 }

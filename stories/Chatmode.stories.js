@@ -80,6 +80,7 @@ export const date = () => {
       "When is your birthday?"
       >>date
       /TEMPLATE
+      TEMPLATE "Great, excited to see you on \${date}"
     /DIALOG
     RUN pickDate
   `
