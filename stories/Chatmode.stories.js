@@ -76,15 +76,13 @@ export const emailValidation = () => {
 }
 
 export const date = () => {
-  // const transformTextVariables = (value) => {
-  //   if (isDate(value)) {
-  //     return formatDateString(value)
-  //   } else {
-  //     return value
-  //   }
-  // }
-
-  const transformTextVariables = (value) => value
+  const transformTextVariables = (value) => {
+    if (isDate(value)) {
+      return formatDateString(value)
+    } else {
+      return value
+    }
+  }
 
   const simpleTemplate = `
     DIALOG pickDate
