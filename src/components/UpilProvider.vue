@@ -45,6 +45,10 @@ export default {
       // default: () => () => import('@/components/DefaultTemplate')
       default: () => () => null,
     },
+    transformTextVariables: {
+      type: Function,
+      default: (value) => value,
+    },
     listeners: {
       type: Object,
       default: () => ({}),
@@ -211,7 +215,8 @@ export default {
             text: substituteNodeText(
               this.stateWrapper.inputState,
               text,
-              this.searchForLinks
+              this.searchForLinks,
+              this.transformTextVariables
             ),
             id: reply === true ? `${id}-r` : id,
             reply,

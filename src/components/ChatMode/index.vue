@@ -2,6 +2,7 @@
   <UpilProvider
     :override="_override"
     :overrideCurrent="_overrideCurrent"
+    :transformTextVariables="transformTextVariables"
     :upil="upil"
     :listeners="listeners"
     :searchForLinks="searchForLinks"
@@ -157,6 +158,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    transformTextVariables: {
+      type: Function,
+      default: (value) => value,
+    },
   },
   computed: {
     wrapperStyle() {
@@ -221,10 +226,22 @@ export default {
       const { reply, type } = node
       const internalComponentType =
         reply === true
-          ? defaultReplyComponentsMap[type]
+          ? this.calculateReplyComponentByLabel(
+              context,
+              node,
+              defaultReplyComponentsMap[type]
+            )
           : defaultStatementComponentsMap[type]
       const finalComponent = internalComponentType || component
       return this.override(context, node, finalComponent)
+    },
+    calculateReplyComponentByLabel(context, node, component) {
+      switch (node.label) {
+        case 'date':
+          return () => import('./overrides/Reply_Date')
+        default:
+          return component
+      }
     },
     fromUser(node) {
       return node.reply === true

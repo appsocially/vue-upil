@@ -30,13 +30,8 @@
 <script>
 import { VMenu, VTextField, VDatePicker } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
-import { formatISO, parseISO, format } from 'date-fns'
-import ja from 'date-fns/locale/ja'
-
-const formatAsDate = (date) => formatISO(date, { representation: 'date' })
-
-const formatString = 'yyyy年MM月dd日(EEEEE)'
-const formatTextbox = (date) => format(date, formatString, { locale: ja })
+import { parseISO } from 'date-fns'
+import { formatAsDate, formatTextbox } from './utils'
 
 export default {
   components: {

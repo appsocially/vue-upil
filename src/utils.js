@@ -10,7 +10,12 @@ import dot from 'dot-object'
  * @param {boolean} searchForLinks - Finds links in text and makes them links if necessary
  * @returns {string} - Text that was updated if necessary
  */
-export function substituteNodeText(inputState, text, searchForLinks) {
+export function substituteNodeText(
+  inputState,
+  text,
+  searchForLinks,
+  transformTextVariables
+) {
   if (text) {
     // Regex used to parse for tokens in nodes' text
     const nodeTextRegex = /\$\{([^}]+)\}/gm
@@ -24,7 +29,8 @@ export function substituteNodeText(inputState, text, searchForLinks) {
       const [originalText, dataKey] = match
       const stateValue = dot.pick(dataKey, inputState)
       if (stateValue) {
-        return memo.replace(originalText, stateValue)
+        const transformedValue = transformTextVariables(stateValue)
+        return memo.replace(originalText, transformedValue)
       } else {
         // eslint-disable-next-line
         console.error(
