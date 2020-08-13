@@ -72,3 +72,31 @@ export const emailValidation = () => {
     },
   }
 }
+
+export const date = () => {
+  const simpleTemplate = `
+    DIALOG pickDate
+      TEMPLATE date
+      "When is your birthday?"
+      >>date
+      /TEMPLATE
+    /DIALOG
+    RUN pickDate
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      ChatMode,
+    },
+    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo" />`,
+    data() {
+      return {
+        upil,
+        TruffleLogo,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(simpleTemplate)
+    },
+  }
+}

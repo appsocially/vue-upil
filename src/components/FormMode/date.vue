@@ -11,7 +11,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           v-model="computedDateFormatted"
-          hide-hint
+          hide-details
           prepend-icon="mdi-calendar"
           readonly
           v-bind="attrs"
@@ -46,10 +46,6 @@ export default {
   },
   props: {
     node: {
-      type: Object,
-      required: true,
-    },
-    upil: {
       type: Object,
       required: true,
     },
@@ -108,7 +104,7 @@ export default {
     },
     onSubmit(date) {
       const submitValue = date ? date : symbols.UNRESOLVED
-      this.upil.consume(this.node.event, submitValue)
+      this.$emit('consume', { event: this.node.event, value: submitValue })
     },
   },
 }

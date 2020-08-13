@@ -1,11 +1,12 @@
 <template>
   <span>
     <slot
-      v-bind:history="history"
-      v-bind:allNodes="allNodes"
-      v-bind:currentNode="currentNode"
-      v-bind:sendInput="upil.consume"
-      v-bind:scenarioEnded="scenarioEnded"
+      :history="history"
+      :allNodes="allNodes"
+      :currentNode="currentNode"
+      :sendInput="upil.consume"
+      :scenarioEnded="scenarioEnded"
+      :state="stateWrapper.inputState"
     />
   </span>
 </template>
