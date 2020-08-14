@@ -47,7 +47,7 @@ export default {
     },
     transformTextVariables: {
       type: Function,
-      default: (value) => value,
+      default: ({ value }) => value,
     },
     listeners: {
       type: Object,

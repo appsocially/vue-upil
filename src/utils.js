@@ -5,8 +5,8 @@ import dot from 'dot-object'
  * If a node with text is passed in, replacement text tokens are searched for (${key}),
  * and those tokens are replaced with data stored in the data parameter.
  *
- * @param {Object} inputState - A dictionary of key:values of variable state
- * @param {string} text - text to update if necessary
+ * @param {Object} state - A dictionary of key:values of variable state
+ * @param {Node} node - text to update if necessary
  * @param {boolean} searchForLinks - Finds links in text and makes them links if necessary
  * @returns {string} - Text that was updated if necessary
  */
@@ -29,12 +29,15 @@ export function substituteNodeText(
       const [originalText, dataKey] = match
       const stateValue = dot.pick(dataKey, inputState)
       if (stateValue) {
-        const transformedValue = transformTextVariables(stateValue)
+        const transformedValue = transformTextVariables({
+          value: stateValue,
+          key: dataKey,
+        })
         return memo.replace(originalText, transformedValue)
       } else {
         // eslint-disable-next-line
         console.error(
-          `Couldn't find inputState to replace custom variable ${dataKey}`
+          `Couldn't find state to replace custom variable ${dataKey}`
         )
         return memo
       }

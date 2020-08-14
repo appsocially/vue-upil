@@ -224,6 +224,8 @@ export default {
           return () => import('./overrides/Current_Date')
         case 'date-time':
           return () => import('./overrides/Current_DateTime')
+        case 'range':
+          return () => import('./overrides/Current_Range')
         default:
           return component
       }

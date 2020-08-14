@@ -14,9 +14,11 @@ const types = {
   email: emailValidationRules,
 }
 
-const transformTextVariables = (value) => {
+const transformTextVariables = ({ value, key: variableName }) => {
   if (isDate(value)) {
     return formatDateString(value)
+  } else if (variableName === 'minutes') {
+    return `${value}分`
   } else {
     return value
   }
@@ -24,11 +26,16 @@ const transformTextVariables = (value) => {
 
 const transformReplyVariables = ({
   node: {
+    label,
     event: { value },
+    args,
   },
 }) => {
   if (isDate(value)) {
     return formatDateString(value)
+  } else if (label === 'range') {
+    const unit = args && args.unit ? args.unit : ''
+    return `${value}${unit}`
   } else {
     return value
   }
@@ -176,6 +183,43 @@ export const date = () => {
       ChatMode,
     },
     template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo" :transformReplyVariables="transformReplyVariables" :transformTextVariables="transformTextVariables"/>`,
+    data() {
+      return {
+        upil,
+        TruffleLogo,
+        transformTextVariables,
+        transformReplyVariables,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(simpleTemplate)
+    },
+  }
+}
+
+export const range = () => {
+  const simpleTemplate = `
+  DIALOG range
+    TEMPLATE range
+    {
+      formText: "Minutes",
+      min: 10,
+      max: 20,
+      unit: "分"
+    }
+    "How long did it take?"
+    >>minutes
+    /TEMPLATE
+    TEMPLATE "\${minutes} huh? That seems like a reasonable amount of time"
+  /DIALOG
+  RUN range
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      ChatMode,
+    },
+    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil,
