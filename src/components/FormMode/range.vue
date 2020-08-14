@@ -3,7 +3,7 @@
     <v-select
       :items="items"
       v-model="numericModel"
-      :placeholder="placeholder"
+      :placeholder="labelOverride"
     />
   </keep-alive>
 </template>
@@ -29,6 +29,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    labelOverride: {
+      type: String,
+      default: '選んでください',
+    },
   },
   computed: {
     min() {
@@ -44,11 +48,6 @@ export default {
     unit() {
       return this.node && this.node.args && this.node.args.unit
         ? this.node.args.unit
-        : ''
-    },
-    placeholder() {
-      return this.node && this.node.args && this.node.args.formText
-        ? this.node.args.formText
         : ''
     },
     items() {

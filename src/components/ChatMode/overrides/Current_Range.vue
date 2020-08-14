@@ -5,6 +5,7 @@
         :node="rawNode"
         :state="state"
         :rules="rules"
+        :labelOverride="labelOverride"
         @consume="onConsume"
       />
     </v-col>
@@ -58,6 +59,11 @@ export default {
     },
     hasValue() {
       return this.inputValue && this.inputValue !== symbols.UNRESOLVED
+    },
+    labelOverride() {
+      return this.rawNode && this.rawNode.args && this.rawNode.args.formText
+        ? this.rawNode.args.formText
+        : ''
     },
   },
   methods: {
