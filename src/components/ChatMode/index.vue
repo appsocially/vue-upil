@@ -45,10 +45,11 @@
                     </v-col>
                     <v-col class="chat-bubble" cols="auto">
                       <component
-                        v-bind="node"
+                        :node="node"
                         :is="componentType"
                         :upil="upil"
                         :state="state"
+                        :transform="transformReplyVariables"
                         @consume="onConsume"
                       />
                     </v-col>
@@ -162,6 +163,9 @@ export default {
       type: Function,
       default: (value) => value,
     },
+    transformReplyVariables: {
+      type: Function,
+    },
   },
   computed: {
     wrapperStyle() {
@@ -226,22 +230,10 @@ export default {
       const { reply, type } = node
       const internalComponentType =
         reply === true
-          ? this.calculateReplyComponentByLabel(
-              context,
-              node,
-              defaultReplyComponentsMap[type]
-            )
+          ? defaultReplyComponentsMap[type]
           : defaultStatementComponentsMap[type]
       const finalComponent = internalComponentType || component
       return this.override(context, node, finalComponent)
-    },
-    calculateReplyComponentByLabel(context, node, component) {
-      switch (node.label) {
-        case 'date':
-          return () => import('./overrides/Reply_Date')
-        default:
-          return component
-      }
     },
     fromUser(node) {
       return node.reply === true

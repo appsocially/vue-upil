@@ -1,5 +1,5 @@
 <template>
-  <TextBubble :reply="reply">{{ selectedOption }}</TextBubble>
+  <TextBubble :reply="node.reply">{{ selectedOption }}</TextBubble>
 </template>
 
 <script>
@@ -10,17 +10,8 @@ export default {
     TextBubble,
   },
   props: {
-    options: {
-      type: Array,
-      required: true,
-    },
-    event: {
+    node: {
       type: Object,
-      required: false,
-    },
-    reply: {
-      type: Boolean,
-      required: true,
     },
     upil: {
       type: Object,
@@ -29,9 +20,9 @@ export default {
   computed: {
     selectedOption() {
       const index = this.upil
-        ? this.upil.findOptionIndex(this.options, this.event.value)
+        ? this.upil.findOptionIndex(this.node.options, this.node.event.value)
         : -1
-      const selectedOption = this.options[index]
+      const selectedOption = this.node.options[index]
       return selectedOption.text
     },
   },

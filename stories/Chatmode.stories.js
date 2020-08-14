@@ -45,6 +45,70 @@ export const basic = () => {
   }
 }
 
+export const select = () => {
+  const script = `
+    DIALOG favColor
+      SELECT
+        "Please choose your favorite color"
+        -("Red", "red")
+        -("Blue", "blue")
+        -("Green", "green")
+        >>color
+      /SELECT
+      TEMPLATE "\${color} is a great color!"
+    /DIALOG
+    RUN favColor
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      ChatMode,
+    },
+    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo"/>`,
+    data() {
+      return {
+        upil,
+        TruffleLogo,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(script)
+    },
+  }
+}
+
+export const MultiSelect = () => {
+  const script = `
+    DIALOG favColor
+      MULTI_SELECT
+        "Please choose all of your favorite colors"
+        -("Color red", "red")
+        -("Color blue", "blue")
+        -("Color green", "green")
+        >>colors
+      /MULTI_SELECT
+      TEMPLATE "Those are all great colors!"
+    /DIALOG
+    RUN favColor
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      ChatMode,
+    },
+    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo"/>`,
+    data() {
+      return {
+        upil,
+        TruffleLogo,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(script)
+    },
+  }
+}
+
 export const emailValidation = () => {
   const simpleTemplate = `
     DIALOG icecream
@@ -84,6 +148,18 @@ export const date = () => {
     }
   }
 
+  const transformReplyVariables = ({
+    node: {
+      event: { value },
+    },
+  }) => {
+    if (isDate(value)) {
+      return formatDateString(value)
+    } else {
+      return value
+    }
+  }
+
   const simpleTemplate = `
     DIALOG pickDate
       TEMPLATE date
@@ -99,12 +175,13 @@ export const date = () => {
     components: {
       ChatMode,
     },
-    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables"/>`,
+    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo" :transformReplyVariables="transformReplyVariables" :transformTextVariables="transformTextVariables"/>`,
     data() {
       return {
         upil,
         TruffleLogo,
         transformTextVariables,
+        transformReplyVariables,
       }
     },
     mounted() {
