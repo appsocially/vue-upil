@@ -14,6 +14,26 @@ const types = {
   email: emailValidationRules,
 }
 
+const transformTextVariables = (value) => {
+  if (isDate(value)) {
+    return formatDateString(value)
+  } else {
+    return value
+  }
+}
+
+const transformReplyVariables = ({
+  node: {
+    event: { value },
+  },
+}) => {
+  if (isDate(value)) {
+    return formatDateString(value)
+  } else {
+    return value
+  }
+}
+
 export default { title: 'Chatmode' }
 
 export const basic = () => {
@@ -140,26 +160,6 @@ export const emailValidation = () => {
 }
 
 export const date = () => {
-  const transformTextVariables = (value) => {
-    if (isDate(value)) {
-      return formatDateString(value)
-    } else {
-      return value
-    }
-  }
-
-  const transformReplyVariables = ({
-    node: {
-      event: { value },
-    },
-  }) => {
-    if (isDate(value)) {
-      return formatDateString(value)
-    } else {
-      return value
-    }
-  }
-
   const simpleTemplate = `
     DIALOG pickDate
       TEMPLATE date
@@ -169,6 +169,39 @@ export const date = () => {
       TEMPLATE "Great, excited to see you on \${date}"
     /DIALOG
     RUN pickDate
+  `
+  const upil = new UPILCore()
+  return {
+    components: {
+      ChatMode,
+    },
+    template: ` <ChatMode :upil="upil" key="Template" :avatar="TruffleLogo" :transformReplyVariables="transformReplyVariables" :transformTextVariables="transformTextVariables"/>`,
+    data() {
+      return {
+        upil,
+        TruffleLogo,
+        transformTextVariables,
+        transformReplyVariables,
+      }
+    },
+    mounted() {
+      this.upil.startRaw(simpleTemplate)
+    },
+  }
+}
+
+export const dateTime = () => {
+  const simpleTemplate = `
+  DIALOG birthday
+    TEMPLATE date-time
+    {
+      formText: "Birthday party"
+    }
+    "When is your birthday party?"
+    >>birthday
+    /TEMPLATE
+  /DIALOG
+  RUN birthday
   `
   const upil = new UPILCore()
   return {

@@ -222,6 +222,8 @@ export default {
       switch (node.label) {
         case 'date':
           return () => import('./overrides/Current_Date')
+        case 'date-time':
+          return () => import('./overrides/Current_DateTime')
         default:
           return component
       }

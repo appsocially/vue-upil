@@ -1,6 +1,7 @@
 <template>
   <keep-alive>
     <v-menu
+      id="menu"
       v-model="menu"
       :close-on-content-click="false"
       :close-on-click="false"
@@ -19,41 +20,43 @@
           v-on="on"
         ></v-text-field>
       </template>
-      <div>
-        <v-row no-gutters>
-          <v-col cols="12">
-            <v-date-picker v-model="tempDateModel" no-title></v-date-picker>
-          </v-col>
-        </v-row>
-        <v-row no-gutters class="mx-1" justify="space-around">
-          <v-col cols="5">
-            <v-select
-              placeholder="何時"
-              :items="hoursItems"
-              v-model="tempHoursModel"
-            />
-          </v-col>
-          <v-col cols="5">
-            <v-select
-              placeholder="何分"
-              :items="minutesItems"
-              v-model="tempMinutesModel"
-            />
-          </v-col>
-        </v-row>
-      </div>
-      <div>
-        <v-row dense class="mx-1" justify="end">
-          <v-col cols="auto">
-            <v-btn text @click="onCancel">キャンセル</v-btn>
-          </v-col>
-          <v-col cols="auto">
-            <v-btn color="primary" @click="onSubmit" :disabled="!dateTime"
-              >OK</v-btn
-            >
-          </v-col>
-        </v-row>
-      </div>
+      <v-sheet>
+        <div>
+          <v-row no-gutters>
+            <v-col cols="12">
+              <v-date-picker v-model="tempDateModel" no-title></v-date-picker>
+            </v-col>
+          </v-row>
+          <v-row no-gutters class="mx-1" justify="space-around">
+            <v-col cols="5">
+              <v-select
+                placeholder="何時"
+                :items="hoursItems"
+                v-model="tempHoursModel"
+              />
+            </v-col>
+            <v-col cols="5">
+              <v-select
+                placeholder="何分"
+                :items="minutesItems"
+                v-model="tempMinutesModel"
+              />
+            </v-col>
+          </v-row>
+        </div>
+        <div>
+          <v-row dense class="mx-1" justify="end">
+            <v-col cols="auto">
+              <v-btn text @click="onCancel">キャンセル</v-btn>
+            </v-col>
+            <v-col cols="auto">
+              <v-btn color="primary" @click="onSubmit" :disabled="!dateTime"
+                >OK</v-btn
+              >
+            </v-col>
+          </v-row>
+        </div>
+      </v-sheet>
     </v-menu>
   </keep-alive>
 </template>
@@ -67,25 +70,11 @@ import {
   VCol,
   VBtn,
   VSelect,
+  VSheet,
 } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
-import {
-  formatISO,
-  parseISO,
-  parse,
-  format,
-  getHours,
-  getMinutes,
-} from 'date-fns'
-import ja from 'date-fns/locale/ja'
-
-const formatAsDate = (date) => formatISO(date, { representation: 'date' })
-
-const formatStringDateTime = 'yyyy年MM月dd日(EEEEE) @ HH:mm'
-const formatTextbox = (date) =>
-  format(date, formatStringDateTime, {
-    locale: ja,
-  })
+import { parseISO, parse, getHours, getMinutes } from 'date-fns'
+import { formatAsDate, formatTextbox } from './utils'
 
 export default {
   components: {
@@ -96,13 +85,10 @@ export default {
     VCol,
     VBtn,
     VSelect,
+    VSheet,
   },
   props: {
     node: {
-      type: Object,
-      required: true,
-    },
-    upil: {
       type: Object,
       required: true,
     },
@@ -226,7 +212,7 @@ export default {
     },
     onSubmit() {
       if (this.dateTime) {
-        this.upil.consume(this.node.event, this.dateTime)
+        this.$emit('consume', { event: this.node.event, value: this.dateTime })
         this.menu = false
       }
     },
@@ -242,5 +228,3 @@ export default {
   },
 }
 </script>
-
-<style></style>
