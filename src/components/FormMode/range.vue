@@ -1,6 +1,10 @@
 <template>
   <keep-alive>
-    <v-select :items="items" v-model="numericModel" />
+    <v-select
+      :items="items"
+      v-model="numericModel"
+      :placeholder="placeholder"
+    />
   </keep-alive>
 </template>
 
@@ -40,6 +44,11 @@ export default {
     unit() {
       return this.node && this.node.args && this.node.args.unit
         ? this.node.args.unit
+        : ''
+    },
+    placeholder() {
+      return this.node && this.node.args && this.node.args.formText
+        ? this.node.args.formText
         : ''
     },
     items() {
