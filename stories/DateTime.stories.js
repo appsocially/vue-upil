@@ -1,5 +1,5 @@
 import TruffleLogo from './truffle_logo.png'
-import { parseISO } from 'date-fns'
+import { parse } from 'date-fns'
 import FormMode from '@/components/FormMode'
 import WizardMode from '@/components/WizardMode'
 import ChatMode from '@/components/ChatMode'
@@ -7,7 +7,7 @@ import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 
 export default {
-  title: 'Widgets/Date Widget',
+  title: 'Widgets/Date-Time Widget',
   args: { mode: 'FormMode', listeners: {} },
   argTypes: {
     mode: {
@@ -22,18 +22,21 @@ export default {
   },
 }
 
-const dateTemplate = (args) => {
+const dateTimeTemplate = (args) => {
+  console.log('args', args)
+  console.log('Object.keys(args)', Object.keys(args))
+
   const birthdayTemplate = `
-    DIALOG birthday
-      TEMPLATE date
-      {
-        formText: "Birthdate"
-      }
-      "When is your birthday?"
-      >>birthday
-      /TEMPLATE
-    /DIALOG
-    RUN birthday
+  DIALOG birthday
+    TEMPLATE date-time
+    {
+      formText: "Birthday party"
+    }
+    "When is your birthday party?"
+    >>birthday
+    /TEMPLATE
+  /DIALOG
+  RUN birthday
   `
 
   return {
@@ -76,16 +79,16 @@ const dateTemplate = (args) => {
   }
 }
 
-export const DateEmpty = dateTemplate.bind({})
+export const DateTimeEmpty = dateTimeTemplate.bind({})
 // DateFormMode.args = { mode: 'FormMode' }
 
-export const DatePreLoaded = dateTemplate.bind({})
-DatePreLoaded.args = {
+export const DateTimePreLoaded = dateTimeTemplate.bind({})
+DateTimePreLoaded.args = {
   mode: 'FormMode',
   listeners: {
     'preload-input': async () => {
       return {
-        birthday: parseISO('2001-01-01'),
+        birthday: parse('2019-08-05:15:5', 'yyyy-MM-dd:k:m', new Date()),
       }
     },
   },
