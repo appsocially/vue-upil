@@ -23,9 +23,6 @@ export default {
 }
 
 const dateTimeTemplate = (args) => {
-  console.log('args', args)
-  console.log('Object.keys(args)', Object.keys(args))
-
   const birthdayTemplate = `
   DIALOG birthday
     TEMPLATE date-time
