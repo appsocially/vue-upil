@@ -161,7 +161,6 @@ export default {
     },
     transformTextVariables: {
       type: Function,
-      default: (value) => value,
     },
     transformReplyVariables: {
       type: Function,
