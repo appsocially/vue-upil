@@ -1,46 +1,6 @@
 import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import TruffleLogo from './truffle_logo.png'
-import { email } from 'vee-validate/dist/rules'
-import { formatTextbox as formatDateString } from '@/components/FormMode/date/utils'
-import { isDate } from 'date-fns'
-import { setupListeners } from '@/utils'
-
-// const emailValidationRules = [
-//   (value) => (value && value.length > 0 ? true : 'Required'),
-//   (value) => (email.validate(value) ? true : 'Invalid email address'),
-// ]
-
-// const types = {
-//   email: emailValidationRules,
-// }
-
-// const transformTextVariables = ({ value, key: variableName }) => {
-//   if (isDate(value)) {
-//     return formatDateString(value)
-//   } else if (variableName === 'minutes') {
-//     return `${value}分`
-//   } else {
-//     return value
-//   }
-// }
-
-// const transformReplyVariables = ({
-//   node: {
-//     label,
-//     event: { value },
-//     args,
-//   },
-// }) => {
-//   if (isDate(value)) {
-//     return formatDateString(value)
-//   } else if (label === 'range') {
-//     const unit = args && args.unit ? args.unit : ''
-//     return `${value}${unit}`
-//   } else {
-//     return value
-//   }
-// }
 
 export default {
   title: 'Modes/Chatmode',
