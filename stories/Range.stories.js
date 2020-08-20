@@ -60,7 +60,7 @@ export default {
     },
     unit: {
       control: {
-        type: 'string',
+        type: 'text',
       },
     },
     listeners: {
@@ -106,6 +106,15 @@ const rangeTemplate = (args) => {
       argsSignature() {
         return `${this.mode}-${this.min}-${this.max}-${this.unit}`
       },
+      transformTextVariables() {
+        return ({ value, key: variableName }) => {
+          if (variableName === 'minutes') {
+            return `${value}${this.unit}`
+          } else {
+            return value
+          }
+        }
+      },
     },
     methods: {
       startUpil() {
@@ -121,7 +130,6 @@ const rangeTemplate = (args) => {
           })
         }
       },
-      transformTextVariables,
       transformReplyVariables,
     },
     mounted() {
