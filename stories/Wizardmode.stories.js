@@ -1,113 +1,103 @@
 import WizardMode from '@/components/WizardMode'
 import { UPILCore } from '@appsocially/userpil-core'
 
-export default { title: 'WizardMode' }
+export default {
+  title: 'Modes/Wizardmode',
+  args: {
+    templateText: '',
+  },
+  argTypes: {
+    templateText: {
+      control: {
+        type: 'text',
+      },
+    },
+  },
+}
 
-export const basic = () => {
-  const simpleTemplate = `
-    DIALOG icecream
-      TEMPLATE 
-      {
-        formText: "First Name"
-      }
-      "What's your first name?"
-      >>firstName
-      /TEMPLATE
-      TEMPLATE 
-      {
-        formText: "Last Name"
-      }
-      "What's your last name?"
-      >>lastName
-      /TEMPLATE
-      TEMPLATE "Welcome \${firstName} \${lastName}"
-    /DIALOG
-    RUN icecream
-  `
-  const upil = new UPILCore()
+const wizardmodeTemplate = (args) => {
   return {
+    props: Object.keys(args),
     components: {
       WizardMode,
     },
-    template: ` <WizardMode :upil="upil" />`,
+    template: ` <WizardMode v-if="upil" :upil="upil" key="Template"/>`,
     data() {
       return {
-        upil,
+        upil: null,
       }
     },
+    methods: {
+      startUpil() {
+        this.upil = new UPILCore()
+
+        this.upil.startRaw(this.templateText, {})
+      },
+    },
     mounted() {
-      this.upil.startRaw(simpleTemplate, {
-        mode: 'form',
-        resetOnInputUpdate: true,
-      })
+      this.startUpil()
+    },
+    watch: {
+      templateText() {
+        this.startUpil()
+      },
     },
   }
 }
 
-export const longer = () => {
-  const longerTemplate = `
-    DIALOG mainDialog
-    TEMPLATE "Welcome to our job application bot!"
-    TEMPLATE
-      {
-        formText: "First name"
-      }
-      "What's your first name?"
-      >>firstname
-    /TEMPLATE
-    TEMPLATE
-      {
-        formText: "Last name"
-      }
-      "What's your last name?"
-      >>lastname
-    /TEMPLATE
-    SELECT
-      {
-        formText: "Target job"
-      }
-      "\${firstname} \${lastname}, what job do you want to apply for?"
-      -"Janitor"
-      -"Chef"
-      >>selectedJob
-    /SELECT
-    IF selectedJob == "Janitor"
-      TEMPLATE
+export const BasicTemplate = wizardmodeTemplate.bind({})
+BasicTemplate.args = {
+  templateText: `
+    DIALOG getName
+      TEMPLATE 
         {
-          formText: "Favorite vacuum"
+          formText: "First Name"
         }
-        "What is your favorite brand of vacuum?"
-        >>favoriteVacuum
+        "What's your name?"
+        >>name
       /TEMPLATE
-      ELSE
-        TEMPLATE
-        {
-          formText: "Favorite dish"
-        }
-        "What is your favorite dish to make?"
-        >>favoriteDish
-      /TEMPLATE
-    /IF
-    TEMPLATE "Thank you for your application!"
-  /DIALOG
-  RUN mainDialog
-  `
-  const upil = new UPILCore()
-  return {
-    components: {
-      WizardMode,
-    },
-    template: ` <WizardMode :upil="upil" />`,
-    data() {
-      return {
-        upil,
-      }
-    },
-    mounted() {
-      this.upil.startRaw(longerTemplate, {
-        mode: 'form',
-        resetOnInputUpdate: true,
-      })
-    },
-  }
+      TEMPLATE "Welcome \${name}"
+    /DIALOG
+    RUN getName
+  `,
+}
+
+export const BasicSelect = wizardmodeTemplate.bind({})
+BasicSelect.args = {
+  templateText: `
+      DIALOG favColor
+        SELECT
+          {
+            formText: "Favorite color"
+          }
+          "Please choose your favorite color"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          >>color
+        /SELECT
+        TEMPLATE "\${color} is a great color!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
+export const BasicMultiSelect = wizardmodeTemplate.bind({})
+BasicMultiSelect.args = {
+  templateText: `
+      DIALOG favColor
+        MULTI_SELECT
+          {
+            formText: "Favorite colors"
+          }
+          "Please choose all of your favorite colors"
+          -("Color red", "red")
+          -("Color blue", "blue")
+          -("Color green", "green")
+          >>colors
+        /MULTI_SELECT
+        TEMPLATE "Those are all great colors!"
+      /DIALOG
+      RUN favColor
+  `,
 }

@@ -43,7 +43,7 @@ import { setupListeners } from '@/utils'
 // }
 
 export default {
-  title: 'Chatmode',
+  title: 'Modes/Chatmode',
   args: {
     templateText: '',
   },
@@ -90,14 +90,14 @@ const chatmodeTemplate = (args) => {
 export const BasicTemplate = chatmodeTemplate.bind({})
 BasicTemplate.args = {
   templateText: `
-    DIALOG icecream
+    DIALOG getName
       TEMPLATE 
-      "What's your name?"
-      >>name
+        "What's your name?"
+        >>name
       /TEMPLATE
       TEMPLATE "Welcome \${name}"
     /DIALOG
-    RUN icecream
+    RUN getName
   `,
 }
 
