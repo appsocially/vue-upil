@@ -5,6 +5,35 @@ import WizardMode from '@/components/WizardMode'
 import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
+import { formatTextbox as formatDateString } from '@/components/FormMode/date/utils'
+import { isDate } from 'date-fns'
+
+const transformTextVariables = ({ value, key: variableName }) => {
+  if (isDate(value)) {
+    return formatDateString(value)
+  } else if (variableName === 'minutes') {
+    return `${value}分`
+  } else {
+    return value
+  }
+}
+
+const transformReplyVariables = ({
+  node: {
+    label,
+    event: { value },
+    args,
+  },
+}) => {
+  if (isDate(value)) {
+    return formatDateString(value)
+  } else if (label === 'range') {
+    const unit = args && args.unit ? args.unit : ''
+    return `${value}${unit}`
+  } else {
+    return value
+  }
+}
 
 export default {
   title: 'Widgets/Date Widget',
@@ -32,6 +61,7 @@ const dateTemplate = (args) => {
       "When is your birthday?"
       >>birthday
       /TEMPLATE
+      TEMPLATE "\${birthday} is a great birthday isn't it?"
     /DIALOG
     RUN birthday
   `
@@ -43,7 +73,7 @@ const dateTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo"/>`,
+    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil: null,
@@ -64,6 +94,8 @@ const dateTemplate = (args) => {
           })
         }
       },
+      transformTextVariables,
+      transformReplyVariables,
     },
     mounted() {
       this.startUpil()

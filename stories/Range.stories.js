@@ -5,6 +5,29 @@ import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 
+const transformTextVariables = ({ value, key: variableName }) => {
+  if (variableName === 'minutes') {
+    return `${value}分`
+  } else {
+    return value
+  }
+}
+
+const transformReplyVariables = ({
+  node: {
+    label,
+    event: { value },
+    args,
+  },
+}) => {
+  if (label === 'range') {
+    const unit = args && args.unit ? args.unit : ''
+    return `${value}${unit}`
+  } else {
+    return value
+  }
+}
+
 export default {
   title: 'Widgets/Range Widget',
   args: { mode: 'FormMode', min: 10, max: 20, unit: '分', listeners: {} },
@@ -54,7 +77,7 @@ const rangeTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo"/>`,
+    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil: null,
@@ -75,6 +98,7 @@ const rangeTemplate = (args) => {
             "How long did it take?"
             >>minutes
             /TEMPLATE
+            TEMPLATE "\${minutes} isn't that long!"
           /DIALOG
           RUN range
           `
@@ -97,6 +121,8 @@ const rangeTemplate = (args) => {
           })
         }
       },
+      transformTextVariables,
+      transformReplyVariables,
     },
     mounted() {
       this.startUpil()
