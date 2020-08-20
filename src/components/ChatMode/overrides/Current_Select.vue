@@ -6,7 +6,6 @@
     v-model="userInput"
     :items="items"
     :label="labelOverride"
-    background-color="primary"
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
     dense

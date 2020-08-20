@@ -1,5 +1,5 @@
 <template>
-  <v-row align="center" no-gutters>
+  <v-row align="center" no-gutters class="upil-range">
     <v-col cols="auto" class="flex-grow-1">
       <Range
         :node="rawNode"
