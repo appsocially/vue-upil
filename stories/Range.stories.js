@@ -5,14 +5,6 @@ import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 
-const transformTextVariables = ({ value, key: variableName }) => {
-  if (variableName === 'minutes') {
-    return `${value}分`
-  } else {
-    return value
-  }
-}
-
 const transformReplyVariables = ({
   node: {
     label,
