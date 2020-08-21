@@ -4,10 +4,11 @@ import WizardMode from '@/components/WizardMode'
 import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
+import './theming.css'
 
 export default {
   title: 'Theming',
-  args: { mode: 'FormMode', listeners: {} },
+  args: { mode: 'FormMode', themed: false, listeners: {} },
   argTypes: {
     mode: {
       control: {
@@ -15,8 +16,10 @@ export default {
         options: ['FormMode', 'WizardMode', 'ChatMode'],
       },
     },
-    listeners: {
-      type: 'object',
+    themed: {
+      control: {
+        type: 'boolean',
+      },
     },
   },
 }
@@ -40,7 +43,11 @@ const themingTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" />`,
+    template: `
+    <div :id="themed ? 'themed' : null">
+      <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" />
+    </div>
+    `,
     data() {
       return {
         upil: null,
@@ -85,4 +92,9 @@ VuetifyThemeOverride.args = {
       },
     },
   },
+}
+
+export const CSSOverride = themingTemplate.bind({})
+CSSOverride.args = {
+  themed: true,
 }
