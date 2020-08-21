@@ -1,6 +1,10 @@
 <template>
   <keep-alive>
-    <v-select :items="items" v-model="numericModel" />
+    <v-select
+      :items="items"
+      v-model="numericModel"
+      :placeholder="labelOverride"
+    />
   </keep-alive>
 </template>
 
@@ -17,10 +21,6 @@ export default {
       type: Object,
       required: true,
     },
-    upil: {
-      type: Object,
-      required: true,
-    },
     state: {
       type: Object,
       required: true,
@@ -29,14 +29,10 @@ export default {
       type: Array,
       default: () => [],
     },
-  },
-  data() {
-    return {
-      menu: false,
-      isValid: this.rules.length === 0,
-      tempDate: null,
-      tempDuration: null,
-    }
+    labelOverride: {
+      type: String,
+      default: '選んでください',
+    },
   },
   computed: {
     min() {
@@ -66,7 +62,7 @@ export default {
         return this.stateInputValue
       },
       set(value) {
-        this.upil.consume(this.node.event, value)
+        this.$emit('consume', { event: this.node.event, value })
       },
     },
     inputName() {
@@ -75,33 +71,6 @@ export default {
     stateInputValue() {
       const inputValue = this.state[this.inputName]
       return inputValue === symbols.UNRESOLVED ? null : inputValue
-    },
-  },
-  watch: {
-    stateInputValue: {
-      immediate: true,
-      handler(stateInputValue) {
-        if (stateInputValue) {
-          this.resetTempValues(stateInputValue)
-        }
-      },
-    },
-  },
-  methods: {
-    onUpdateError(hasError) {
-      this.isValid = !hasError
-    },
-    onSubmit() {
-      this.upil.consume(this.node.event, this.dateTime)
-    },
-    onCancel() {
-      this.resetTempValues()
-      this.menu = false
-    },
-    resetTempValues() {
-      this.tempDate = null
-      this.tempHours = null
-      this.tempMinutes = null
     },
   },
 }

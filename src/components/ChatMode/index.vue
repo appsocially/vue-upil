@@ -2,6 +2,7 @@
   <UpilProvider
     :override="_override"
     :overrideCurrent="_overrideCurrent"
+    :transformTextVariables="transformTextVariables"
     :upil="upil"
     :listeners="listeners"
     :searchForLinks="searchForLinks"
@@ -9,7 +10,7 @@
     @update:currentEvent="$emit('update:currentEvent', $event)"
     @eventWithLabel="$emit('eventWithLabel', $event)"
   >
-    <template v-slot="{ allNodes, currentNode, scenarioEnded }">
+    <template v-slot="{ allNodes, currentNode, scenarioEnded, state }">
       <div>
         <div
           v-resize="calculateWindowHeight"
@@ -44,9 +45,12 @@
                     </v-col>
                     <v-col class="chat-bubble" cols="auto">
                       <component
-                        v-bind:is="componentType"
-                        v-bind="node"
+                        :node="node"
+                        :is="componentType"
                         :upil="upil"
+                        :state="state"
+                        :transform="transformReplyVariables"
+                        @consume="onConsume"
                       />
                     </v-col>
                   </v-row>
@@ -57,19 +61,24 @@
 
           <div id="bottom-bar" v-if="!removeBottomBar && currentNode">
             <component
-              v-bind:is="currentNode.componentType"
               v-bind="currentNode.node"
+              :is="currentNode.componentType"
+              :rawNode="currentNode.rawNode"
               :rules="calculateRules(currentNode)"
               :upil="upil"
+              :state="state"
+              @consume="onConsume"
               @adjust:height="onAdjustHeight"
             />
           </div>
         </div>
         <slot
           name="external"
-          v-bind:allNodes="allNodes"
-          v-bind:currentNode="currentNode"
-          v-bind:scenarioEnded="scenarioEnded"
+          :allNodes="allNodes"
+          :currentNode="currentNode"
+          :scenarioEnded="scenarioEnded"
+          :state="state"
+          @consume="onConsume"
         ></slot>
       </div>
     </template>
@@ -150,6 +159,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    transformTextVariables: {
+      type: Function,
+    },
+    transformReplyVariables: {
+      type: Function,
+    },
   },
   computed: {
     wrapperStyle() {
@@ -173,27 +188,45 @@ export default {
   },
   methods: {
     _overrideCurrent(context, node, component) {
-      const componentType = this.calculateCurrentComponent(
-        context,
-        node,
-        component
-      )
-      return this.overrideCurrent(context, node, componentType)
-    },
-    calculateCurrentComponent(context, node) {
       const { scenarioEnded } = context
-
       if (scenarioEnded) {
         return () => import('./overrides/Current_Finished')
       } else {
-        switch (node.type) {
-          case NODE_TYPES.SELECT:
-            return () => import('./overrides/Current_Select')
-          case NODE_TYPES.MULTISELECT:
-            return () => import('./overrides/Current_MultiSelect')
-          default:
-            return () => import('./overrides/Current_Template')
-        }
+        const byTypeComponent = this.calculateCurrentComponentByType(
+          context,
+          node,
+          component
+        )
+
+        const byLabelComponent = this.calculateCurrentComponentByLabel(
+          context,
+          node,
+          byTypeComponent
+        )
+
+        return this.overrideCurrent(context, node, byLabelComponent)
+      }
+    },
+    calculateCurrentComponentByType(context, node) {
+      switch (node.type) {
+        case NODE_TYPES.SELECT:
+          return () => import('./overrides/Current_Select')
+        case NODE_TYPES.MULTISELECT:
+          return () => import('./overrides/Current_MultiSelect')
+        default:
+          return () => import('./overrides/Current_Template')
+      }
+    },
+    calculateCurrentComponentByLabel(context, node, component) {
+      switch (node.label) {
+        case 'date':
+          return () => import('./overrides/Current_Date')
+        case 'date-time':
+          return () => import('./overrides/Current_DateTime')
+        case 'range':
+          return () => import('./overrides/Current_Range')
+        default:
+          return component
       }
     },
     _override(context, node, component) {
@@ -245,6 +278,9 @@ export default {
       } else {
         return []
       }
+    },
+    onConsume({ event, value }) {
+      this.upil.consume(event, value)
     },
   },
 }

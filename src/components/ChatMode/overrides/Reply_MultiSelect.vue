@@ -1,5 +1,5 @@
 <template>
-  <TextBubble :reply="reply">{{ eventValues }}</TextBubble>
+  <TextBubble :reply="node.reply">{{ eventValues }}</TextBubble>
 </template>
 
 <script>
@@ -10,24 +10,17 @@ export default {
     TextBubble,
   },
   props: {
-    options: {
-      type: Array,
-      required: true,
-    },
-    event: {
+    node: {
       type: Object,
-      required: false,
-    },
-    reply: {
-      type: Boolean,
-      required: true,
     },
   },
   computed: {
     eventValues() {
-      return this.event.value
+      return this.node.event.value
         .map((v) => v.value)
-        .map((v) => this.event.node.options.find((o) => o.value.value === v))
+        .map((v) =>
+          this.node.event.node.options.find((o) => o.value.value === v)
+        )
         .map((o) => o.text)
         .join(', ')
     },

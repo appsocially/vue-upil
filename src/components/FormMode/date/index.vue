@@ -11,7 +11,7 @@
       <template v-slot:activator="{ on, attrs }">
         <v-text-field
           v-model="computedDateFormatted"
-          hide-hint
+          hide-details
           prepend-icon="mdi-calendar"
           readonly
           v-bind="attrs"
@@ -30,13 +30,8 @@
 <script>
 import { VMenu, VTextField, VDatePicker } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
-import { formatISO, parseISO, format } from 'date-fns'
-import ja from 'date-fns/locale/ja'
-
-const formatAsDate = (date) => formatISO(date, { representation: 'date' })
-
-const formatString = 'yyyy年MM月dd日(EEEEE)'
-const formatTextbox = (date) => format(date, formatString, { locale: ja })
+import { parseISO } from 'date-fns'
+import { formatAsDate, formatTextbox } from './utils'
 
 export default {
   components: {
@@ -46,10 +41,6 @@ export default {
   },
   props: {
     node: {
-      type: Object,
-      required: true,
-    },
-    upil: {
       type: Object,
       required: true,
     },
@@ -108,7 +99,7 @@ export default {
     },
     onSubmit(date) {
       const submitValue = date ? date : symbols.UNRESOLVED
-      this.upil.consume(this.node.event, submitValue)
+      this.$emit('consume', { event: this.node.event, value: submitValue })
     },
   },
 }

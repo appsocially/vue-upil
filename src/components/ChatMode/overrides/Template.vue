@@ -1,5 +1,5 @@
 <template>
-  <TextBubble :reply="reply">
+  <TextBubble :reply="node.reply">
     <span class="text-node" v-html="output" />
   </TextBubble>
 </template>
@@ -12,22 +12,29 @@ export default {
     TextBubble,
   },
   props: {
-    text: {
-      type: String,
-      required: true,
-    },
-    reply: {
-      type: Boolean,
-      default: false,
-    },
-    event: {
+    node: {
       type: Object,
-      required: false,
+    },
+    upil: {
+      type: Object,
+    },
+    state: {
+      type: Object,
+    },
+    transform: {
+      type: Function,
+      default: ({ node }) => node.event.value,
     },
   },
   computed: {
     output() {
-      return this.reply === true ? this.event.value : this.text
+      return this.node.reply === true
+        ? this.transform({
+            node: this.node,
+            upil: this.upil,
+            state: this.state,
+          })
+        : this.node.text
     },
   },
 }

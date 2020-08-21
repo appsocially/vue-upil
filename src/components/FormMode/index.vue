@@ -29,6 +29,7 @@
               <v-col cols="12">
                 <keep-alive>
                   <component
+                    @consume="onConsume"
                     :is="node.component"
                     :node="node"
                     :upil="upil"
@@ -186,6 +187,9 @@ export default {
       } else {
         return []
       }
+    },
+    onConsume({ event, value }) {
+      this.upil.consume(event, value)
     },
   },
 }
