@@ -31,5 +31,20 @@ export default {
         return formText
       }
     },
+    calculateOptions({ options, args }) {
+      const i18nRoot = args && args.i18n
+      const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
+      if (localeKeys && localeKeys.options) {
+        return options.map(({ text, value }) => {
+          const localeText = localeKeys.options[value.value]
+          return {
+            value,
+            text: localeText ? localeText : text,
+          }
+        })
+      } else {
+        return options
+      }
+    },
   },
 }

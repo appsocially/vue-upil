@@ -209,7 +209,7 @@ export default {
           componentType,
         }
       } else {
-        const { text, args, id, reply, ...rest } = node
+        const { text, args, id, reply, options, ...rest } = node
 
         return {
           node: {
@@ -222,6 +222,7 @@ export default {
             }),
             id: reply === true ? `${id}-r` : id,
             reply,
+            options: this.calculateOptions({ options, args }),
             ...rest,
           },
           rawNode: node,

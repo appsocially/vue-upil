@@ -3,11 +3,34 @@ import FormMode from '@/components/FormMode'
 import WizardMode from '@/components/WizardMode'
 import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
-import { setupListeners } from '@/utils'
 
 export default {
   title: 'i18n',
-  args: { mode: 'FormMode', locale: 'en', listeners: {} },
+  args: {
+    mode: 'FormMode',
+    locale: 'en',
+    upilScript: `
+      DIALOG getName
+        TEMPLATE 
+          {
+            formText: "Name",
+            i18n: {
+              ja: {
+                formText: "名前",
+                text: "お名前は？"
+              }
+            }
+          }
+          "What's your name?"
+          >>name
+        /TEMPLATE
+        TEMPLATE 
+          "Welcome \${name}"
+        /TEMPLATE
+      /DIALOG
+      RUN getName
+    `,
+  },
   argTypes: {
     mode: {
       control: {
@@ -25,28 +48,6 @@ export default {
 }
 
 const basicI18nTemplate = (args) => {
-  const themeTemplate = `
-  DIALOG getName
-    TEMPLATE 
-      {
-        formText: "Name",
-        i18n: {
-          ja: {
-            formText: "名前",
-            text: "お名前は？"
-          }
-        }
-      }
-      "What's your name?"
-      >>name
-    /TEMPLATE
-    TEMPLATE 
-      "Welcome \${name}"
-    /TEMPLATE
-  /DIALOG
-  RUN getName
-  `
-
   return {
     props: Object.keys(args),
     components: {
@@ -65,6 +66,9 @@ const basicI18nTemplate = (args) => {
         i18n: {
           ja: {
             missingValue: '未記入',
+            templateInputPlaceholder: '入力してください',
+            selectInputPlaceholder: '選んでください',
+            multiSelectInputPlaceholder: '選んでください',
           },
         },
       }
@@ -72,12 +76,11 @@ const basicI18nTemplate = (args) => {
     methods: {
       startUpil() {
         this.upil = new UPILCore()
-        setupListeners({ upil: this.upil, listeners: this.listeners })
 
         if (this.mode === 'ChatMode') {
-          this.upil.startRaw(themeTemplate, {})
+          this.upil.startRaw(this.upilScript, {})
         } else {
-          this.upil.startRaw(themeTemplate, {
+          this.upil.startRaw(this.upilScript, {
             mode: 'form',
             resetOnInputUpdate: true,
           })
@@ -127,4 +130,82 @@ export const JapaneseChatMode = basicI18nTemplate.bind({})
 JapaneseChatMode.args = {
   locale: 'ja',
   mode: 'ChatMode',
+}
+
+export const EnglishChatModeSelect = basicI18nTemplate.bind({})
+EnglishChatModeSelect.args = {
+  locale: 'en',
+  mode: 'ChatMode',
+  upilScript: `
+  DIALOG favColor
+    SELECT
+      {
+        formText: "Favorite Color",
+        i18n: {
+          ja: {
+            formText: "一番好きな色",
+            text: "一番好きな色を選んでください",
+            options: {
+              red: "赤",
+              blue: "青",
+              green: "緑"
+            }
+          }
+        }
+      }
+      "Please choose your favorite color"
+      -("Red", "red")
+      -("Blue", "blue")
+      -("Green", "green")
+      >>color
+    /SELECT
+    TEMPLATE "\${color} is a great color!"
+  /DIALOG
+  RUN favColor
+  `,
+}
+
+export const JapaneseChatModeSelect = basicI18nTemplate.bind({})
+JapaneseChatModeSelect.args = {
+  ...EnglishChatModeSelect.args,
+  locale: 'ja',
+}
+
+export const EnglishChatModeMultiSelect = basicI18nTemplate.bind({})
+EnglishChatModeMultiSelect.args = {
+  locale: 'en',
+  mode: 'ChatMode',
+  upilScript: `
+  DIALOG favColors
+    MULTI_SELECT
+      {
+        formText: "Favorite Colors",
+        i18n: {
+          ja: {
+            formText: "一番好きな色",
+            text: "一番好きな色を選んでください",
+            options: {
+              red: "赤",
+              blue: "青",
+              green: "緑"
+            }
+          }
+        }
+      }
+      "Please tell us your favorite colors!"
+      -("Red", "red")
+      -("Blue", "blue")
+      -("Green", "green")
+      >>color
+    /MULTI_SELECT
+    TEMPLATE "Those are great colors!"
+  /DIALOG
+  RUN favColors
+  `,
+}
+
+export const JapaneseChatModeMultiSelect = basicI18nTemplate.bind({})
+JapaneseChatModeMultiSelect.args = {
+  ...EnglishChatModeMultiSelect.args,
+  locale: 'ja',
 }

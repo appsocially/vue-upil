@@ -188,11 +188,18 @@ export default {
         this.currentNodeAdditionalHeight
       }px`
     },
+    i18nKeys() {
+      const i18n = this.$attrs.i18n || {}
+      return i18n[this.$attrs.locale]
+    },
     placeholderText() {
       if (this.currentNode) {
         const {
           node: { type },
         } = this.currentNode
+
+        console.log({ type, i18nKeys: this.i18nKeys })
+
         switch (type) {
           case NODE_TYPES.TEMPLATE:
             return this.i18nKeys
