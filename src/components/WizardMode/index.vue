@@ -183,12 +183,16 @@ export default {
           calculateComponent({ args, ...rest })
         ),
         isMissingValue: isMissingValue(rest, this.state),
-        headerText: substituteNodeText(
-          this.state,
-          args && args.formText ? args.formText : text,
-          false
-        ),
-        text: substituteNodeText(this.state, text, false),
+        headerText: substituteNodeText({
+          inputState: this.state,
+          text: args && args.formText ? args.formText : text,
+          searchForLinks: false,
+        }),
+        text: substituteNodeText({
+          inputState: this.state,
+          text,
+          searchForLinks: false,
+        }),
         args,
         ...rest,
       }))

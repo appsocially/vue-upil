@@ -10,12 +10,12 @@ import dot from 'dot-object'
  * @param {boolean} searchForLinks - Finds links in text and makes them links if necessary
  * @returns {string} - Text that was updated if necessary
  */
-export function substituteNodeText(
+export function substituteNodeText({
   inputState,
   text,
   searchForLinks,
-  transformTextVariables
-) {
+  transformTextVariables,
+}) {
   if (text) {
     // Regex used to parse for tokens in nodes' text
     const nodeTextRegex = /\$\{([^}]+)\}/gm

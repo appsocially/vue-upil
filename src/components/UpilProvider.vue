@@ -212,12 +212,12 @@ export default {
         return {
           node: {
             sendInput: this.createSendInput(node),
-            text: substituteNodeText(
-              this.stateWrapper.inputState,
+            text: substituteNodeText({
+              inputState: this.stateWrapper.inputState,
               text,
-              this.searchForLinks,
-              this.transformTextVariables
-            ),
+              searchForLinks: this.searchForLinks,
+              transformTextVariables: this.transformTextVariables,
+            }),
             id: reply === true ? `${id}-r` : id,
             reply,
             ...rest,
