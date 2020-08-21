@@ -68,6 +68,7 @@
               :rules="calculateRules(currentNode)"
               :upil="upil"
               :state="state"
+              :placeholderText="placeholderText"
               @consume="onConsume"
               @adjust:height="onAdjustHeight"
             />
@@ -79,6 +80,7 @@
           :currentNode="currentNode"
           :scenarioEnded="scenarioEnded"
           :state="state"
+          :placeholderText="placeholderText"
           @consume="onConsume"
         ></slot>
       </div>
@@ -106,6 +108,8 @@ const defaultReplyComponentsMap = {
   [NODE_TYPES.MULTISELECT]: () => import('./overrides/Reply_MultiSelect'),
 }
 
+const defaultPlaceholder = 'Please answer here...'
+
 export default {
   components: {
     VCol,
@@ -121,6 +125,7 @@ export default {
       // calculatedHeight: '100vh',
       windowHeight: null,
       currentNodeAdditionalHeight: 0,
+      currentNode: null,
     }
   },
   props: {
@@ -182,6 +187,31 @@ export default {
         extraIOSHeight -
         this.currentNodeAdditionalHeight
       }px`
+    },
+    placeholderText() {
+      if (this.currentNode) {
+        const {
+          node: { type },
+        } = this.currentNode
+        switch (type) {
+          case NODE_TYPES.TEMPLATE:
+            return this.i18nKeys
+              ? this.i18nKeys.templateInputPlaceholder
+              : defaultPlaceholder
+          case NODE_TYPES.SELECT:
+            return this.i18nKeys
+              ? this.i18nKeys.selectInputPlaceholder
+              : 'Select one...'
+          case NODE_TYPES.MULTISELECT:
+            return this.i18nKeys
+              ? this.i18nKeys.multiSelectInputPlaceholder
+              : 'Select one or more...'
+          default:
+            return defaultPlaceholder
+        }
+      } else {
+        return defaultPlaceholder
+      }
     },
   },
   mounted() {
@@ -262,7 +292,8 @@ export default {
     calculateWindowHeight() {
       this.windowHeight = window.innerHeight
     },
-    onUpdateCurrent() {
+    onUpdateCurrent(currentNode) {
+      this.currentNode = currentNode
       this.currentNodeAdditionalHeight = 0
     },
     onAdjustHeight(height) {
