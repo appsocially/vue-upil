@@ -107,6 +107,10 @@ export default {
       type: Function,
       default: (_, component) => component,
     },
+    locale: {
+      type: String,
+      default: null,
+    },
   },
   watch: {
     upil: {
@@ -151,7 +155,9 @@ export default {
         isMissingValue: isMissingValue(rest, this.state),
         text: substituteNodeText({
           inputState: this.state,
-          text: args && args.formText ? args.formText : text,
+          text: this.calculateFormText({ args })
+            ? this.calculateFormText({ args })
+            : this.calculateText({ text, args }),
           searchForLinks: false,
         }),
         args,
@@ -160,6 +166,22 @@ export default {
     },
   },
   methods: {
+    calculateFormText({ args }) {
+      const locale = this.locale
+      const { i18n: i18nRoot = null } = args || {}
+      if (locale && i18nRoot) {
+        const formText = i18nRoot[this.locale].formText
+        return formText
+      } else {
+        const { formText = null } = args || {}
+        return formText
+      }
+    },
+    calculateText({ text, args }) {
+      const locale = this.locale
+      const i18nRoot = args && args.i18n
+      return locale && i18nRoot ? i18nRoot[this.locale].text : text
+    },
     updateNodes(nodes) {
       this.nodes = nodes
     },
