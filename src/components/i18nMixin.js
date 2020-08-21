@@ -22,13 +22,13 @@ export default {
     },
     calculateFormText({ args }) {
       const locale = this.locale
-      const { i18n: i18nRoot = null } = args || {}
+      const { i18n: i18nRoot = null, formText: baseFormText } = args || {}
       if (locale && i18nRoot) {
         const { formText = null } = i18nRoot[this.locale] || {}
-        return formText
+        return formText ? formText : baseFormText
       } else {
         const { formText = null } = args || {}
-        return formText
+        return formText ? formText : baseFormText
       }
     },
     calculateOptions({ options, args }) {

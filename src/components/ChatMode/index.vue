@@ -198,8 +198,6 @@ export default {
           node: { type },
         } = this.currentNode
 
-        console.log({ type, i18nKeys: this.i18nKeys })
-
         switch (type) {
           case NODE_TYPES.TEMPLATE:
             return this.i18nKeys
