@@ -7,7 +7,7 @@ import { setupListeners } from '@/utils'
 
 export default {
   title: 'i18n',
-  args: { mode: 'FormMode', themed: false, listeners: {} },
+  args: { mode: 'FormMode', locale: 'en', listeners: {} },
   argTypes: {
     mode: {
       control: {
@@ -15,9 +15,10 @@ export default {
         options: ['FormMode', 'WizardMode', 'ChatMode'],
       },
     },
-    themed: {
+    locale: {
       control: {
-        type: 'boolean',
+        type: 'radio',
+        options: ['en', 'ja'],
       },
     },
   },
@@ -54,24 +55,13 @@ const basicI18nTemplate = (args) => {
       ChatMode,
     },
     template: `
-      <div>
-      <v-select
-        v-model="locale"
-        :items="items"
-        label="Language"
-      />
           <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :locale="locale" :i18n="i18n"/>
-      </div>
     `,
     data() {
       return {
         upil: null,
         TruffleLogo,
-        items: [
-          { text: 'en', value: null },
-          { text: 'ja', value: 'ja' },
-        ],
-        locale: null,
+        items: ['en', 'ja'],
         i18n: {
           ja: {
             missingValue: '未記入',
@@ -105,4 +95,12 @@ const basicI18nTemplate = (args) => {
   }
 }
 
-export const Basic = basicI18nTemplate.bind({})
+export const English = basicI18nTemplate.bind({})
+English.args = {
+  locale: 'en',
+}
+
+export const Japanese = basicI18nTemplate.bind({})
+Japanese.args = {
+  locale: 'ja',
+}

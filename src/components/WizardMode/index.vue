@@ -109,25 +109,29 @@ export default {
   },
   computed: {
     finalNodes() {
-      return this.inputNodes.map(({ text, args, ...rest }) => ({
-        component: this.override(
-          { args, ...rest },
-          calculateComponent({ args, ...rest })
-        ),
-        isMissingValue: isMissingValue(rest, this.state),
-        headerText: substituteNodeText({
-          inputState: this.state,
-          text: args && args.formText ? args.formText : text,
-          searchForLinks: false,
-        }),
-        text: substituteNodeText({
-          inputState: this.state,
-          text,
-          searchForLinks: false,
-        }),
-        args,
-        ...rest,
-      }))
+      return this.inputNodes.map(({ text, args, ...rest }) => {
+        const formText = this.calculateFormText({ args })
+        const baseText = this.calculateText({ args, text })
+        return {
+          component: this.override(
+            { args, ...rest },
+            calculateComponent({ args, ...rest })
+          ),
+          isMissingValue: isMissingValue(rest, this.state),
+          headerText: substituteNodeText({
+            inputState: this.state,
+            text: formText ? formText : baseText,
+            searchForLinks: false,
+          }),
+          text: substituteNodeText({
+            inputState: this.state,
+            text: baseText,
+            searchForLinks: false,
+          }),
+          args,
+          ...rest,
+        }
+      })
     },
   },
   methods: {

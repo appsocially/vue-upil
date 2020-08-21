@@ -90,24 +90,6 @@ export default {
     inputNodes() {
       return this.nodes.filter((n) => !!n.input && n.reply !== true)
     },
-    // finalNodes() {
-    //   return this.inputNodes.map(({ text, args, ...rest }) => ({
-    //     component: this.override(
-    //       { args, ...rest },
-    //       calculateComponent({ args, ...rest })
-    //     ),
-    //     isMissingValue: isMissingValue(rest, this.state),
-    //     text: substituteNodeText({
-    //       inputState: this.state,
-    //       text: this.calculateFormText({ args })
-    //         ? this.calculateFormText({ args })
-    //         : this.calculateText({ text, args }),
-    //       searchForLinks: false,
-    //     }),
-    //     args,
-    //     ...rest,
-    //   }))
-    // },
     i18nKeys() {
       const i18n = this.i18n || {}
       return i18n[this.locale]
@@ -121,7 +103,7 @@ export default {
       const locale = this.locale
       const { i18n: i18nRoot = null } = args || {}
       if (locale && i18nRoot) {
-        const formText = i18nRoot[this.locale].formText
+        const { formText = null } = i18nRoot[this.locale] || {}
         return formText
       } else {
         const { formText = null } = args || {}
@@ -129,9 +111,9 @@ export default {
       }
     },
     calculateText({ text, args }) {
-      const locale = this.locale
       const i18nRoot = args && args.i18n
-      return locale && i18nRoot ? i18nRoot[this.locale].text : text
+      const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
+      return localeKeys ? localeKeys.text : text
     },
     updateNodes(nodes) {
       this.nodes = nodes
