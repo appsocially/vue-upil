@@ -20,7 +20,7 @@
             class="my-0"
             tile
             v-if="node.isMissingValue"
-            >未記入</v-alert
+            >{{ finalMissingValueText }}</v-alert
           >
           <div class="alert-placeholder" v-else />
           <v-card-text class="pt-1">
@@ -111,6 +111,13 @@ export default {
       type: String,
       default: null,
     },
+    missingValueText: {
+      type: String,
+      default: 'Missing Value',
+    },
+    i18n: {
+      type: Object,
+    },
   },
   watch: {
     upil: {
@@ -163,6 +170,13 @@ export default {
         args,
         ...rest,
       }))
+    },
+    i18nKeys() {
+      const i18n = this.i18n || {}
+      return i18n[this.locale]
+    },
+    finalMissingValueText() {
+      return this.i18nKeys ? this.i18nKeys.missingValue : this.missingValueText
     },
   },
   methods: {

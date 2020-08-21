@@ -60,7 +60,7 @@ const basicI18nTemplate = (args) => {
         :items="items"
         label="Language"
       />
-        <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :locale="locale"/>
+          <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :locale="locale" :i18n="i18n"/>
       </div>
     `,
     data() {
@@ -72,6 +72,11 @@ const basicI18nTemplate = (args) => {
           { text: 'ja', value: 'ja' },
         ],
         locale: null,
+        i18n: {
+          ja: {
+            missingValue: '未記入',
+          },
+        },
       }
     },
     methods: {
