@@ -67,7 +67,7 @@ export default {
   },
   computed: {
     finalNodes() {
-      return this.inputNodes.map(({ text, args, ...rest }) => ({
+      return this.inputNodes.map(({ text, args, options, ...rest }) => ({
         component: this.override(
           { args, ...rest },
           calculateComponent({ args, ...rest })
@@ -80,6 +80,7 @@ export default {
             : this.calculateText({ text, args }),
           searchForLinks: false,
         }),
+        options: this.calculateOptions({ options, args }),
         args,
         ...rest,
       }))

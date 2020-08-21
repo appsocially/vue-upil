@@ -109,7 +109,7 @@ export default {
   },
   computed: {
     finalNodes() {
-      return this.inputNodes.map(({ text, args, ...rest }) => {
+      return this.inputNodes.map(({ text, args, options, ...rest }) => {
         const formText = this.calculateFormText({ args })
         const baseText = this.calculateText({ args, text })
         return {
@@ -128,6 +128,7 @@ export default {
             text: baseText,
             searchForLinks: false,
           }),
+          options: this.calculateOptions({ options, args }),
           args,
           ...rest,
         }
