@@ -9,6 +9,7 @@
     @update:current="onUpdateCurrent"
     @update:currentEvent="$emit('update:currentEvent', $event)"
     @eventWithLabel="$emit('eventWithLabel', $event)"
+    v-bind="$attrs"
   >
     <template v-slot="{ allNodes, currentNode, scenarioEnded, state }">
       <div>

@@ -95,12 +95,36 @@ const basicI18nTemplate = (args) => {
   }
 }
 
-export const English = basicI18nTemplate.bind({})
-English.args = {
+export const EnglishFormMode = basicI18nTemplate.bind({})
+EnglishFormMode.args = {
   locale: 'en',
 }
 
-export const Japanese = basicI18nTemplate.bind({})
-Japanese.args = {
+export const JapaneseFormMode = basicI18nTemplate.bind({})
+JapaneseFormMode.args = {
   locale: 'ja',
+}
+
+export const EnglishWizardMode = basicI18nTemplate.bind({})
+EnglishWizardMode.args = {
+  locale: 'en',
+  mode: 'WizardMode',
+}
+
+export const JapaneseWizardMode = basicI18nTemplate.bind({})
+JapaneseWizardMode.args = {
+  locale: 'ja',
+  mode: 'WizardMode',
+}
+
+export const EnglishChatMode = basicI18nTemplate.bind({})
+EnglishChatMode.args = {
+  locale: 'en',
+  mode: 'ChatMode',
+}
+
+export const JapaneseChatMode = basicI18nTemplate.bind({})
+JapaneseChatMode.args = {
+  locale: 'ja',
+  mode: 'ChatMode',
 }

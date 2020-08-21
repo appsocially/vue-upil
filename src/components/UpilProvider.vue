@@ -16,6 +16,7 @@ import { consume, state, NODE_TYPES } from '@/enums'
 import { substituteNodeText, setupListeners } from '@/utils'
 import { defaultListeners } from '@/defaultListeners'
 import debounce from 'lodash.debounce'
+import i18nMixin from '@/components/i18nMixin'
 
 const defaultStatementComponentsMap = {
   // [NODE_TYPES.TEMPLATE]: () => import('@/components/DefaultTemplate'),
@@ -31,6 +32,7 @@ const defaultReplyComponentsMap = {
 }
 
 export default {
+  mixins: [i18nMixin],
   props: {
     upil: {
       Object: true,
@@ -207,14 +209,14 @@ export default {
           componentType,
         }
       } else {
-        const { text, id, reply, ...rest } = node
+        const { text, args, id, reply, ...rest } = node
 
         return {
           node: {
             sendInput: this.createSendInput(node),
             text: substituteNodeText({
               inputState: this.stateWrapper.inputState,
-              text,
+              text: this.calculateText({ text, args }),
               searchForLinks: this.searchForLinks,
               transformTextVariables: this.transformTextVariables,
             }),
@@ -223,6 +225,7 @@ export default {
             ...rest,
           },
           rawNode: node,
+          args,
           componentType,
         }
       }
