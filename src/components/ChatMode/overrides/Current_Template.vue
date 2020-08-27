@@ -3,7 +3,7 @@
     class="upil-template"
     :rows="1"
     v-model="userInput"
-    :placeholder="placeholderOverride"
+    :placeholder="placeholderText"
     solo
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
@@ -30,9 +30,8 @@ export default {
       type: Function,
       required: false,
     },
-    placeholderOverride: {
+    placeholderText: {
       type: String,
-      default: '入力してください。',
     },
     rules: {
       type: Array,

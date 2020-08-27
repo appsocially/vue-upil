@@ -6,7 +6,7 @@
     hide-details
     v-model="userInput"
     :items="simpleOptions"
-    :label="labelOverride"
+    :label="placeholderText"
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
     dense
@@ -28,9 +28,8 @@ export default {
       type: Function,
       required: false,
     },
-    labelOverride: {
+    placeholderText: {
       type: String,
-      default: '選んでください',
     },
   },
   data() {
