@@ -15,6 +15,18 @@ export default {
     },
   },
   methods: {
+    calculateVariable({ args }) {
+      const i18nRoot = args && args.i18n
+      const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
+      if (localeKeys) {
+        return (dataKey, variableValue) => {
+          const lookupMap = localeKeys[dataKey]
+          return lookupMap ? lookupMap[variableValue] : variableValue
+        }
+      } else {
+        return (_, variableValue) => variableValue
+      }
+    },
     calculateText({ text, args }) {
       const i18nRoot = args && args.i18n
       const localeKeys = i18nRoot ? i18nRoot[this.locale] : null

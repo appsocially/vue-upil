@@ -210,7 +210,6 @@ export default {
         }
       } else {
         const { text, args, id, reply, options, ...rest } = node
-
         return {
           node: {
             sendInput: this.createSendInput(node),
@@ -219,6 +218,7 @@ export default {
               text: this.calculateText({ text, args }),
               searchForLinks: this.searchForLinks,
               transformTextVariables: this.transformTextVariables,
+              calculateVariable: this.calculateVariable({ args }),
             }),
             id: reply === true ? `${id}-r` : id,
             reply,

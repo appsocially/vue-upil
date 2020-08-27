@@ -159,7 +159,21 @@ EnglishFormModeSelect.args = {
       -("Green", "green")
       >>color
     /SELECT
-    TEMPLATE "\${color} is a great color!"
+    TEMPLATE 
+    {
+      i18n: {
+        ja: {
+          text: "\${color}はいい色だね！",
+          color: {
+            red: "赤",
+            blue: "青",
+            green: "緑"
+          }
+        }
+      }
+    }
+    "\${color} is a great color!"
+    /TEMPLATE 
   /DIALOG
   RUN favColor
   `,
@@ -194,42 +208,3 @@ JapaneseChatModeSelect.args = {
   ...EnglishChatModeSelect.args,
   locale: 'ja',
 }
-
-// export const EnglishChatModeMultiSelect = basicI18nTemplate.bind({})
-// EnglishChatModeMultiSelect.args = {
-//   locale: 'en',
-//   mode: 'ChatMode',
-//   upilScript: `
-//   DIALOG favColors
-//     MULTI_SELECT
-//       {
-//         formText: "Favorite Colors",
-//         i18n: {
-//           ja: {
-//             formText: "一番好きな色",
-//             text: "一番好きな色を選んでください",
-//             options: {
-//               red: "赤",
-//               blue: "青",
-//               green: "緑"
-//             }
-//           }
-//         }
-//       }
-//       "Please tell us your favorite colors!"
-//       -("Red", "red")
-//       -("Blue", "blue")
-//       -("Green", "green")
-//       >>color
-//     /MULTI_SELECT
-//     TEMPLATE "Those are great colors!"
-//   /DIALOG
-//   RUN favColors
-//   `,
-// }
-
-// export const JapaneseChatModeMultiSelect = basicI18nTemplate.bind({})
-// JapaneseChatModeMultiSelect.args = {
-//   ...EnglishChatModeMultiSelect.args,
-//   locale: 'ja',
-// }

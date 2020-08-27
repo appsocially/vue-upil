@@ -15,6 +15,7 @@ export function substituteNodeText({
   text,
   searchForLinks,
   transformTextVariables,
+  calculateVariable,
 }) {
   if (text) {
     // Regex used to parse for tokens in nodes' text
@@ -28,9 +29,10 @@ export function substituteNodeText({
     const newText = matches.reduce((memo, match) => {
       const [originalText, dataKey] = match
       const stateValue = dot.pick(dataKey, inputState)
-      if (stateValue) {
+      const translatedStateValue = calculateVariable(dataKey, stateValue)
+      if (translatedStateValue) {
         const transformedValue = transformTextVariables({
-          value: stateValue,
+          value: translatedStateValue,
           key: dataKey,
         })
         return memo.replace(originalText, transformedValue)
