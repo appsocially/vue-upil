@@ -34,6 +34,7 @@
                     :node="node"
                     :upil="upil"
                     :state="state"
+                    :locale="locale"
                     :rules="calculateRules(node)"
                   />
                 </keep-alive>

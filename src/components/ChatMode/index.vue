@@ -50,6 +50,7 @@
                         :is="componentType"
                         :upil="upil"
                         :state="state"
+                        :locale="locale"
                         :transform="transformReplyVariables"
                         @consume="onConsume"
                       />
@@ -68,6 +69,7 @@
               :rules="calculateRules(currentNode)"
               :upil="upil"
               :state="state"
+              :locale="locale"
               :placeholderText="placeholderText"
               @consume="onConsume"
               @adjust:height="onAdjustHeight"
@@ -80,6 +82,7 @@
           :currentNode="currentNode"
           :scenarioEnded="scenarioEnded"
           :state="state"
+          :locale="locale"
           :placeholderText="placeholderText"
           @consume="onConsume"
         ></slot>
