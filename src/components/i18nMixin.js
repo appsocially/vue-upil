@@ -18,9 +18,10 @@ export default {
     calculateVariable({ args }) {
       const i18nRoot = args && args.i18n
       const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
-      if (localeKeys) {
+      const optionsLookup = localeKeys ? localeKeys.options : null
+      if (optionsLookup) {
         return (dataKey, variableValue) => {
-          const lookupMap = localeKeys[dataKey]
+          const lookupMap = optionsLookup[dataKey]
           return lookupMap ? lookupMap[variableValue] : variableValue
         }
       } else {
@@ -46,7 +47,7 @@ export default {
     calculateOptions({ options, args }) {
       const i18nRoot = args && args.i18n
       const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
-      if (localeKeys && localeKeys.options) {
+      if (options && localeKeys && localeKeys.options) {
         return options.map(({ text, value }) => {
           const localeText = localeKeys.options[value.value]
           return {

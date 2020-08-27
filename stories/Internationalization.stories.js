@@ -164,10 +164,12 @@ EnglishFormModeSelect.args = {
       i18n: {
         ja: {
           text: "\${color}はいい色だね！",
-          color: {
-            red: "赤",
-            blue: "青",
-            green: "緑"
+          options: {
+            color: {
+              red: "赤",
+              blue: "青",
+              green: "緑"
+            }
           }
         }
       }
