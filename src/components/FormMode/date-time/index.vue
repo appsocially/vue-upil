@@ -24,7 +24,11 @@
         <div>
           <v-row no-gutters>
             <v-col cols="12">
-              <v-date-picker v-model="tempDateModel" no-title></v-date-picker>
+              <v-date-picker
+                v-model="tempDateModel"
+                :locale="locale"
+                no-title
+              ></v-date-picker>
             </v-col>
           </v-row>
           <v-row no-gutters class="mx-1" justify="space-around">
@@ -100,6 +104,9 @@ export default {
       type: Array,
       default: () => [],
     },
+    locale: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -133,7 +140,7 @@ export default {
       return inputValue === symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
-      return this.dateTime ? formatTextbox(this.dateTime) : ''
+      return this.dateTime ? formatTextbox(this.dateTime, this.locale) : ''
     },
     tempDateModel: {
       get() {

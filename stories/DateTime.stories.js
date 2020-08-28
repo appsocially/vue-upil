@@ -8,9 +8,9 @@ import { setupListeners } from '@/utils'
 import { formatTextbox as formatDateTimeString } from '@/components/FormMode/date-time/utils'
 import { isDate } from 'date-fns'
 
-const transformTextVariables = ({ value }) => {
+const transformTextVariables = ({ value, locale }) => {
   if (isDate(value)) {
-    return formatDateTimeString(value)
+    return formatDateTimeString(value, locale)
   } else {
     return value
   }
@@ -20,9 +20,10 @@ const transformReplyVariables = ({
   node: {
     event: { value },
   },
+  locale,
 }) => {
   if (isDate(value)) {
-    return formatDateTimeString(value)
+    return formatDateTimeString(value, locale)
   } else {
     return value
   }
@@ -30,12 +31,18 @@ const transformReplyVariables = ({
 
 export default {
   title: 'Widgets/Date-Time Widget',
-  args: { mode: 'FormMode', listeners: {} },
+  args: { mode: 'FormMode', listeners: {}, locale: 'en' },
   argTypes: {
     mode: {
       control: {
         type: 'select',
         options: ['FormMode', 'WizardMode', 'ChatMode'],
+      },
+    },
+    locale: {
+      control: {
+        type: 'radio',
+        options: ['en', 'ja'],
       },
     },
     listeners: {
@@ -49,12 +56,27 @@ const dateTimeTemplate = (args) => {
   DIALOG partySelector
     TEMPLATE date-time
     {
-      formText: "Birthday party"
+      formText: "Birthday party",
+      i18n: {
+        ja: {
+          formText: "お誕生日パーティー",
+          text: "お誕生日パーティーはいつ？"
+        }
+      }
     }
     "When is your birthday party?"
     >>partyDateTime
     /TEMPLATE
-    TEMPLATE "\${partyDateTime} is a great time for a birthday party isn't it?"
+    TEMPLATE 
+    {
+      i18n: {
+        ja: {
+          text: "\${partyDateTime}はいいお誕生日パーティーの時間ですね～"
+        }
+      }
+    }
+    "\${partyDateTime} is a great time for a birthday party isn't it?"
+    /TEMPLATE
   /DIALOG
   RUN partySelector
   `
@@ -66,7 +88,7 @@ const dateTimeTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
+    template: `<component v-if="upil" :locale="locale" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil: null,
@@ -119,4 +141,10 @@ DateTimePreLoaded.args = {
 export const DateTimeChat = dateTimeTemplate.bind({})
 DateTimeChat.args = {
   mode: 'ChatMode',
+}
+
+export const DateTimeChatJa = dateTimeTemplate.bind({})
+DateTimeChatJa.args = {
+  mode: 'ChatMode',
+  locale: 'ja',
 }

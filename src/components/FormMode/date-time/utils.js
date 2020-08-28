@@ -1,11 +1,16 @@
 import { formatISO, format } from 'date-fns'
-import ja from 'date-fns/locale/ja'
+import { ja, enUS } from 'date-fns/locale'
+
+const locales = {
+  ja,
+  en: enUS,
+}
 
 export const formatAsDate = (date) =>
   formatISO(date, { representation: 'date' })
 
-const formatStringDateTime = 'yyyy年MM月dd日(EEEEE) @ HH:mm'
-export const formatTextbox = (date) =>
+const formatStringDateTime = 'yyyy-MM-dd (eee) @ HH:mm'
+export const formatTextbox = (date, locale = 'en') =>
   format(date, formatStringDateTime, {
-    locale: ja,
+    locale: locales[locale],
   })
