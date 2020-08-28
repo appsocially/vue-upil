@@ -22,6 +22,7 @@
         v-model="dateModel"
         no-title
         @input="menu = false"
+        :locale="locale"
       ></v-date-picker>
     </v-menu>
   </keep-alive>
@@ -52,6 +53,9 @@ export default {
       type: Array,
       default: () => [],
     },
+    locale: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -69,7 +73,7 @@ export default {
       return inputValue === symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
-      return this.date ? formatTextbox(this.date) : ''
+      return this.date ? formatTextbox(this.date, this.locale) : ''
     },
     dateModel: {
       get() {
