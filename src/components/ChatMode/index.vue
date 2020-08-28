@@ -171,10 +171,10 @@ export default {
       default: () => ({}),
     },
     locale: {
-      type: Object,
+      type: String,
     },
     i18n: {
-      type: String,
+      type: Object,
     },
     transformTextVariables: {
       type: Function,

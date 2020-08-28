@@ -33,6 +33,9 @@ export default {
       type: String,
       default: '選んでください',
     },
+    locale: {
+      type: String,
+    },
   },
   computed: {
     min() {
@@ -46,9 +49,15 @@ export default {
         : 1
     },
     unit() {
-      return this.node && this.node.args && this.node.args.unit
-        ? this.node.args.unit
-        : ''
+      const i18nRoot = this.node.args && this.node.args.i18n
+      const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
+      if (localeKeys && localeKeys.unit) {
+        return localeKeys.unit
+      } else {
+        return this.node && this.node.args && this.node.args.unit
+          ? this.node.args.unit
+          : ''
+      }
     },
     items() {
       const range = Array.from(Array(this.max - this.min + 1).keys())
