@@ -24,20 +24,24 @@
         <div>
           <v-row no-gutters>
             <v-col cols="12">
-              <v-date-picker v-model="tempDateModel" no-title></v-date-picker>
+              <v-date-picker
+                v-model="tempDateModel"
+                :locale="locale"
+                no-title
+              ></v-date-picker>
             </v-col>
           </v-row>
           <v-row no-gutters class="mx-1" justify="space-around">
             <v-col cols="5">
               <v-select
-                placeholder="何時"
+                :placeholder="hoursSelectLabel"
                 :items="hoursItems"
                 v-model="tempHoursModel"
               />
             </v-col>
             <v-col cols="5">
               <v-select
-                placeholder="何分"
+                :placeholder="minutesSelectlabel"
                 :items="minutesItems"
                 v-model="tempMinutesModel"
               />
@@ -47,12 +51,12 @@
         <div>
           <v-row dense class="mx-1" justify="end">
             <v-col cols="auto">
-              <v-btn text @click="onCancel">キャンセル</v-btn>
+              <v-btn text @click="onCancel">{{ labelCancel }}</v-btn>
             </v-col>
             <v-col cols="auto">
-              <v-btn color="primary" @click="onSubmit" :disabled="!dateTime"
-                >OK</v-btn
-              >
+              <v-btn color="primary" @click="onSubmit" :disabled="!dateTime">{{
+                labelOk
+              }}</v-btn>
             </v-col>
           </v-row>
         </div>
@@ -75,8 +79,10 @@ import {
 import { symbols } from '@appsocially/userpil-core'
 import { parseISO, parse, getHours, getMinutes } from 'date-fns'
 import { formatAsDate, formatTextbox } from './utils'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
+  mixins: [widgeti18nMixin],
   components: {
     VMenu,
     VTextField,
@@ -100,6 +106,9 @@ export default {
       type: Array,
       default: () => [],
     },
+    locale: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -115,13 +124,13 @@ export default {
   computed: {
     hoursItems() {
       return this.hoursRaw.map((i) => ({
-        text: `${i}時`.padStart(3, 0),
+        text: `${i}${this.unitHour}`.padStart(2 + this.unitHour.length, 0),
         value: i,
       }))
     },
     minutesItems() {
       return this.minutesRaw.map((i) => ({
-        text: `${i}分`.padStart(3, 0),
+        text: `${i}${this.unitMinute}`.padStart(2 + this.unitMinute.length, 0),
         value: i,
       }))
     },
@@ -133,7 +142,7 @@ export default {
       return inputValue === symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
-      return this.dateTime ? formatTextbox(this.dateTime) : ''
+      return this.dateTime ? formatTextbox(this.dateTime, this.locale) : ''
     },
     tempDateModel: {
       get() {
@@ -145,7 +154,7 @@ export default {
     },
     tempHoursModel: {
       get() {
-        return this.tempHours ? this.tempHours : this.stateHours
+        return this.tempHours !== null ? this.tempHours : this.stateHours
       },
       set(value) {
         this.tempHours = value
@@ -153,7 +162,7 @@ export default {
     },
     tempMinutesModel: {
       get() {
-        return this.tempMinutes ? this.tempMinutes : this.stateMinutes
+        return this.tempMinutes !== null ? this.tempMinutes : this.stateMinutes
       },
       set(value) {
         this.tempMinutes = value
@@ -192,8 +201,26 @@ export default {
     },
     dateTime() {
       return this.dateTimeString
-        ? parse(this.dateTimeString, 'yyyy-MM-dd:k:m', new Date())
+        ? parse(this.dateTimeString, 'yyyy-MM-dd:H:m', new Date())
         : null
+    },
+    labelOk() {
+      return this.localeArgLookup('labelOk') || 'OK'
+    },
+    labelCancel() {
+      return this.localeArgLookup('labelCancel') || 'Cancel'
+    },
+    hoursSelectLabel() {
+      return this.localeArgLookup('hoursSelectLabel') || 'hour'
+    },
+    minutesSelectlabel() {
+      return this.localeArgLookup('minutesSelectlabel') || 'minutes'
+    },
+    unitHour() {
+      return this.localeArgLookup('unitHour') || ''
+    },
+    unitMinute() {
+      return this.localeArgLookup('unitMinute') || ''
     },
   },
   watch: {

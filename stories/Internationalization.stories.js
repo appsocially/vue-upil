@@ -62,7 +62,6 @@ const basicI18nTemplate = (args) => {
       return {
         upil: null,
         TruffleLogo,
-        items: ['en', 'ja'],
         i18n: {
           ja: {
             missingValue: '未記入',

@@ -5,15 +5,24 @@ import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 
+const calculateUnit = (locale) => {
+  switch (locale) {
+    case 'ja':
+      return '分'
+    default:
+      return ' minutes'
+  }
+}
+
 const transformReplyVariables = ({
   node: {
     label,
     event: { value },
-    args,
   },
+  locale,
 }) => {
   if (label === 'range') {
-    const unit = args && args.unit ? args.unit : ''
+    const unit = calculateUnit(locale)
     return `${value}${unit}`
   } else {
     return value
@@ -22,8 +31,20 @@ const transformReplyVariables = ({
 
 export default {
   title: 'Widgets/Range Widget',
-  args: { mode: 'FormMode', min: 10, max: 20, unit: '分', listeners: {} },
+  args: {
+    locale: 'en',
+    mode: 'FormMode',
+    min: 10,
+    max: 20,
+    listeners: {},
+  },
   argTypes: {
+    locale: {
+      control: {
+        type: 'radio',
+        options: ['en', 'ja'],
+      },
+    },
     mode: {
       control: {
         type: 'select',
@@ -50,11 +71,6 @@ export default {
         },
       },
     },
-    unit: {
-      control: {
-        type: 'text',
-      },
-    },
     listeners: {
       type: 'object',
     },
@@ -69,11 +85,19 @@ const rangeTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
+    template: `<component v-if="upil" :locale="locale" :i18n="i18n" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil: null,
         TruffleLogo,
+        i18n: {
+          ja: {
+            missingValue: '未記入',
+            templateInputPlaceholder: '入力してください',
+            selectInputPlaceholder: '選んでください',
+            multiSelectInputPlaceholder: '選んでください',
+          },
+        },
       }
     },
     computed: {
@@ -85,12 +109,28 @@ const rangeTemplate = (args) => {
               formText: "Minutes",
               min: ${this.min ? this.min : '10'},
               max: ${this.max ? this.max : '20'},
-              unit: "${this.unit ? this.unit : '分'}"
+              unit: " minutes",
+              i18n: {
+                ja: {
+                  text: "何分掛かった？",
+                  formText: "時間（分）",
+                  unit: "分"
+                }
+              }
             }
             "How long did it take?"
             >>minutes
             /TEMPLATE
-            TEMPLATE "\${minutes} isn't that long!"
+            TEMPLATE 
+            {
+              i18n: {
+                ja: {
+                  text: "\${minutes}はそんなに長くない！"
+                }
+              }
+            }
+            "\${minutes} isn't that long!"
+            /TEMPLATE
           /DIALOG
           RUN range
           `
@@ -99,9 +139,10 @@ const rangeTemplate = (args) => {
         return `${this.mode}-${this.min}-${this.max}-${this.unit}`
       },
       transformTextVariables() {
-        return ({ value, key: variableName }) => {
+        return ({ value, key: variableName, locale }) => {
+          const unit = calculateUnit(locale)
           if (variableName === 'minutes') {
-            return `${value}${this.unit}`
+            return `${value}${unit}`
           } else {
             return value
           }
@@ -147,4 +188,15 @@ RangePreLoaded.args = {
       }
     },
   },
+}
+
+export const RangeChat = rangeTemplate.bind({})
+RangeChat.args = {
+  mode: 'ChatMode',
+}
+
+export const RangeChatJa = rangeTemplate.bind({})
+RangeChatJa.args = {
+  mode: 'ChatMode',
+  locale: 'ja',
 }

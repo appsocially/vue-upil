@@ -2,10 +2,12 @@
   <UpilProvider
     :override="_override"
     :overrideCurrent="_overrideCurrent"
-    :transformTextVariables="transformTextVariables"
+    :transformTextVariables="transformTextVariablesLocale"
     :upil="upil"
     :listeners="listeners"
     :searchForLinks="searchForLinks"
+    :locale="locale"
+    :i18n="i18n"
     @update:current="onUpdateCurrent"
     @update:currentEvent="$emit('update:currentEvent', $event)"
     @eventWithLabel="$emit('eventWithLabel', $event)"
@@ -51,7 +53,7 @@
                         :upil="upil"
                         :state="state"
                         :locale="locale"
-                        :transform="transformReplyVariables"
+                        :transform="transformReplyVariablesLocale"
                         @consume="onConsume"
                       />
                     </v-col>
@@ -168,6 +170,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    locale: {
+      type: String,
+    },
+    i18n: {
+      type: Object,
+    },
     transformTextVariables: {
       type: Function,
     },
@@ -176,6 +184,26 @@ export default {
     },
   },
   computed: {
+    transformTextVariablesLocale() {
+      if (this.transformTextVariables) {
+        const locale = this.locale
+        return (params) => this.transformTextVariables({ ...params, locale })
+      } else {
+        return undefined
+      }
+    },
+    transformReplyVariablesLocale() {
+      if (this.transformReplyVariables) {
+        const locale = this.locale
+        return (params) =>
+          this.transformReplyVariables({
+            ...params,
+            locale,
+          })
+      } else {
+        return undefined
+      }
+    },
     wrapperStyle() {
       return this.wrapperStyleOverride
         ? this.wrapperStyleOverride
@@ -192,8 +220,8 @@ export default {
       }px`
     },
     i18nKeys() {
-      const i18n = this.$attrs.i18n || {}
-      return i18n[this.$attrs.locale]
+      const i18n = this.i18n || {}
+      return i18n[this.locale]
     },
     placeholderText() {
       if (this.currentNode) {

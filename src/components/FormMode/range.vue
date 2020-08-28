@@ -1,18 +1,16 @@
 <template>
   <keep-alive>
-    <v-select
-      :items="items"
-      v-model="numericModel"
-      :placeholder="labelOverride"
-    />
+    <v-select :items="items" v-model="numericModel" />
   </keep-alive>
 </template>
 
 <script>
 import { VSelect } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
+  mixins: [widgeti18nMixin],
   components: {
     VSelect,
   },
@@ -29,31 +27,18 @@ export default {
       type: Array,
       default: () => [],
     },
-    labelOverride: {
-      type: String,
-      default: '選んでください',
-    },
   },
   computed: {
     min() {
-      return this.node && this.node.args && this.node.args.min
-        ? this.node.args.min
-        : 0
+      return this.localeArgLookup('min') || 0
     },
     max() {
-      return this.node && this.node.args && this.node.args.max
-        ? this.node.args.max
-        : 1
-    },
-    unit() {
-      return this.node && this.node.args && this.node.args.unit
-        ? this.node.args.unit
-        : ''
+      return this.localeArgLookup('max') || 1
     },
     items() {
       const range = Array.from(Array(this.max - this.min + 1).keys())
       return range.map((i) => ({
-        text: `${i + this.min}${this.unit}`,
+        text: `${i + this.min}${this.localeArgLookup('unit') || ''}`,
         value: i + this.min,
       }))
     },

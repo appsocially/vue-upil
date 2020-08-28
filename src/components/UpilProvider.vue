@@ -224,6 +224,7 @@ export default {
             reply,
             options: this.calculateOptions({ options, args }),
             ...rest,
+            args,
           },
           rawNode: node,
           args,

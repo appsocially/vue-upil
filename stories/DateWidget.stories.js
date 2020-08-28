@@ -8,11 +8,9 @@ import { setupListeners } from '@/utils'
 import { formatTextbox as formatDateString } from '@/components/FormMode/date/utils'
 import { isDate } from 'date-fns'
 
-const transformTextVariables = ({ value, key: variableName }) => {
+const transformTextVariables = ({ value, locale }) => {
   if (isDate(value)) {
-    return formatDateString(value)
-  } else if (variableName === 'minutes') {
-    return `${value}分`
+    return formatDateString(value, locale)
   } else {
     return value
   }
@@ -20,16 +18,12 @@ const transformTextVariables = ({ value, key: variableName }) => {
 
 const transformReplyVariables = ({
   node: {
-    label,
     event: { value },
-    args,
   },
+  locale,
 }) => {
   if (isDate(value)) {
-    return formatDateString(value)
-  } else if (label === 'range') {
-    const unit = args && args.unit ? args.unit : ''
-    return `${value}${unit}`
+    return formatDateString(value, locale)
   } else {
     return value
   }
@@ -37,12 +31,18 @@ const transformReplyVariables = ({
 
 export default {
   title: 'Widgets/Date Widget',
-  args: { mode: 'FormMode', listeners: {} },
+  args: { mode: 'FormMode', listeners: {}, locale: 'en' },
   argTypes: {
     mode: {
       control: {
         type: 'select',
         options: ['FormMode', 'WizardMode', 'ChatMode'],
+      },
+    },
+    locale: {
+      control: {
+        type: 'radio',
+        options: ['en', 'ja'],
       },
     },
     listeners: {
@@ -56,12 +56,27 @@ const dateTemplate = (args) => {
     DIALOG birthday
       TEMPLATE date
       {
-        formText: "Birthdate"
+        formText: "Birthdate",
+        i18n: {
+          ja: {
+            formText: "お誕生日",
+            text: "お誕生日はいつ？"
+          }
+        }
       }
       "When is your birthday?"
       >>birthday
       /TEMPLATE
-      TEMPLATE "\${birthday} is a great birthday isn't it?"
+      TEMPLATE 
+      {
+        i18n: {
+          ja: {
+            text: "\${birthday}はいいお誕生日ですね～"
+          }
+        }
+      }
+      "\${birthday} is a great birthday isn't it?"
+      /TEMPLATE
     /DIALOG
     RUN birthday
   `
@@ -73,7 +88,7 @@ const dateTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
+    template: `<component v-if="upil" :locale="locale" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil: null,
@@ -109,7 +124,6 @@ const dateTemplate = (args) => {
 }
 
 export const DateEmpty = dateTemplate.bind({})
-// DateFormMode.args = { mode: 'FormMode' }
 
 export const DatePreLoaded = dateTemplate.bind({})
 DatePreLoaded.args = {
@@ -121,4 +135,15 @@ DatePreLoaded.args = {
       }
     },
   },
+}
+
+export const DateChat = dateTemplate.bind({})
+DateChat.args = {
+  mode: 'ChatMode',
+}
+
+export const DateChatJa = dateTemplate.bind({})
+DateChatJa.args = {
+  mode: 'ChatMode',
+  locale: 'ja',
 }

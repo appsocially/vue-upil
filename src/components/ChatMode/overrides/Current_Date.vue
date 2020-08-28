@@ -5,6 +5,7 @@
         :node="rawNode"
         :state="state"
         :rules="rules"
+        :locale="locale"
         @consume="onConsume"
       />
     </v-col>
@@ -44,6 +45,9 @@ export default {
     rules: {
       type: Array,
       default: () => [],
+    },
+    locale: {
+      type: String,
     },
   },
   data() {

@@ -6,6 +6,7 @@
         :state="state"
         :rules="rules"
         :labelOverride="labelOverride"
+        :locale="locale"
         @consume="onConsume"
       />
     </v-col>
@@ -46,6 +47,9 @@ export default {
       type: Array,
       default: () => [],
     },
+    locale: {
+      type: String,
+    },
   },
   data() {
     return {
@@ -61,9 +65,15 @@ export default {
       return this.inputValue && this.inputValue !== symbols.UNRESOLVED
     },
     labelOverride() {
-      return this.rawNode && this.rawNode.args && this.rawNode.args.formText
-        ? this.rawNode.args.formText
-        : ''
+      const i18nRoot = this.rawNode.args && this.rawNode.args.i18n
+      const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
+      if (localeKeys && localeKeys.formText) {
+        return localeKeys.formText
+      } else {
+        return this.rawNode && this.rawNode.args && this.rawNode.args.formText
+          ? this.rawNode.args.formText
+          : ''
+      }
     },
   },
   methods: {

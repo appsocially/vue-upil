@@ -7,6 +7,7 @@ import CurrentTemplate from '@/components/ChatMode/overrides/Current_Template'
 import { substituteNodeText, setupListeners } from '@/utils'
 import FormMode from '@/components/FormMode'
 import WizardMode from '@/components/WizardMode'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 const ChatBot = {
   ChatMode,
@@ -28,4 +29,5 @@ export {
   setupListeners,
   FormMode,
   WizardMode,
+  widgeti18nMixin,
 }
