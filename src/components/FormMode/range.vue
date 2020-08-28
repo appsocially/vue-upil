@@ -1,10 +1,6 @@
 <template>
   <keep-alive>
-    <v-select
-      :items="items"
-      v-model="numericModel"
-      :placeholder="labelOverride"
-    />
+    <v-select :items="items" v-model="numericModel" />
   </keep-alive>
 </template>
 
@@ -28,10 +24,6 @@ export default {
     rules: {
       type: Array,
       default: () => [],
-    },
-    labelOverride: {
-      type: String,
-      default: '選んでください',
     },
     locale: {
       type: String,

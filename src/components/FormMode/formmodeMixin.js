@@ -50,6 +50,9 @@ export default {
       type: String,
       default: 'Missing Value',
     },
+    locale: {
+      type: String,
+    },
   },
   watch: {
     upil: {
