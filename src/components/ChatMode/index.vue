@@ -189,7 +189,7 @@ export default {
         const locale = this.locale
         return (params) => this.transformTextVariables({ ...params, locale })
       } else {
-        return null
+        return undefined
       }
     },
     transformReplyVariablesLocale() {
@@ -201,7 +201,7 @@ export default {
             locale,
           })
       } else {
-        return null
+        return undefined
       }
     },
     wrapperStyle() {
