@@ -148,3 +148,8 @@ RangePreLoaded.args = {
     },
   },
 }
+
+export const RangeChat = rangeTemplate.bind({})
+RangeChat.args = {
+  mode: 'ChatMode',
+}

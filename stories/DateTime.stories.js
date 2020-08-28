@@ -115,3 +115,8 @@ DateTimePreLoaded.args = {
     },
   },
 }
+
+export const DateTimeChat = dateTimeTemplate.bind({})
+DateTimeChat.args = {
+  mode: 'ChatMode',
+}

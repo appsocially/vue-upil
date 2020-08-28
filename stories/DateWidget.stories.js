@@ -122,3 +122,8 @@ DatePreLoaded.args = {
     },
   },
 }
+
+export const DateChat = dateTemplate.bind({})
+DateChat.args = {
+  mode: 'ChatMode',
+}
