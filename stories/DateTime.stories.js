@@ -60,7 +60,12 @@ const dateTimeTemplate = (args) => {
       i18n: {
         ja: {
           formText: "お誕生日パーティー",
-          text: "お誕生日パーティーはいつ？"
+          text: "お誕生日パーティーはいつ？",
+          labelCancel: "キャンセル",
+          hoursSelectLabel: "何時",
+          minutesSelectlabel: "何分",
+          unitHour: "時",
+          unitMinute: "分"
         }
       }
     }
@@ -132,7 +137,7 @@ DateTimePreLoaded.args = {
   listeners: {
     'preload-input': async () => {
       return {
-        birthday: parse('2019-08-05:15:5', 'yyyy-MM-dd:k:m', new Date()),
+        partyDateTime: parse('2019-08-05:15:5', 'yyyy-MM-dd:H:m', new Date()),
       }
     },
   },
