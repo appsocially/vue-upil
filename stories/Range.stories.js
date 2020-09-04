@@ -140,8 +140,8 @@ const rangeTemplate = (args) => {
       },
       transformTextVariables() {
         return ({ value, key: variableName, locale }) => {
-          const unit = calculateUnit(locale)
           if (variableName === 'minutes') {
+            const unit = calculateUnit(locale)
             return `${value}${unit}`
           } else {
             return value

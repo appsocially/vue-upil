@@ -6,6 +6,8 @@ function componentByLabel({ label }, component) {
       return () => import('./date-time')
     case 'range':
       return () => import('./range')
+    case 'dynamic-list':
+      return () => import('./dynamic-list-builder')
     default:
       return component
   }
