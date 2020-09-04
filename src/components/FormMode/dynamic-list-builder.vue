@@ -1,12 +1,11 @@
 <template>
   <v-combobox
     class="upil-dynamic-list px-1"
-    :dark="dark"
     full-width
     hide-details
     solo
-    v-model="userInput"
-    :label="labelOverride"
+    v-model="inputValue"
+    :label="placeholder"
     :delimiters="[',', '、']"
     small-chips
     multiple
@@ -25,14 +24,13 @@
         <v-icon small @click="parent.selectItem(item)">mdi-close</v-icon>
       </v-chip>
     </template>
-    <template v-if="!immediate" v-slot:append-outer>
-      <v-icon :dark="dark" @click="onSubmit">mdi-send</v-icon>
-    </template>
   </v-combobox>
 </template>
 
 <script>
 import widgeti18nMixin from '@/components/widgeti18nMixin'
+import { symbols } from '@appsocially/userpil-core'
+
 export default {
   mixins: [widgeti18nMixin],
   props: {
@@ -54,7 +52,7 @@ export default {
   },
   data() {
     return {
-      userInput: [].concat(this.initialValues),
+      inputValue: this.stateInputValue,
     }
   },
   computed: {
@@ -64,17 +62,31 @@ export default {
         'Please enter a comma-separated list'
       )
     },
-  },
-  watch: {
-    userInput() {
-      this.$emit('consume', { event: this.node.event, value: this.dateTime })
+    inputName() {
+      return this.node.input.name
+    },
+    stateInputValue() {
+      const inputValue = this.state[this.inputName]
+      return inputValue === symbols.UNRESOLVED ? [] : inputValue
     },
   },
-  methods: {
-    onSubmit() {
-      if (this.userInput.length > 0) {
-        this.sendInput(this.userInput)
-      }
+  watch: {
+    stateInputValue: {
+      immediate: true,
+      handler(stateInputValue) {
+        if (!this.inputValue) {
+          this.inputValue = stateInputValue
+        } else {
+          if (this.$refs.input) {
+            this.$refs.input.focus()
+          }
+        }
+      },
+    },
+    inputValue(inputValue) {
+      const value =
+        !inputValue || inputValue.length === 0 ? symbols.UNRESOLVED : inputValue
+      this.$emit('consume', { event: this.node.event, value })
     },
   },
 }

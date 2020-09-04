@@ -6,7 +6,7 @@ import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 
 export default {
-  title: 'Dynamic-list Widget',
+  title: 'Widgets/Dynamic-list Widget',
   args: { mode: 'FormMode', listeners: {}, locale: 'en' },
   argTypes: {
     mode: {
@@ -27,7 +27,7 @@ export default {
   },
 }
 
-const dateTimeTemplate = (args) => {
+const dynamicListTemplate = (args) => {
   const birthdayTemplate = `
   DIALOG jobsSearch
     TEMPLATE dynamic-list
@@ -98,28 +98,28 @@ const dateTimeTemplate = (args) => {
   }
 }
 
-export const DateTimeEmpty = dateTimeTemplate.bind({})
-// DateFormMode.args = { mode: 'FormMode' }
+export const DynamicListEmpty = dynamicListTemplate.bind({})
+DynamicListEmpty.args = { mode: 'FormMode' }
 
-// export const DateTimePreLoaded = dateTimeTemplate.bind({})
-// DateTimePreLoaded.args = {
-//   mode: 'FormMode',
-//   listeners: {
-//     'preload-input': async () => {
-//       return {
-//         partyDateTime: parse('2019-08-05:15:5', 'yyyy-MM-dd:H:m', new Date()),
-//       }
-//     },
-//   },
-// }
+export const DynamicListPreLoaded = dynamicListTemplate.bind({})
+DynamicListPreLoaded.args = {
+  mode: 'FormMode',
+  listeners: {
+    'preload-input': async () => {
+      return {
+        jobTypes: ['Kitchen', 'Chef', 'Line Cook'],
+      }
+    },
+  },
+}
 
-export const DateTimeChat = dateTimeTemplate.bind({})
-DateTimeChat.args = {
+export const DynamicListChat = dynamicListTemplate.bind({})
+DynamicListChat.args = {
   mode: 'ChatMode',
 }
 
-export const DateTimeChatJa = dateTimeTemplate.bind({})
-DateTimeChatJa.args = {
+export const DynamicListChatJa = dynamicListTemplate.bind({})
+DynamicListChatJa.args = {
   mode: 'ChatMode',
   locale: 'ja',
 }
