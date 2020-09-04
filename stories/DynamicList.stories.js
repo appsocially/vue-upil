@@ -5,6 +5,41 @@ import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 
+const commaChooser = (locale) => {
+  switch (locale) {
+    case 'ja':
+      return '、'
+    default:
+      return ', '
+  }
+}
+
+const transformReplyVariables = ({
+  node: {
+    event: { value },
+    label,
+  },
+  locale,
+}) => {
+  if (label === 'dynamic-list') {
+    return value.join(commaChooser(locale))
+  } else {
+    return value
+  }
+}
+
+const transformTextVariables = ({ value, key, locale }) => {
+  if (key === 'jobTypes') {
+    if (locale === 'ja') {
+      return value.join(commaChooser(locale))
+    } else {
+      return value.join(commaChooser(locale))
+    }
+  } else {
+    return value
+  }
+}
+
 export default {
   title: 'Widgets/Dynamic-list Widget',
   args: { mode: 'FormMode', listeners: {}, locale: 'en' },
@@ -65,7 +100,7 @@ const dynamicListTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :locale="locale" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" />`,
+    template: `<component v-if="upil" :locale="locale" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformReplyVariables="transformReplyVariables" :transformTextVariables="transformTextVariables"/>`,
     data() {
       return {
         upil: null,
@@ -86,6 +121,8 @@ const dynamicListTemplate = (args) => {
           })
         }
       },
+      transformReplyVariables,
+      transformTextVariables,
     },
     mounted() {
       this.startUpil()
