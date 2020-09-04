@@ -1,6 +1,6 @@
 <template>
-  <v-row align="center" no-gutters>
-    <v-col cols="auto" class="flex-grow-1">
+  <v-row align="center" class="flex-nowrap" no-gutters>
+    <v-col cols="auto" class="flex-grow-1 dynamic-list-wrapper">
       <DynamicListBuilder
         :node="rawNode"
         :state="state"
@@ -9,7 +9,7 @@
         @consume="onConsume"
       />
     </v-col>
-    <v-col cols="auto" class="flex-shrink-1">
+    <v-col cols="auto" class="">
       <v-btn icon :disabled="!canConsume" @click="onSend">
         <v-icon>mdi-send</v-icon>
       </v-btn>
@@ -75,3 +75,9 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.dynamic-list-wrapper {
+  max-width: calc(100% - 40px);
+}
+</style>

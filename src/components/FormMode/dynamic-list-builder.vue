@@ -102,4 +102,8 @@ export default {
 .upil-dynamic-list >>> .v-input__append-inner {
   visibility: hidden;
 }
+
+.upil-dynamic-list .dynamic-list-builder-chip {
+  margin: 2px;
+}
 </style>
