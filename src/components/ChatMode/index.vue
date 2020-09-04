@@ -292,6 +292,8 @@ export default {
           return () => import('./overrides/Current_DateTime')
         case 'range':
           return () => import('./overrides/Current_Range')
+        case 'dynamic-list':
+          return () => import('./overrides/Current_DynamicList')
         default:
           return component
       }

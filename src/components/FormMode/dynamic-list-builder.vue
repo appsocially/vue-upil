@@ -28,11 +28,17 @@
 </template>
 
 <script>
+import { VCombobox, VChip, VIcon } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 import { symbols } from '@appsocially/userpil-core'
 
 export default {
   mixins: [widgeti18nMixin],
+  components: {
+    VCombobox,
+    VChip,
+    VIcon,
+  },
   props: {
     node: {
       type: Object,
