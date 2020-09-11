@@ -5,12 +5,16 @@ import WizardMode from '@/components/WizardMode'
 import ChatMode from '@/components/ChatMode'
 import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
-import { formatTextbox as formatDateTimeString } from '@/components/FormMode/date-time/utils'
-import { isDate } from 'date-fns'
 
-const transformTextVariables = ({ value, locale }) => {
-  if (isDate(value)) {
-    return formatDateTimeString(value, locale)
+const padTime = (timeNum) => `${timeNum}`.padStart(2, 0)
+
+const formatTimeInputValue = (timeInputValue) => {
+  return `${padTime(timeInputValue.hours)}:${padTime(timeInputValue.minutes)}`
+}
+
+const transformTextVariables = ({ value, key, locale }) => {
+  if (key === 'meetingsStart' || key === 'meetingsEnd') {
+    return formatTimeInputValue(value, locale)
   } else {
     return value
   }
@@ -19,11 +23,12 @@ const transformTextVariables = ({ value, locale }) => {
 const transformReplyVariables = ({
   node: {
     event: { value },
+    label,
   },
   locale,
 }) => {
-  if (isDate(value)) {
-    return formatDateTimeString(value, locale)
+  if (label === 'time-input') {
+    return formatTimeInputValue(value, locale)
   } else {
     return value
   }
