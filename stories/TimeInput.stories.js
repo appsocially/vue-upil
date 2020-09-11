@@ -60,7 +60,11 @@ const dateTimeTemplate = (args) => {
       i18n: {
         ja: {
           formText: "ミーティング時間の開始",
-          text: "ミーティング時間はいつから始まる？"
+          text: "ミーティング時間はいつから始まる？",
+          hoursSelectLabel: "何時",
+          unitHour: "時",
+          minutesSelectlabel: "何分",
+          unitMinute: "分"
         }
       }
     }
@@ -73,7 +77,11 @@ const dateTimeTemplate = (args) => {
       i18n: {
         ja: {
           formText: "ミーティング時間のお終い",
-          text: "ミーティング時間はいつまで続く？"
+          text: "ミーティング時間はいつまで続く？",
+          hoursSelectLabel: "時間",
+          unitHour: "時",
+          minutesSelectlabel: "分",
+          unitMinute: "分"
         }
       }
     }
