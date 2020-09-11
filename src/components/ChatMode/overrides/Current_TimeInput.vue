@@ -1,14 +1,19 @@
 <template>
-  <v-row align="center" no-gutters class="upil-time-input">
+  <v-row justify="end" align="center" no-gutters class="upil-time-input">
     <v-col cols="auto" class="flex-grow-1">
       <v-sheet class="pa-2 time-input-sheet">
-        <TimeInput
-          :node="rawNode"
-          :state="state"
-          :rules="rules"
-          :locale="locale"
-          @consume="onConsume"
-        />
+        <v-row no-gutters>
+          <v-col cols="auto" class="flex-grow-1" />
+          <v-col cols="auto">
+            <TimeInput
+              :node="rawNode"
+              :state="state"
+              :rules="rules"
+              :locale="locale"
+              @consume="onConsume"
+            />
+          </v-col>
+        </v-row>
       </v-sheet>
     </v-col>
     <v-col cols="auto" class="flex-shrink-1">
