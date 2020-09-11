@@ -15,6 +15,7 @@
     </v-col>
     <v-col cols="auto">
       <v-select
+        :disabled="minutesSelectedDisabled"
         class="time-input"
         :placeholder="minutesSelectlabel"
         :items="minutesItems"
@@ -30,6 +31,19 @@
 import { VRow, VCol, VSelect } from 'vuetify/lib'
 import { symbols } from '@appsocially/userpil-core'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
+import {
+  endOfDay,
+  startOfDay,
+  getHours,
+  set,
+  eachHourOfInterval,
+  isWithinInterval,
+} from 'date-fns'
+
+const createDateFromTimeInput = (timeInput, baseDate) => {
+  const { hours, minutes } = timeInput || {}
+  return hours && minutes ? set(baseDate, { hours, minutes }) : null
+}
 
 export default {
   mixins: [widgeti18nMixin],
@@ -57,25 +71,41 @@ export default {
   },
   data() {
     return {
+      baseDate: startOfDay(new Date()),
       isValid: this.rules.length === 0,
       tempHours: null,
       tempMinutes: null,
-      hoursRaw: Array.from(Array(24).keys()),
       minutesRaw: Array.from(Array(60).keys()),
     }
   },
   computed: {
     hoursItems() {
-      return this.hoursRaw.map((i) => ({
-        text: `${i}${this.unitHour}`.padStart(2 + this.unitHour.length, 0),
-        value: i,
-      }))
+      return eachHourOfInterval({ start: this.minDate, end: this.maxDate })
+        .map((hourDate) => getHours(hourDate))
+        .map((i) => ({
+          text: `${i}${this.unitHour}`.padStart(2 + this.unitHour.length, 0),
+          value: i,
+        }))
     },
     minutesItems() {
-      return this.minutesRaw.map((i) => ({
-        text: `${i}${this.unitMinute}`.padStart(2 + this.unitMinute.length, 0),
-        value: i,
-      }))
+      return this.minutesRaw
+        .filter((i) => {
+          const potentialMinuteDate = set(this.baseDate, {
+            hours: this.hoursModel,
+            minutes: i,
+          })
+          return isWithinInterval(potentialMinuteDate, {
+            start: this.minDate,
+            end: this.maxDate,
+          })
+        })
+        .map((i) => ({
+          text: `${i}${this.unitMinute}`.padStart(
+            2 + this.unitMinute.length,
+            0
+          ),
+          value: i,
+        }))
     },
     inputName() {
       return this.node.input.name
@@ -83,6 +113,9 @@ export default {
     stateInputValue() {
       const inputValue = this.state[this.inputName]
       return inputValue === symbols.UNRESOLVED ? null : inputValue
+    },
+    minutesSelectedDisabled() {
+      return !Number.isInteger(this.hoursModel)
     },
     hoursModel: {
       get() {
@@ -126,6 +159,24 @@ export default {
     },
     unitSeparator() {
       return this.localeArgLookup('unitSeparator') || ':'
+    },
+    timeInputMax() {
+      return (this.node.args || {}).timeInputMax
+    },
+    timeInputMin() {
+      return (this.node.args || {}).timeInputMin
+    },
+    maxDate() {
+      return (
+        createDateFromTimeInput(this.timeInputMax, this.baseDate) ||
+        endOfDay(this.baseDate)
+      )
+    },
+    minDate() {
+      return (
+        createDateFromTimeInput(this.timeInputMin, this.baseDate) ||
+        startOfDay(this.baseDate)
+      )
     },
   },
   watch: {

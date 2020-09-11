@@ -56,12 +56,13 @@ export default {
   },
 }
 
-const dateTimeTemplate = (args) => {
-  const birthdayTemplate = `
+const timeInput = (args) => {
+  const template = `
   DIALOG meetingTime
     TEMPLATE time-input
     {
       formText: "Meetings start time",
+      timeInputMax: meetingsEnd,
       i18n: {
         ja: {
           formText: "ミーティング時間の開始",
@@ -79,6 +80,7 @@ const dateTimeTemplate = (args) => {
     TEMPLATE time-input
     {
       formText: "Meetings end time",
+      timeInputMin: meetingsStart,
       i18n: {
         ja: {
           formText: "ミーティング時間のお終い",
@@ -127,9 +129,9 @@ const dateTimeTemplate = (args) => {
         setupListeners({ upil: this.upil, listeners: this.listeners })
 
         if (this.mode === 'ChatMode') {
-          this.upil.startRaw(birthdayTemplate, {})
+          this.upil.startRaw(template, {})
         } else {
-          this.upil.startRaw(birthdayTemplate, {
+          this.upil.startRaw(template, {
             mode: 'form',
             resetOnInputUpdate: true,
           })
@@ -149,28 +151,28 @@ const dateTimeTemplate = (args) => {
   }
 }
 
-export const DateTimeEmpty = dateTimeTemplate.bind({})
-// DateFormMode.args = { mode: 'FormMode' }
+export const TimeInputEmpty = timeInput.bind({})
 
-export const DateTimePreLoaded = dateTimeTemplate.bind({})
-DateTimePreLoaded.args = {
+export const TimeInputPreLoaded = timeInput.bind({})
+TimeInputPreLoaded.args = {
   mode: 'FormMode',
   listeners: {
     'preload-input': async () => {
       return {
-        partyDateTime: parse('2019-08-05:15:5', 'yyyy-MM-dd:H:m', new Date()),
+        meetingsStart: { hours: 5, minutes: 30 },
+        meetingsEnd: { hours: 15, minutes: 0 },
       }
     },
   },
 }
 
-export const DateTimeChat = dateTimeTemplate.bind({})
-DateTimeChat.args = {
+export const TimeInputChat = timeInput.bind({})
+TimeInputChat.args = {
   mode: 'ChatMode',
 }
 
-export const DateTimeChatJa = dateTimeTemplate.bind({})
-DateTimeChatJa.args = {
+export const TimeInputChatJa = timeInput.bind({})
+TimeInputChatJa.args = {
   mode: 'ChatMode',
   locale: 'ja',
 }
