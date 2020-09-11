@@ -1,5 +1,7 @@
 function componentByLabel({ label }, component) {
   switch (label) {
+    case 'time-input':
+      return () => import('./time-input')
     case 'date':
       return () => import('./date')
     case 'date-time':

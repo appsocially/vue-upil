@@ -290,6 +290,8 @@ export default {
           return () => import('./overrides/Current_Date')
         case 'date-time':
           return () => import('./overrides/Current_DateTime')
+        case 'time-input':
+          return () => import('./overrides/Current_TimeInput')
         case 'range':
           return () => import('./overrides/Current_Range')
         case 'dynamic-list':
