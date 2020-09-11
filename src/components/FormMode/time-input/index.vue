@@ -1,14 +1,16 @@
 <template>
-  <v-row no-gutters class="mx-1" justify="start" align="center">
+  <v-row no-gutters class="mx-1" justify="start" align="end">
     <v-col cols="auto">
       <v-select
         class="time-input"
         :placeholder="hoursSelectLabel"
         :items="hoursItems"
         v-model="hoursModel"
+        hide-details
+        dense
       />
     </v-col>
-    <v-col cols="auto" class="ma-1 text-h5">
+    <v-col cols="auto" class="mx-1 text-h5">
       {{ unitSeparator }}
     </v-col>
     <v-col cols="auto">
@@ -17,6 +19,8 @@
         :placeholder="minutesSelectlabel"
         :items="minutesItems"
         v-model="minutesModel"
+        hide-details
+        dense
       />
     </v-col>
   </v-row>
@@ -82,7 +86,9 @@ export default {
     },
     hoursModel: {
       get() {
-        return this.tempHours ? this.tempHours : this.stateHours
+        return Number.isInteger(this.tempHours)
+          ? this.tempHours
+          : this.stateHours
       },
       set(value) {
         this.tempHours = value
@@ -91,7 +97,9 @@ export default {
     },
     minutesModel: {
       get() {
-        return this.tempMinutes ? this.tempMinutes : this.stateMinutes
+        return Number.isInteger(this.tempMinutes)
+          ? this.tempMinutes
+          : this.stateMinutes
       },
       set(value) {
         this.tempMinutes = value
@@ -132,7 +140,10 @@ export default {
   },
   methods: {
     checkSubmit() {
-      if (this.hoursModel && this.minutesModel) {
+      if (
+        Number.isInteger(this.hoursModel) &&
+        Number.isInteger(this.minutesModel)
+      ) {
         this.$emit('consume', {
           event: this.node.event,
           value: { hours: this.hoursModel, minutes: this.minutesModel },
