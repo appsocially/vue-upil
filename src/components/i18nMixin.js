@@ -31,7 +31,7 @@ export default {
     calculateText({ text, args }) {
       const i18nRoot = args && args.i18n
       const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
-      return localeKeys ? localeKeys.text : text
+      return localeKeys && localeKeys.text ? localeKeys.text : text
     },
     calculateFormText({ args }) {
       const locale = this.locale

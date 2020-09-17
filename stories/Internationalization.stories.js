@@ -131,6 +131,35 @@ JapaneseChatMode.args = {
   mode: 'ChatMode',
 }
 
+/**
+ * Since i18n.ja.text is missing it should fallback to default text even for ja locale
+ */
+export const JapaneseChatModeTranslationFallback = basicI18nTemplate.bind({})
+JapaneseChatModeTranslationFallback.args = {
+  locale: 'ja',
+  mode: 'ChatMode',
+  upilScript: `
+  DIALOG getName
+    TEMPLATE 
+      {
+        formText: "Name",
+        i18n: {
+          ja: {
+            formText: "お名前"
+          }
+        }
+      }
+      "お名前は？"
+      >>name
+    /TEMPLATE
+    TEMPLATE 
+      "\${name}ようこそ"
+    /TEMPLATE
+  /DIALOG
+  RUN getName
+`,
+}
+
 export const EnglishFormModeSelect = basicI18nTemplate.bind({})
 EnglishFormModeSelect.args = {
   locale: 'en',
