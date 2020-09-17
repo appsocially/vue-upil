@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { VRow, VCol, VBtn, VIcon } from 'vuetify/lib'
+import { VRow, VSheet, VCol, VBtn, VIcon } from 'vuetify/lib'
 import TimeInput from '@/components/FormMode/time-input'
 import { symbols } from '@appsocially/userpil-core'
 
@@ -33,6 +33,7 @@ export default {
   components: {
     TimeInput,
     VRow,
+    VSheet,
     VCol,
     VBtn,
     VIcon,
