@@ -81,9 +81,7 @@ export default {
       )
     },
     isMissingValues() {
-      return this.initializingUpil
-        ? false
-        : this.missingValueNodes && this.missingValueNodes.length > 0
+      return this.missingValueNodes && this.missingValueNodes.length > 0
     },
     initializingUpil() {
       return (
