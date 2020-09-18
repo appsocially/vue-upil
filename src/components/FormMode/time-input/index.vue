@@ -42,7 +42,9 @@ import {
 
 const createDateFromTimeInput = (timeInput, baseDate) => {
   const { hours, minutes } = timeInput || {}
-  return hours && minutes ? set(baseDate, { hours, minutes }) : null
+  return Number.isInteger(hours) && Number.isInteger(minutes)
+    ? set(baseDate, { hours, minutes })
+    : null
 }
 
 export default {
