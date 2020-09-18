@@ -2,6 +2,7 @@
   <v-row align="center" class="flex-nowrap" no-gutters>
     <v-col cols="auto" class="flex-grow-1 dynamic-list-wrapper">
       <DynamicListBuilder
+        :upil="upil"
         :node="rawNode"
         :state="state"
         :rules="rules"
@@ -20,57 +21,16 @@
 <script>
 import { VRow, VCol, VBtn, VIcon } from 'vuetify/lib'
 import DynamicListBuilder from '@/components/FormMode/dynamic-list-builder'
+import formmodeWrapperMixin from './formmodeWrapperMixin'
 
 export default {
+  mixins: [formmodeWrapperMixin],
   components: {
     DynamicListBuilder,
     VRow,
     VCol,
     VBtn,
     VIcon,
-  },
-  props: {
-    rawNode: {
-      type: Object,
-      required: true,
-    },
-    upil: {
-      type: Object,
-    },
-    state: {
-      type: Object,
-      required: true,
-    },
-    rules: {
-      type: Array,
-      default: () => [],
-    },
-    locale: {
-      type: String,
-    },
-  },
-  data() {
-    return {
-      inputValue: null,
-      event: null,
-    }
-  },
-  computed: {
-    canConsume() {
-      return this.hasValue && this.event
-    },
-    hasValue() {
-      return this.inputValue && this.inputValue !== this.upil.symbols.UNRESOLVED
-    },
-  },
-  methods: {
-    onConsume({ event, value }) {
-      this.inputValue = value
-      this.event = event
-    },
-    onSend() {
-      this.$emit('consume', { event: this.event, value: this.inputValue })
-    },
   },
 }
 </script>

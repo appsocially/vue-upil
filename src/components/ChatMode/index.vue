@@ -48,6 +48,7 @@
                     </v-col>
                     <v-col class="chat-bubble" cols="auto">
                       <component
+                        v-if="upil"
                         :node="node"
                         :is="componentType"
                         :upil="upil"
@@ -65,6 +66,7 @@
 
           <div id="bottom-bar" v-if="!removeBottomBar && currentNode">
             <component
+              v-if="upil"
               v-bind="currentNode.node"
               :is="currentNode.componentType"
               :rawNode="currentNode.rawNode"
