@@ -30,7 +30,6 @@
 
 <script>
 import { VMenu, VTextField, VDatePicker } from 'vuetify/lib'
-import { symbols } from '@appsocially/userpil-core'
 import { parseISO } from 'date-fns'
 import { formatAsDate, formatTextbox } from './utils'
 
@@ -56,6 +55,9 @@ export default {
     locale: {
       type: String,
     },
+    upil: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -70,7 +72,7 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? null : inputValue
+      return inputValue === this.upil.symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
       return this.date ? formatTextbox(this.date, this.locale) : ''
@@ -102,7 +104,7 @@ export default {
       this.isValid = !hasError
     },
     onSubmit(date) {
-      const submitValue = date ? date : symbols.UNRESOLVED
+      const submitValue = date ? date : this.upil.symbols.UNRESOLVED
       this.$emit('consume', { event: this.node.event, value: submitValue })
     },
   },

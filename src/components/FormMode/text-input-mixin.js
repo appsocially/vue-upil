@@ -1,4 +1,3 @@
-import { symbols } from '@appsocially/userpil-core'
 import debounce from 'lodash.debounce'
 
 export default {
@@ -25,7 +24,7 @@ export default {
           const trimmedInput = (input || '').trim()
           const finalInput =
             !trimmedInput || trimmedInput === ''
-              ? symbols.UNRESOLVED
+              ? this.upil.symbols.UNRESOLVED
               : trimmedInput
           return this.upil.consume(this.node.event, finalInput)
         }
@@ -38,7 +37,7 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? '' : inputValue
+      return inputValue === this.upil.symbols.UNRESOLVED ? '' : inputValue
     },
   },
   watch: {

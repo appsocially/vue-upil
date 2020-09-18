@@ -30,7 +30,6 @@
 <script>
 import { VCombobox, VChip, VIcon } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
-import { symbols } from '@appsocially/userpil-core'
 
 export default {
   mixins: [widgeti18nMixin],
@@ -55,6 +54,9 @@ export default {
     locale: {
       type: String,
     },
+    upil: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -73,7 +75,7 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? [] : inputValue
+      return inputValue === this.upil.symbols.UNRESOLVED ? [] : inputValue
     },
   },
   watch: {
@@ -91,7 +93,9 @@ export default {
     },
     inputValue(inputValue) {
       const value =
-        !inputValue || inputValue.length === 0 ? symbols.UNRESOLVED : inputValue
+        !inputValue || inputValue.length === 0
+          ? this.upil.symbols.UNRESOLVED
+          : inputValue
       this.$emit('consume', { event: this.node.event, value })
     },
   },

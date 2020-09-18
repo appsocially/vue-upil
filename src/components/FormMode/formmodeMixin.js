@@ -1,4 +1,3 @@
-import { symbols } from '@appsocially/userpil-core'
 import debounce from 'lodash.debounce'
 import i18nMixin from '@/components/i18nMixin'
 
@@ -9,10 +8,10 @@ const isLoadingEventType = (event) => {
   return isPending && isExternalEvent
 }
 
-export const isMissingValue = (node, state) => {
+export const isMissingValue = (node, state, upil) => {
   const currentValue = state[node.input.name]
   const missingState = currentValue === undefined || currentValue === null
-  const isUnresolved = currentValue === symbols.UNRESOLVED
+  const isUnresolved = currentValue === upil.symbols.UNRESOLVED
   return missingState || isUnresolved
 }
 
@@ -77,13 +76,21 @@ export default {
   },
   computed: {
     missingValueNodes() {
-      return this.inputNodes.filter((n) => isMissingValue(n, this.state))
+      return this.inputNodes.filter((n) =>
+        isMissingValue(n, this.state, this.upil)
+      )
     },
     isMissingValues() {
-      return this.missingValueNodes && this.missingValueNodes.length > 0
+      return this.initializingUpil
+        ? false
+        : this.missingValueNodes && this.missingValueNodes.length > 0
     },
     initializingUpil() {
-      return this.events.length === 0 || this.events.some(isLoadingEventType)
+      return (
+        !this.upil ||
+        this.events.length === 0 ||
+        this.events.some(isLoadingEventType)
+      )
     },
     inputNodes() {
       return this.nodes.filter((n) => !!n.input && n.reply !== true)

@@ -25,7 +25,7 @@
     "vue-scrollto": "^2.18.2"
   },
   "devDependencies": {
-    "@appsocially/userpil-core": "^1.1.7",
+    "@appsocially/userpil-core": "^1.1.10",
     "@babel/core": "^7.11.1",
     "@mdi/font": "^5.5.55",
     "@storybook/addon-actions": "^6.0.5",
@@ -57,7 +57,7 @@
     "webpack": "^4.44.1"
   },
   "peerDependencies": {
-    "@appsocially/userpil-core": "^1.1.5"
+    "@appsocially/userpil-core": "^1.1.9"
   },
   "resolutions": {
     "ajv": "6.10.0"

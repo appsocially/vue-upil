@@ -29,7 +29,6 @@
 
 <script>
 import { VRow, VCol, VSelect } from 'vuetify/lib'
-import { symbols } from '@appsocially/userpil-core'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 import {
   endOfDay,
@@ -69,6 +68,9 @@ export default {
     },
     locale: {
       type: String,
+    },
+    upil: {
+      type: Object,
     },
   },
   data() {
@@ -114,7 +116,7 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? null : inputValue
+      return inputValue === this.upil.symbols.UNRESOLVED ? null : inputValue
     },
     minutesSelectedDisabled() {
       return !Number.isInteger(this.hoursModel)

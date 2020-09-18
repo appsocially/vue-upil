@@ -27,7 +27,6 @@
 <script>
 import { VRow, VSheet, VCol, VBtn, VIcon } from 'vuetify/lib'
 import TimeInput from '@/components/FormMode/time-input'
-import { symbols } from '@appsocially/userpil-core'
 
 export default {
   components: {
@@ -69,7 +68,7 @@ export default {
       return this.hasValue && this.event
     },
     hasValue() {
-      return this.inputValue && this.inputValue !== symbols.UNRESOLVED
+      return this.inputValue && this.inputValue !== this.upil.symbols.UNRESOLVED
     },
   },
   methods: {

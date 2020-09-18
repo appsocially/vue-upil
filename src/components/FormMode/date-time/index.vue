@@ -76,7 +76,6 @@ import {
   VSelect,
   VSheet,
 } from 'vuetify/lib'
-import { symbols } from '@appsocially/userpil-core'
 import { parseISO, parse, getHours, getMinutes } from 'date-fns'
 import { formatAsDate, formatTextbox } from './utils'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
@@ -109,6 +108,9 @@ export default {
     locale: {
       type: String,
     },
+    upil: {
+      type: Object,
+    },
   },
   data() {
     return {
@@ -139,7 +141,7 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? null : inputValue
+      return inputValue === this.upil.symbols.UNRESOLVED ? null : inputValue
     },
     computedDateFormatted() {
       return this.dateTime ? formatTextbox(this.dateTime, this.locale) : ''
@@ -170,19 +172,19 @@ export default {
     },
     stateDate() {
       return !this.stateInputValue ||
-        this.stateInputValue === symbols.UNRESOLVED
+        this.stateInputValue === this.upil.symbols.UNRESOLVED
         ? null
         : formatAsDate(this.stateInputValue)
     },
     stateHours() {
       return !this.stateInputValue ||
-        this.stateInputValue === symbols.UNRESOLVED
+        this.stateInputValue === this.upil.symbols.UNRESOLVED
         ? null
         : getHours(this.stateInputValue)
     },
     stateMinutes() {
       return !this.stateInputValue ||
-        this.stateInputValue === symbols.UNRESOLVED
+        this.stateInputValue === this.upil.symbols.UNRESOLVED
         ? null
         : getMinutes(this.stateInputValue)
     },

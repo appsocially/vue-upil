@@ -6,7 +6,6 @@
 
 <script>
 import { VSelect } from 'vuetify/lib'
-import { symbols } from '@appsocially/userpil-core'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
@@ -26,6 +25,9 @@ export default {
     rules: {
       type: Array,
       default: () => [],
+    },
+    upil: {
+      type: Object,
     },
   },
   computed: {
@@ -55,7 +57,7 @@ export default {
     },
     stateInputValue() {
       const inputValue = this.state[this.inputName]
-      return inputValue === symbols.UNRESOLVED ? null : inputValue
+      return inputValue === this.upil.symbols.UNRESOLVED ? null : inputValue
     },
   },
 }

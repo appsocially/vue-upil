@@ -73,7 +73,7 @@ export default {
           { args, ...rest },
           calculateComponent({ args, ...rest })
         ),
-        isMissingValue: isMissingValue(rest, this.state),
+        isMissingValue: isMissingValue(rest, this.state, this.upil),
         text: substituteNodeText({
           inputState: this.state,
           text: this.calculateFormText({ args })

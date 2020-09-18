@@ -20,7 +20,6 @@
 <script>
 import { VRow, VCol, VBtn, VIcon } from 'vuetify/lib'
 import Date from '@/components/FormMode/date'
-import { symbols } from '@appsocially/userpil-core'
 
 export default {
   components: {
@@ -61,7 +60,7 @@ export default {
       return this.hasValue && this.event
     },
     hasValue() {
-      return this.inputValue && this.inputValue !== symbols.UNRESOLVED
+      return this.inputValue && this.inputValue !== this.upil.symbols.UNRESOLVED
     },
   },
   methods: {

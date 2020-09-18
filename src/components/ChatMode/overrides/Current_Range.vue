@@ -21,7 +21,6 @@
 <script>
 import { VRow, VCol, VBtn, VIcon } from 'vuetify/lib'
 import Range from '@/components/FormMode/range'
-import { symbols } from '@appsocially/userpil-core'
 
 export default {
   components: {
@@ -62,7 +61,7 @@ export default {
       return this.hasValue && this.event
     },
     hasValue() {
-      return this.inputValue && this.inputValue !== symbols.UNRESOLVED
+      return this.inputValue && this.inputValue !== this.upil.symbols.UNRESOLVED
     },
     labelOverride() {
       const i18nRoot = this.rawNode.args && this.rawNode.args.i18n
