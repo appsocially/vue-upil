@@ -3,7 +3,7 @@
     class="upil-template"
     :rows="1"
     v-model="userInput"
-    :placeholder="placeholderText"
+    :placeholder="placeholder"
     solo
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
@@ -16,8 +16,10 @@
 
 <script>
 import { VTextarea } from 'vuetify/lib'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
+  mixins: [widgeti18nMixin],
   components: {
     VTextarea,
   },
@@ -45,6 +47,9 @@ export default {
     }
   },
   computed: {
+    placeholder() {
+      return this.localeArgLookup('placeholder') || this.placeholderText
+    },
     hasRules() {
       return this.rules.length > 0
     },

@@ -23,9 +23,10 @@
 import { VRow, VCol, VBtn, VIcon } from 'vuetify/lib'
 import Range from '@/components/FormMode/range'
 import formmodeWrapperMixin from './formmodeWrapperMixin'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
-  mixins: [formmodeWrapperMixin],
+  mixins: [formmodeWrapperMixin, widgeti18nMixin],
   components: {
     Range,
     VRow,
@@ -35,15 +36,7 @@ export default {
   },
   computed: {
     labelOverride() {
-      const i18nRoot = this.rawNode.args && this.rawNode.args.i18n
-      const localeKeys = i18nRoot ? i18nRoot[this.locale] : null
-      if (localeKeys && localeKeys.formText) {
-        return localeKeys.formText
-      } else {
-        return this.rawNode && this.rawNode.args && this.rawNode.args.formText
-          ? this.rawNode.args.formText
-          : ''
-      }
+      return this.localeArgLookup('formText') || ''
     },
   },
 }

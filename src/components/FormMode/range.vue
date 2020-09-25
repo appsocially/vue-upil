@@ -1,6 +1,6 @@
 <template>
   <keep-alive>
-    <v-select :items="items" v-model="numericModel" />
+    <v-select :items="items" v-model="numericModel" :label="labelOverride" />
   </keep-alive>
 </template>
 
@@ -28,6 +28,10 @@ export default {
     },
     upil: {
       type: Object,
+    },
+    labelOverride: {
+      type: String,
+      default: '',
     },
   },
   computed: {

@@ -78,6 +78,26 @@ BasicSelect.args = {
   `,
 }
 
+export const BasicSelectPlaceholderOverride = chatmodeTemplate.bind({})
+BasicSelectPlaceholderOverride.args = {
+  templateText: `
+      DIALOG favColor
+        SELECT
+          {
+            placeholder: "Choose a color"
+          }
+          "Please choose your favorite color"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          >>color
+        /SELECT
+        TEMPLATE "\${color} is a great color!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
 export const BasicMultiSelect = chatmodeTemplate.bind({})
 BasicMultiSelect.args = {
   templateText: `

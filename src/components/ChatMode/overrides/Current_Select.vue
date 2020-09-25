@@ -5,7 +5,7 @@
     hide-details
     v-model="userInput"
     :items="items"
-    :label="placeholderText"
+    :label="placeholder"
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
     dense
@@ -14,8 +14,10 @@
 
 <script>
 import { VSelect } from 'vuetify/lib'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
+  mixins: [widgeti18nMixin],
   components: {
     VSelect,
   },
@@ -41,6 +43,9 @@ export default {
     }
   },
   computed: {
+    placeholder() {
+      return this.localeArgLookup('placeholder') || this.placeholderText
+    },
     items() {
       return this.options.map(({ text, value }) => ({
         text,
