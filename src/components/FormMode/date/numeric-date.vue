@@ -2,8 +2,10 @@
   <v-row no-gutters class="mx-1" justify="start" align="end">
     <v-col cols="auto">
       <v-select
+        filled
         class="date-part-input"
-        :placeholder="yearsSelectLabel"
+        :label="yearSelectLabel"
+        :placeholder="yearSelectPlaceholder"
         :items="yearsItems"
         v-model="yearsModel"
         hide-details
@@ -15,9 +17,11 @@
     </v-col>
     <v-col cols="auto">
       <v-select
+        filled
         :disabled="monthsSelectedDisabled"
         class="date-part-input"
-        :placeholder="monthsSelectlabel"
+        :label="monthSelectLabel"
+        :placeholder="monthSelectPlaceholder"
         :items="monthsItems"
         v-model="monthsModel"
         hide-details
@@ -29,9 +33,11 @@
     </v-col>
     <v-col cols="auto">
       <v-select
+        filled
         :disabled="daysSelectedDisabled"
         class="date-part-input"
-        :placeholder="daysSelectlabel"
+        :label="daySelectLabel"
+        :placeholder="daySelectPlaceholder"
         :items="daysItems"
         v-model="daysModel"
         hide-details
@@ -224,14 +230,23 @@ export default {
     stateDays() {
       return this.stateInputValue ? this.stateInputValue.days : null
     },
-    yearsSelectLabel() {
-      return this.localeArgLookup('yearsSelectLabel') || 'year'
+    yearSelectLabel() {
+      return this.localeArgLookup('yearSelectLabel') || ''
     },
-    monthsSelectlabel() {
-      return this.localeArgLookup('monthsSelectlabel') || 'months'
+    monthSelectLabel() {
+      return this.localeArgLookup('monthSelectLabel') || ''
     },
-    daysSelectlabel() {
-      return this.localeArgLookup('daysSelectlabel') || 'days'
+    daySelectLabel() {
+      return this.localeArgLookup('daySelectLabel') || ''
+    },
+    yearSelectPlaceholder() {
+      return this.localeArgLookup('yearSelectPlaceholder') || ''
+    },
+    monthSelectPlaceholder() {
+      return this.localeArgLookup('monthSelectPlaceholder') || ''
+    },
+    daySelectPlaceholder() {
+      return this.localeArgLookup('daySelectPlaceholder') || ''
     },
     unitYear() {
       return this.localeArgLookup('unitYear') || ''
@@ -293,6 +308,6 @@ export default {
 
 <style scoped>
 .date-part-input {
-  max-width: 100px;
+  max-width: 150px;
 }
 </style>

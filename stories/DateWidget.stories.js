@@ -70,11 +70,16 @@ const dateTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :locale="locale" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
+    template: `<component v-if="upil" :i18n="i18n" :locale="locale" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :transformTextVariables="transformTextVariables" :transformReplyVariables="transformReplyVariables"/>`,
     data() {
       return {
         upil: null,
         TruffleLogo,
+        i18n: {
+          ja: {
+            missingValue: '未記入',
+          },
+        },
       }
     },
     computed: {
@@ -86,9 +91,20 @@ const dateTemplate = (args) => {
             formText: "Birthdate",
             calendarType: "${this.calendarType}",
             i18n: {
+              en: {
+                yearSelectLabel: "year",
+                monthSelectLabel: "month",
+                daySelectLabel: "day"
+              },
               ja: {
                 formText: "お誕生日",
-                text: "お誕生日はいつ？"
+                text: "お誕生日はいつ？",
+                unitYear: "年",
+                unitMonth: "月",
+                unitDay: "日",
+                yearSelectPlaceholder: "何年",
+                monthSelectPlaceholder: "何月",
+                daySelectPlaceholder: "何日"
               }
             }
           }
@@ -171,8 +187,21 @@ DateNumericForm.args = {
   calendarType: 'numeric',
 }
 
+export const DateNumericFormJa = dateTemplate.bind({})
+DateNumericFormJa.args = {
+  calendarType: 'numeric',
+  locale: 'ja',
+}
+
 export const DateNumericChat = dateTemplate.bind({})
 DateNumericChat.args = {
   mode: 'ChatMode',
   calendarType: 'numeric',
+}
+
+export const DateNumericChatJa = dateTemplate.bind({})
+DateNumericChatJa.args = {
+  mode: 'ChatMode',
+  calendarType: 'numeric',
+  locale: 'ja',
 }
