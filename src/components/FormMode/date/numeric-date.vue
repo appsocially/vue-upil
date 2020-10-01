@@ -2,7 +2,7 @@
   <v-row no-gutters class="mx-1" justify="start" align="end">
     <v-col cols="auto">
       <v-select
-        filled
+        :filled="!reduceHeight"
         class="date-part-input"
         :label="yearSelectLabel"
         :placeholder="yearSelectPlaceholder"
@@ -17,7 +17,7 @@
     </v-col>
     <v-col cols="auto">
       <v-select
-        filled
+        :filled="!reduceHeight"
         :disabled="monthsSelectedDisabled"
         class="date-part-input"
         :label="monthSelectLabel"
@@ -33,7 +33,7 @@
     </v-col>
     <v-col cols="auto">
       <v-select
-        filled
+        :filled="!reduceHeight"
         :disabled="daysSelectedDisabled"
         class="date-part-input"
         :label="daySelectLabel"
@@ -93,6 +93,10 @@ export default {
     },
     upil: {
       type: Object,
+    },
+    reduceHeight: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

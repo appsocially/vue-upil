@@ -12,6 +12,7 @@
               :rules="rules"
               :locale="locale"
               @consume="onConsume"
+              reduceHeight
             />
           </v-col>
         </v-row>
