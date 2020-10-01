@@ -2,24 +2,38 @@
   <v-row no-gutters class="mx-1" justify="start" align="end">
     <v-col cols="auto">
       <v-select
-        class="time-input"
-        :placeholder="hoursSelectLabel"
-        :items="hoursItems"
-        v-model="hoursModel"
+        class="date-part-input"
+        :placeholder="yearsSelectLabel"
+        :items="yearsItems"
+        v-model="yearsModel"
         hide-details
         dense
       />
     </v-col>
-    <v-col cols="auto" class="mx-1 text-h5">
+    <v-col cols="auto" class="mx-3 text-h5">
       {{ unitSeparator }}
     </v-col>
     <v-col cols="auto">
       <v-select
-        :disabled="minutesSelectedDisabled"
-        class="time-input"
-        :placeholder="minutesSelectlabel"
-        :items="minutesItems"
-        v-model="minutesModel"
+        :disabled="monthsSelectedDisabled"
+        class="date-part-input"
+        :placeholder="monthsSelectlabel"
+        :items="monthsItems"
+        v-model="monthsModel"
+        hide-details
+        dense
+      />
+    </v-col>
+    <v-col cols="auto" class="mx-3 text-h5">
+      {{ unitSeparator }}
+    </v-col>
+    <v-col cols="auto">
+      <v-select
+        :disabled="daysSelectedDisabled"
+        class="date-part-input"
+        :placeholder="daysSelectlabel"
+        :items="daysItems"
+        v-model="daysModel"
         hide-details
         dense
       />
@@ -31,20 +45,22 @@
 import { VRow, VCol, VSelect } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 import {
-  endOfDay,
-  startOfDay,
-  getHours,
+  endOfYear,
+  startOfYear,
+  startOfMonth,
+  endOfMonth,
+  getYear,
+  getMonth,
+  getDate,
   set,
-  eachHourOfInterval,
-  isWithinInterval,
+  sub,
+  parseISO,
+  eachYearOfInterval,
+  eachMonthOfInterval,
+  eachDayOfInterval,
+  min,
+  max,
 } from 'date-fns'
-
-const createDateFromTimeInput = (timeInput, baseDate) => {
-  const { hours, minutes } = timeInput || {}
-  return Number.isInteger(hours) && Number.isInteger(minutes)
-    ? set(baseDate, { hours, minutes })
-    : null
-}
 
 export default {
   mixins: [widgeti18nMixin],
@@ -75,41 +91,70 @@ export default {
   },
   data() {
     return {
-      baseDate: startOfDay(new Date()),
+      baseDate: new Date(),
       isValid: this.rules.length === 0,
-      tempHours: null,
-      tempMinutes: null,
-      minutesRaw: Array.from(Array(60).keys()),
+      tempYears: null,
+      tempMonths: null,
+      tempDays: null,
     }
   },
   computed: {
-    hoursItems() {
-      return eachHourOfInterval({ start: this.minDate, end: this.maxDate })
-        .map((hourDate) => getHours(hourDate))
+    yearsItems() {
+      return eachYearOfInterval({ start: this.minDate, end: this.maxDate })
+        .map(getYear)
         .map((i) => ({
-          text: `${i}${this.unitHour}`.padStart(2 + this.unitHour.length, 0),
+          text: `${i}${this.unitYear}`,
           value: i,
         }))
+        .reverse()
     },
-    minutesItems() {
-      return this.minutesRaw
-        .filter((i) => {
-          const potentialMinuteDate = set(this.baseDate, {
-            hours: this.hoursModel,
-            minutes: i,
-          })
-          return isWithinInterval(potentialMinuteDate, {
-            start: this.minDate,
-            end: this.maxDate,
-          })
+    monthsItems() {
+      if (!this.monthsSelectedDisabled) {
+        const dateWithYear = set(this.baseDate, { year: this.yearsModel })
+        const minMonthThisYear = max([this.minDate, startOfYear(dateWithYear)])
+        const maxMonthThisYear = min([this.maxDate, endOfYear(dateWithYear)])
+        return eachMonthOfInterval({
+          start: minMonthThisYear,
+          end: maxMonthThisYear,
         })
-        .map((i) => ({
-          text: `${i}${this.unitMinute}`.padStart(
-            2 + this.unitMinute.length,
-            0
-          ),
-          value: i,
-        }))
+          .map(getMonth)
+          .map((i) => ({
+            text: `${i + 1}${this.unitMonth}`.padStart(
+              2 + this.unitMonth.length,
+              0
+            ),
+            value: i,
+          }))
+      } else {
+        return []
+      }
+    },
+    daysItems() {
+      if (!this.daysSelectedDisabled) {
+        const dateWithYearMonth = set(this.baseDate, {
+          year: this.yearsModel,
+          month: this.monthsModel,
+        })
+        const minDayThisMonth = max([
+          this.minDate,
+          startOfMonth(dateWithYearMonth),
+        ])
+        const maxDayThisMonth = min([
+          this.maxDate,
+          endOfMonth(dateWithYearMonth),
+        ])
+        return eachDayOfInterval({
+          start: minDayThisMonth,
+          end: maxDayThisMonth,
+        })
+          .map(getDate)
+          .map((i) => ({
+            text: `${i}${this.unitDay}`.padStart(2 + this.unitDay.length, 0),
+            value: i,
+          }))
+      } else {
+        return []
+      }
     },
     inputName() {
       return this.node.input.name
@@ -118,69 +163,82 @@ export default {
       const inputValue = this.state[this.inputName]
       return inputValue === this.upil.symbols.UNRESOLVED ? null : inputValue
     },
-    minutesSelectedDisabled() {
-      return !Number.isInteger(this.hoursModel)
+    monthsSelectedDisabled() {
+      return !Number.isInteger(this.yearsModel)
     },
-    hoursModel: {
+    daysSelectedDisabled() {
+      return !Number.isInteger(this.monthsModel)
+    },
+    yearsModel: {
       get() {
-        return Number.isInteger(this.tempHours)
-          ? this.tempHours
-          : this.stateHours
+        return Number.isInteger(this.tempYears)
+          ? this.tempYears
+          : this.stateYears
       },
       set(value) {
-        this.tempHours = value
+        this.tempYears = value
         this.checkSubmit()
       },
     },
-    minutesModel: {
+    monthsModel: {
       get() {
-        return Number.isInteger(this.tempMinutes)
-          ? this.tempMinutes
-          : this.stateMinutes
+        return Number.isInteger(this.tempMonths)
+          ? this.tempMonths
+          : this.stateMonths
       },
       set(value) {
-        this.tempMinutes = value
+        this.tempMonths = value
         this.checkSubmit()
       },
     },
-    stateHours() {
-      return this.stateInputValue ? this.stateInputValue.hours : null
+    daysModel: {
+      get() {
+        return Number.isInteger(this.tempDays) ? this.tempDays : this.stateDays
+      },
+      set(value) {
+        this.tempDays = value
+        this.checkSubmit()
+      },
     },
-    stateMinutes() {
-      return this.stateInputValue ? this.stateInputValue.minutes : null
+    stateYears() {
+      return this.stateInputValue ? this.stateInputValue.years : null
     },
-    hoursSelectLabel() {
-      return this.localeArgLookup('hoursSelectLabel') || 'hour'
+    stateMonths() {
+      return this.stateInputValue ? this.stateInputValue.months : null
     },
-    minutesSelectlabel() {
-      return this.localeArgLookup('minutesSelectlabel') || 'minutes'
+    stateDays() {
+      return this.stateInputValue ? this.stateInputValue.days : null
     },
-    unitHour() {
-      return this.localeArgLookup('unitHour') || ''
+    yearsSelectLabel() {
+      return this.localeArgLookup('yearsSelectLabel') || 'year'
     },
-    unitMinute() {
-      return this.localeArgLookup('unitMinute') || ''
+    monthsSelectlabel() {
+      return this.localeArgLookup('monthsSelectlabel') || 'months'
+    },
+    daysSelectlabel() {
+      return this.localeArgLookup('daysSelectlabel') || 'days'
+    },
+    unitYear() {
+      return this.localeArgLookup('unitYear') || ''
+    },
+    unitMonth() {
+      return this.localeArgLookup('unitMonth') || ''
+    },
+    unitDay() {
+      return this.localeArgLookup('unitDay') || ''
     },
     unitSeparator() {
-      return this.localeArgLookup('unitSeparator') || ':'
-    },
-    timeInputMax() {
-      return (this.node.args || {}).timeInputMax
-    },
-    timeInputMin() {
-      return (this.node.args || {}).timeInputMin
+      return this.localeArgLookup('unitSeparator') || ''
     },
     maxDate() {
-      return (
-        createDateFromTimeInput(this.timeInputMax, this.baseDate) ||
-        endOfDay(this.baseDate)
-      )
+      return this.localeArgLookup('maxDate')
+        ? parseISO(this.localeArgLookup('maxDate'))
+        : this.baseDate
     },
     minDate() {
-      return (
-        createDateFromTimeInput(this.timeInputMin, this.baseDate) ||
-        startOfDay(this.baseDate)
-      )
+      return this.localeArgLookup('minDate')
+        ? parseISO(this.localeArgLookup('minDate'))
+        : sub(this.baseDate, { years: 150 })
     },
   },
   watch: {
@@ -196,25 +254,31 @@ export default {
   methods: {
     checkSubmit() {
       if (
-        Number.isInteger(this.hoursModel) &&
-        Number.isInteger(this.minutesModel)
+        Number.isInteger(this.yearsModel) &&
+        Number.isInteger(this.monthsModel) &&
+        Number.isInteger(this.daysModel)
       ) {
         this.$emit('consume', {
           event: this.node.event,
-          value: { hours: this.hoursModel, minutes: this.minutesModel },
+          value: {
+            years: this.yearsModel,
+            months: this.monthsModel,
+            days: this.daysModel,
+          },
         })
       }
     },
     resetTempValues() {
-      this.tempHours = null
-      this.tempMinutes = null
+      this.tempYears = null
+      this.tempMonths = null
+      this.tempDays = null
     },
   },
 }
 </script>
 
 <style scoped>
-.time-input {
+.date-part-input {
   max-width: 100px;
 }
 </style>
