@@ -106,6 +106,13 @@ export default {
         Number.isInteger(this.daysModel)
       )
     },
+    currentSetDate() {
+      return set(this.baseDate, {
+        year: this.yearsModel,
+        month: this.monthsModel,
+        day: this.daysModel,
+      })
+    },
     yearsItems() {
       return eachYearOfInterval({ start: this.minDate, end: this.maxDate })
         .map(getYear)
@@ -117,9 +124,14 @@ export default {
     },
     monthsItems() {
       if (!this.monthsSelectedDisabled) {
-        const dateWithYear = set(this.baseDate, { year: this.yearsModel })
-        const minMonthThisYear = max([this.minDate, startOfYear(dateWithYear)])
-        const maxMonthThisYear = min([this.maxDate, endOfYear(dateWithYear)])
+        const minMonthThisYear = max([
+          this.minDate,
+          startOfYear(this.currentSetDate),
+        ])
+        const maxMonthThisYear = min([
+          this.maxDate,
+          endOfYear(this.currentSetDate),
+        ])
         return eachMonthOfInterval({
           start: minMonthThisYear,
           end: maxMonthThisYear,
@@ -138,17 +150,13 @@ export default {
     },
     daysItems() {
       if (!this.daysSelectedDisabled) {
-        const dateWithYearMonth = set(this.baseDate, {
-          year: this.yearsModel,
-          month: this.monthsModel,
-        })
         const minDayThisMonth = max([
           this.minDate,
-          startOfMonth(dateWithYearMonth),
+          min([startOfMonth(this.currentSetDate), this.maxDate]),
         ])
         const maxDayThisMonth = min([
           this.maxDate,
-          endOfMonth(dateWithYearMonth),
+          max([endOfMonth(this.currentSetDate), this.minDate]),
         ])
         return eachDayOfInterval({
           start: minDayThisMonth,
