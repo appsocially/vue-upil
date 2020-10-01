@@ -8,9 +8,10 @@
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
     @keydown.enter="onUserEnter"
-    :hide-details="!hasRules"
+    hide-details="auto"
     :rules="rules"
     @update:error="onUpdateError"
+    :type="inputType"
   />
 </template>
 
@@ -49,6 +50,9 @@ export default {
   computed: {
     placeholder() {
       return this.localeArgLookup('placeholder') || this.placeholderText
+    },
+    inputType() {
+      return this.localeArgLookup('inputType') || ''
     },
     hasRules() {
       return this.rules.length > 0

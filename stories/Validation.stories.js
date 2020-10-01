@@ -36,7 +36,8 @@ const emailValidationTemplate = (args) => {
   DIALOG getEmail
     TEMPLATE
     {
-      formText: "Email"
+      formText: "Email",
+      inputType: "email"
     }
     "Please enter your email address"
     >>customerEmail:email
@@ -87,4 +88,9 @@ const emailValidationTemplate = (args) => {
   }
 }
 
-export const EmailValidation = emailValidationTemplate.bind({})
+export const EmailValidationForm = emailValidationTemplate.bind({})
+
+export const EmailValidationChat = emailValidationTemplate.bind({})
+EmailValidationChat.args = {
+  mode: 'ChatMode',
+}
