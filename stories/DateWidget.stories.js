@@ -31,12 +31,23 @@ const transformReplyVariables = ({
 
 export default {
   title: 'Widgets/Date Widget',
-  args: { mode: 'FormMode', listeners: {}, locale: 'en' },
+  args: {
+    mode: 'FormMode',
+    listeners: {},
+    locale: 'en',
+    calendarType: 'calendar',
+  },
   argTypes: {
     mode: {
       control: {
         type: 'select',
         options: ['FormMode', 'WizardMode', 'ChatMode'],
+      },
+    },
+    calendarType: {
+      control: {
+        type: 'radio',
+        options: ['calendar', 'numeric'],
       },
     },
     locale: {
@@ -52,35 +63,6 @@ export default {
 }
 
 const dateTemplate = (args) => {
-  const birthdayTemplate = `
-    DIALOG birthday
-      TEMPLATE date
-      {
-        formText: "Birthdate",
-        i18n: {
-          ja: {
-            formText: "お誕生日",
-            text: "お誕生日はいつ？"
-          }
-        }
-      }
-      "When is your birthday?"
-      >>birthday
-      /TEMPLATE
-      TEMPLATE 
-      {
-        i18n: {
-          ja: {
-            text: "\${birthday}はいいお誕生日ですね～"
-          }
-        }
-      }
-      "\${birthday} is a great birthday isn't it?"
-      /TEMPLATE
-    /DIALOG
-    RUN birthday
-  `
-
   return {
     props: Object.keys(args),
     components: {
@@ -95,15 +77,48 @@ const dateTemplate = (args) => {
         TruffleLogo,
       }
     },
+    computed: {
+      birthdayTemplate() {
+        return `
+        DIALOG birthday
+          TEMPLATE date
+          {
+            formText: "Birthdate",
+            calendarType: "${this.calendarType}",
+            i18n: {
+              ja: {
+                formText: "お誕生日",
+                text: "お誕生日はいつ？"
+              }
+            }
+          }
+          "When is your birthday?"
+          >>birthday
+          /TEMPLATE
+          TEMPLATE 
+          {
+            i18n: {
+              ja: {
+                text: "\${birthday}はいいお誕生日ですね～"
+              }
+            }
+          }
+          "\${birthday} is a great birthday isn't it?"
+          /TEMPLATE
+        /DIALOG
+        RUN birthday
+      `
+      },
+    },
     methods: {
       startUpil() {
         this.upil = new UPILCore()
         setupListeners({ upil: this.upil, listeners: this.listeners })
 
         if (this.mode === 'ChatMode') {
-          this.upil.startRaw(birthdayTemplate, {})
+          this.upil.startRaw(this.birthdayTemplate, {})
         } else {
-          this.upil.startRaw(birthdayTemplate, {
+          this.upil.startRaw(this.birthdayTemplate, {
             mode: 'form',
             resetOnInputUpdate: true,
           })
@@ -117,6 +132,9 @@ const dateTemplate = (args) => {
     },
     watch: {
       mode() {
+        this.startUpil()
+      },
+      birthdayTemplate() {
         this.startUpil()
       },
     },
@@ -146,4 +164,15 @@ export const DateChatJa = dateTemplate.bind({})
 DateChatJa.args = {
   mode: 'ChatMode',
   locale: 'ja',
+}
+
+export const DateNumericForm = dateTemplate.bind({})
+DateNumericForm.args = {
+  calendarType: 'numeric',
+}
+
+export const DateNumericChat = dateTemplate.bind({})
+DateNumericChat.args = {
+  mode: 'ChatMode',
+  calendarType: 'numeric',
 }
