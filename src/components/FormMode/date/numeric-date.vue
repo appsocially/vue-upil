@@ -103,7 +103,10 @@ export default {
       return (
         Number.isInteger(this.yearsModel) &&
         Number.isInteger(this.monthsModel) &&
-        Number.isInteger(this.daysModel)
+        Number.isInteger(this.daysModel) &&
+        this.yearsItems.map((item) => item.value).includes(this.yearsModel) &&
+        this.monthsItems.map((item) => item.value).includes(this.monthsModel) &&
+        this.daysItems.map((item) => item.value).includes(this.daysModel)
       )
     },
     currentSetDate() {
