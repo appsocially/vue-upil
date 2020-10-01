@@ -99,6 +99,13 @@ export default {
     }
   },
   computed: {
+    isValidDateSelected() {
+      return (
+        Number.isInteger(this.yearsModel) &&
+        Number.isInteger(this.monthsModel) &&
+        Number.isInteger(this.daysModel)
+      )
+    },
     yearsItems() {
       return eachYearOfInterval({ start: this.minDate, end: this.maxDate })
         .map(getYear)
@@ -177,7 +184,6 @@ export default {
       },
       set(value) {
         this.tempYears = value
-        this.checkSubmit()
       },
     },
     monthsModel: {
@@ -188,7 +194,6 @@ export default {
       },
       set(value) {
         this.tempMonths = value
-        this.checkSubmit()
       },
     },
     daysModel: {
@@ -197,7 +202,6 @@ export default {
       },
       set(value) {
         this.tempDays = value
-        this.checkSubmit()
       },
     },
     stateYears() {
@@ -250,23 +254,22 @@ export default {
         }
       },
     },
+    isValidDateSelected(isValidDateSelected) {
+      if (isValidDateSelected) {
+        this.submit()
+      }
+    },
   },
   methods: {
-    checkSubmit() {
-      if (
-        Number.isInteger(this.yearsModel) &&
-        Number.isInteger(this.monthsModel) &&
-        Number.isInteger(this.daysModel)
-      ) {
-        this.$emit('consume', {
-          event: this.node.event,
-          value: {
-            years: this.yearsModel,
-            months: this.monthsModel,
-            days: this.daysModel,
-          },
-        })
-      }
+    submit() {
+      this.$emit('consume', {
+        event: this.node.event,
+        value: {
+          years: this.yearsModel,
+          months: this.monthsModel,
+          days: this.daysModel,
+        },
+      })
     },
     resetTempValues() {
       this.tempYears = null
