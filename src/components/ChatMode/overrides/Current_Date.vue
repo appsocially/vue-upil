@@ -1,7 +1,7 @@
 <template>
   <v-row align="center" no-gutters>
     <v-col cols="auto" class="flex-grow-1">
-      <v-sheet class="pa-2 time-input-sheet">
+      <v-sheet class="pa-2 date-input-sheet">
         <v-row no-gutters>
           <v-col cols="auto" class="flex-grow-1" v-if="isNumeric" />
           <v-col cols="auto" :class="{ 'flex-grow-1': isCalendar }">
@@ -27,7 +27,7 @@
 </template>
 
 <script>
-import { VRow, VCol, VBtn, VIcon } from 'vuetify/lib'
+import { VRow, VCol, VBtn, VIcon, VSheet } from 'vuetify/lib'
 import Date from '@/components/FormMode/date'
 import formmodeWrapperMixin from './formmodeWrapperMixin'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
@@ -40,6 +40,7 @@ export default {
     VCol,
     VBtn,
     VIcon,
+    VSheet,
   },
   computed: {
     calendarType() {
