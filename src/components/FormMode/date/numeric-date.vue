@@ -284,22 +284,22 @@ export default {
         }
       },
     },
-    isValidDateSelected(isValidDateSelected) {
-      if (isValidDateSelected) {
-        this.submit()
-      }
+    currentSetDate() {
+      this.submit()
     },
   },
   methods: {
     submit() {
-      this.$emit('consume', {
-        event: this.node.event,
-        value: {
-          years: this.yearsModel,
-          months: this.monthsModel,
-          days: this.daysModel,
-        },
-      })
+      if (this.isValidDateSelected) {
+        this.$emit('consume', {
+          event: this.node.event,
+          value: {
+            years: this.yearsModel,
+            months: this.monthsModel,
+            days: this.daysModel,
+          },
+        })
+      }
     },
     resetTempValues() {
       this.tempYears = null
