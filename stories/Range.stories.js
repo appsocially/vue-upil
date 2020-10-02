@@ -74,6 +74,9 @@ export default {
     listeners: {
       type: 'object',
     },
+    defaultValue: {
+      type: 'string',
+    },
   },
 }
 
@@ -109,6 +112,7 @@ const rangeTemplate = (args) => {
               formText: "Minutes",
               min: ${this.min ? this.min : '10'},
               max: ${this.max ? this.max : '20'},
+              ${this.defaultValue ? `default: ${this.defaultValue},` : ''}
               unit: " minutes",
               i18n: {
                 ja: {
@@ -177,6 +181,10 @@ const rangeTemplate = (args) => {
 }
 
 export const RangeEmpty = rangeTemplate.bind({})
+export const RangeDefault = rangeTemplate.bind({})
+RangeDefault.args = {
+  defaultValue: 20,
+}
 
 export const RangePreLoaded = rangeTemplate.bind({})
 RangePreLoaded.args = {

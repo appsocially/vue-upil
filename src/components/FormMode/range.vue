@@ -1,6 +1,11 @@
 <template>
   <keep-alive>
-    <v-select :items="items" v-model="numericModel" :label="labelOverride" />
+    <v-select
+      menu-props="auto"
+      :items="items"
+      v-model="numericModel"
+      :label="labelOverride"
+    />
   </keep-alive>
 </template>
 
@@ -41,6 +46,9 @@ export default {
     max() {
       return this.localeArgLookup('max') || 1
     },
+    default() {
+      return this.localeArgLookup('default')
+    },
     items() {
       const range = Array.from(Array(this.max - this.min + 1).keys())
       return range.map((i) => ({
@@ -50,7 +58,7 @@ export default {
     },
     numericModel: {
       get() {
-        return this.stateInputValue
+        return this.stateInputValue || this.default
       },
       set(value) {
         this.$emit('consume', { event: this.node.event, value })
