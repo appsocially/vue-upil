@@ -57,6 +57,7 @@ import {
   startOfMonth,
   startOfDay,
   endOfMonth,
+  getDaysInMonth,
   getYear,
   getMonth,
   getDate,
@@ -206,6 +207,18 @@ export default {
           : this.stateYears
       },
       set(value) {
+        const daysNewMonth = getDaysInMonth(
+          set(this.baseDate, {
+            year: value,
+            month: this.monthsModel,
+            date: 1,
+          })
+        )
+
+        if (daysNewMonth < this.daysModel) {
+          this.daysModel = daysNewMonth
+        }
+
         this.tempYears = value
       },
     },
@@ -216,6 +229,18 @@ export default {
           : this.stateMonths
       },
       set(value) {
+        const daysNewMonth = getDaysInMonth(
+          set(this.baseDate, {
+            year: this.yearsModel,
+            month: value,
+            date: 1,
+          })
+        )
+
+        if (daysNewMonth < this.daysModel) {
+          this.daysModel = daysNewMonth
+        }
+
         this.tempMonths = value
       },
     },
