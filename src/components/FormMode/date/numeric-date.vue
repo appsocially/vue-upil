@@ -51,9 +51,11 @@
 import { VRow, VCol, VSelect } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 import {
+  isEqual,
   endOfYear,
   startOfYear,
   startOfMonth,
+  startOfDay,
   endOfMonth,
   getYear,
   getMonth,
@@ -101,7 +103,7 @@ export default {
   },
   data() {
     return {
-      baseDate: new Date(),
+      baseDate: startOfDay(new Date()),
       isValid: this.rules.length === 0,
       tempYears: null,
       tempMonths: null,
@@ -123,7 +125,7 @@ export default {
       return set(this.baseDate, {
         year: this.yearsModel,
         month: this.monthsModel,
-        day: this.daysModel,
+        date: this.daysModel,
       })
     },
     yearsItems() {
@@ -226,13 +228,13 @@ export default {
       },
     },
     stateYears() {
-      return this.stateInputValue ? this.stateInputValue.years : null
+      return this.stateInputValue ? getYear(this.stateInputValue) : null
     },
     stateMonths() {
-      return this.stateInputValue ? this.stateInputValue.months : null
+      return this.stateInputValue ? getMonth(this.stateInputValue) : null
     },
     stateDays() {
-      return this.stateInputValue ? this.stateInputValue.days : null
+      return this.stateInputValue ? getDate(this.stateInputValue) : null
     },
     yearSelectLabel() {
       return this.localeArgLookup('yearSelectLabel') || ''
@@ -284,8 +286,17 @@ export default {
         }
       },
     },
-    currentSetDate() {
-      this.submit()
+    currentSetDate(currentSetDate, oldSetDate) {
+      /**
+       * Only submit if the dates aren't equal
+       */
+      const changedFromNoDateToDate = currentSetDate && !oldSetDate
+      const bothDatesButNotEqual =
+        currentSetDate && oldSetDate && !isEqual(currentSetDate, oldSetDate)
+      const shouldSubmit = changedFromNoDateToDate || bothDatesButNotEqual
+      if (shouldSubmit) {
+        this.submit()
+      }
     },
   },
   methods: {
@@ -293,11 +304,7 @@ export default {
       if (this.isValidDateSelected) {
         this.$emit('consume', {
           event: this.node.event,
-          value: {
-            years: this.yearsModel,
-            months: this.monthsModel,
-            days: this.daysModel,
-          },
+          value: this.currentSetDate,
         })
       }
     },
