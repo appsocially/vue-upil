@@ -38,6 +38,14 @@ export default {
     labelOverride() {
       return this.localeArgLookup('formText') || ''
     },
+    default() {
+      return this.localeArgLookup('default') || ''
+    },
+  },
+  mounted() {
+    if (this.default) {
+      this.onConsume({ event: this.rawNode.event, value: this.default })
+    }
   },
 }
 </script>

@@ -203,6 +203,12 @@ RangeChat.args = {
   mode: 'ChatMode',
 }
 
+export const RangeChatDefault = rangeTemplate.bind({})
+RangeChatDefault.args = {
+  mode: 'ChatMode',
+  defaultValue: 20,
+}
+
 export const RangeChatJa = rangeTemplate.bind({})
 RangeChatJa.args = {
   mode: 'ChatMode',
