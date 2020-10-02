@@ -1,7 +1,8 @@
 <template>
   <component
     :is="calendarType"
-    v-bind="{ ...$props, ...$attrs, ...$listeners }"
+    v-bind="{ ...$props, ...$attrs }"
+    v-on="$listeners"
   />
 </template>
 
