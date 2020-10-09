@@ -348,7 +348,12 @@ export default {
         nodeWrapper.node.input &&
         nodeWrapper.node.input.type
       if (hasInputType) {
-        return this.types[nodeWrapper.node.input.type] || []
+        const rules = this.types[nodeWrapper.node.input.type]
+        if (rules) {
+          return Array.isArray(rules) ? rules : rules(this.locale)
+        } else {
+          return []
+        }
       } else {
         return []
       }

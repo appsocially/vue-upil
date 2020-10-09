@@ -6,9 +6,29 @@ import { UPILCore } from '@appsocially/userpil-core'
 import { setupListeners } from '@/utils'
 import { email } from 'vee-validate/dist/rules'
 
-const emailValidationRules = [
-  (value) => (value && value.length > 0 ? true : 'Required'),
-  (value) => (email.validate(value) ? true : 'Invalid email address'),
+const requiredMessageChooser = (locale) => {
+  switch (locale) {
+    case 'ja':
+      return '必須項目です'
+    default:
+      return 'Required'
+  }
+}
+
+const invalidEmailAddressChooser = (locale) => {
+  switch (locale) {
+    case 'ja':
+      return '有効なメールアドレスではありません'
+    default:
+      return 'Invalid email address'
+  }
+}
+
+const emailValidationRules = (locale) => [
+  (value) =>
+    value && value.length > 0 ? true : requiredMessageChooser(locale),
+  (value) =>
+    email.validate(value) ? true : invalidEmailAddressChooser(locale),
 ]
 
 const types = {
@@ -17,7 +37,7 @@ const types = {
 
 export default {
   title: 'Validation',
-  args: { mode: 'FormMode', listeners: {} },
+  args: { mode: 'FormMode', listeners: {}, locale: 'en' },
   argTypes: {
     mode: {
       control: {
@@ -28,6 +48,12 @@ export default {
     listeners: {
       type: 'object',
     },
+    locale: {
+      control: {
+        type: 'radio',
+        options: ['en', 'ja'],
+      },
+    },
   },
 }
 
@@ -37,13 +63,28 @@ const emailValidationTemplate = (args) => {
     TEMPLATE
     {
       formText: "Email",
-      inputType: "email"
+      inputType: "email",
+      i18n: {
+        ja: {
+          formText: "メール",
+          text: "メール教えてください。"
+        }
+      }
     }
     "Please enter your email address"
     >>customerEmail:email
     /TEMPLATE
-    TEMPLATE "\${customerEmail} is such a cool email address!"
-  /DIALOG
+    TEMPLATE 
+    {
+      i18n: {
+        ja: {
+          text: "\${customerEmail}がかっこいい！"
+        }
+      }
+    }
+    "\${customerEmail} is such a cool email address!"
+    /TEMPLATE
+    /DIALOG
   RUN getEmail
   `
 
@@ -54,12 +95,20 @@ const emailValidationTemplate = (args) => {
       WizardMode,
       ChatMode,
     },
-    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :types="types"/>`,
+    template: `<component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :types="types" :locale="locale" :i18n="i18n"/>`,
     data() {
       return {
         upil: null,
         TruffleLogo,
         types,
+        i18n: {
+          ja: {
+            missingValue: '未記入',
+            templateInputPlaceholder: '入力してください',
+            selectInputPlaceholder: '選んでください',
+            multiSelectInputPlaceholder: '選んでください',
+          },
+        },
       }
     },
     methods: {
@@ -93,4 +142,10 @@ export const EmailValidationForm = emailValidationTemplate.bind({})
 export const EmailValidationChat = emailValidationTemplate.bind({})
 EmailValidationChat.args = {
   mode: 'ChatMode',
+}
+
+export const EmailValidationChatJa = emailValidationTemplate.bind({})
+EmailValidationChatJa.args = {
+  mode: 'ChatMode',
+  locale: 'ja',
 }
