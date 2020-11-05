@@ -86,6 +86,11 @@ export default {
     }
   },
   computed: {
+    hasValidValues() {
+      return (
+        Number.isInteger(this.hoursModel) && Number.isInteger(this.minutesModel)
+      )
+    },
     hoursItems() {
       return eachHourOfInterval({ start: this.minDate, end: this.maxDate })
         .map((hourDate) => getHours(hourDate))
@@ -216,10 +221,7 @@ export default {
   },
   methods: {
     checkSubmit() {
-      if (
-        Number.isInteger(this.hoursModel) &&
-        Number.isInteger(this.minutesModel)
-      ) {
+      if (this.hasValidValues) {
         this.$emit('consume', {
           event: this.node.event,
           value: { hours: this.hoursModel, minutes: this.minutesModel },
@@ -230,6 +232,14 @@ export default {
       this.tempHours = null
       this.tempMinutes = null
     },
+  },
+  mounted() {
+    if (this.hasValidValues && !this.stateInputValue) {
+      this.$emit('default', {
+        event: this.node.event,
+        value: { hours: this.hoursModel, minutes: this.minutesModel },
+      })
+    }
   },
 }
 </script>

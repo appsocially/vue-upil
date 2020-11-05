@@ -12,6 +12,7 @@
               :rules="rules"
               :locale="locale"
               @consume="onConsume"
+              @default="onConsume"
             />
           </v-col>
         </v-row>
