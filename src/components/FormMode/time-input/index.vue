@@ -3,6 +3,7 @@
     <v-col cols="auto">
       <v-select
         class="time-input"
+        menu-props="auto"
         :placeholder="hoursSelectLabel"
         :items="hoursItems"
         v-model="hoursModel"
@@ -16,6 +17,7 @@
     <v-col cols="auto">
       <v-select
         :disabled="minutesSelectedDisabled"
+        menu-props="auto"
         class="time-input"
         :placeholder="minutesSelectlabel"
         :items="minutesItems"
