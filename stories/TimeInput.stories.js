@@ -35,7 +35,7 @@ const transformReplyVariables = ({
 
 export default {
   title: 'Widgets/Time-Input Widget',
-  args: { mode: 'FormMode', listeners: {}, locale: 'en' },
+  args: { mode: 'FormMode', listeners: {}, locale: 'en', defaultNow: false },
   argTypes: {
     mode: {
       control: {
@@ -52,62 +52,13 @@ export default {
     listeners: {
       type: 'object',
     },
+    defaultNow: {
+      type: 'boolean',
+    },
   },
 }
 
 const timeInput = (args) => {
-  const template = `
-  DIALOG meetingTime
-    TEMPLATE time-input
-    {
-      formText: "Meetings start time",
-      timeInputMax: meetingsEnd,
-      i18n: {
-        ja: {
-          formText: "ミーティング時間の開始",
-          text: "ミーティング時間はいつから始まる？",
-          hoursSelectLabel: "何時",
-          unitHour: "時",
-          minutesSelectlabel: "何分",
-          unitMinute: "分"
-        }
-      }
-    }
-    "When do your meetings start?"
-    >>meetingsStart
-    /TEMPLATE
-    TEMPLATE time-input
-    {
-      formText: "Meetings end time",
-      timeInputMin: meetingsStart,
-      i18n: {
-        ja: {
-          formText: "ミーティング時間のお終い",
-          text: "ミーティング時間はいつまで続く？",
-          hoursSelectLabel: "時間",
-          unitHour: "時",
-          minutesSelectlabel: "分",
-          unitMinute: "分"
-        }
-      }
-    }
-    "When do your meetings end?"
-    >>meetingsEnd
-    /TEMPLATE
-    TEMPLATE 
-    {
-      i18n: {
-        ja: {
-          text: "ミーティング時間が\${meetingsStart}から\${meetingsEnd}まではけっこう長いんでしょう～"
-        }
-      }
-    }
-    "From \${meetingsStart} to \${meetingsEnd} is a pretty long time don't you think?" 
-    /TEMPLATE
-  /DIALOG
-  RUN meetingTime
-  `
-
   return {
     props: Object.keys(args),
     components: {
@@ -122,15 +73,71 @@ const timeInput = (args) => {
         TruffleLogo,
       }
     },
+    computed: {
+      template() {
+        return `
+          DIALOG meetingTime
+            TEMPLATE time-input
+            {
+              formText: "Meetings start time",
+              timeInputMax: meetingsEnd,
+              defaultNow: ${this.defaultNow},
+              i18n: {
+                ja: {
+                  formText: "ミーティング時間の開始",
+                  text: "ミーティング時間はいつから始まる？",
+                  hoursSelectLabel: "何時",
+                  unitHour: "時",
+                  minutesSelectlabel: "何分",
+                  unitMinute: "分"
+                }
+              }
+            }
+            "When do your meetings start?"
+            >>meetingsStart
+            /TEMPLATE
+            TEMPLATE time-input
+            {
+              formText: "Meetings end time",
+              timeInputMin: meetingsStart,
+              i18n: {
+                ja: {
+                  formText: "ミーティング時間のお終い",
+                  text: "ミーティング時間はいつまで続く？",
+                  hoursSelectLabel: "時間",
+                  unitHour: "時",
+                  minutesSelectlabel: "分",
+                  unitMinute: "分"
+                }
+              }
+            }
+            "When do your meetings end?"
+            >>meetingsEnd
+            /TEMPLATE
+            TEMPLATE 
+            {
+              i18n: {
+                ja: {
+                  text: "ミーティング時間が\${meetingsStart}から\${meetingsEnd}まではけっこう長いんでしょう～"
+                }
+              }
+            }
+            "From \${meetingsStart} to \${meetingsEnd} is a pretty long time don't you think?" 
+            /TEMPLATE
+          /DIALOG
+          RUN meetingTime
+          `
+      },
+    },
     methods: {
       startUpil() {
         this.upil = new UPILCore()
         setupListeners({ upil: this.upil, listeners: this.listeners })
 
         if (this.mode === 'ChatMode') {
-          this.upil.startRaw(template, {})
+          this.upil.startRaw(this.template, {})
         } else {
-          this.upil.startRaw(template, {
+          this.upil.startRaw(this.template, {
             mode: 'form',
             resetOnInputUpdate: true,
           })
@@ -151,6 +158,11 @@ const timeInput = (args) => {
 }
 
 export const TimeInputEmpty = timeInput.bind({})
+
+export const TimeInputDefaltNow = timeInput.bind({})
+TimeInputDefaltNow.args = {
+  defaultNow: true,
+}
 
 export const TimeInputPreLoaded = timeInput.bind({})
 TimeInputPreLoaded.args = {

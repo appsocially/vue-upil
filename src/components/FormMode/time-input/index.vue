@@ -34,6 +34,7 @@ import {
   endOfDay,
   startOfDay,
   getHours,
+  getMinutes,
   set,
   eachHourOfInterval,
   isWithinInterval,
@@ -123,9 +124,13 @@ export default {
     },
     hoursModel: {
       get() {
-        return Number.isInteger(this.tempHours)
-          ? this.tempHours
-          : this.stateHours
+        if (Number.isInteger(this.tempHours)) {
+          return this.tempHours
+        } else if (Number.isInteger(this.stateHours)) {
+          return this.stateHours
+        } else {
+          return this.defaultNowHours
+        }
       },
       set(value) {
         this.tempHours = value
@@ -134,14 +139,28 @@ export default {
     },
     minutesModel: {
       get() {
-        return Number.isInteger(this.tempMinutes)
-          ? this.tempMinutes
-          : this.stateMinutes
+        if (Number.isInteger(this.tempMinutes)) {
+          return this.tempMinutes
+        } else if (Number.isInteger(this.stateMinutes)) {
+          return this.stateMinutes
+        } else {
+          return this.defaultNowMinutes
+        }
       },
       set(value) {
         this.tempMinutes = value
         this.checkSubmit()
       },
+    },
+    defaultNowHours() {
+      return this.localeArgLookup('defaultNow') === true
+        ? getHours(new Date())
+        : null
+    },
+    defaultNowMinutes() {
+      return this.localeArgLookup('defaultNow') === true
+        ? getMinutes(new Date())
+        : null
     },
     stateHours() {
       return this.stateInputValue ? this.stateInputValue.hours : null
