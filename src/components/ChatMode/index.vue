@@ -32,7 +32,7 @@
                 <v-col
                   class="my-1 bubble-container"
                   cols="12"
-                  v-for="{ node, componentType } in allNodes"
+                  v-for="({ node, componentType }, index) in allNodes"
                   :data-side="fromUser(node) ? 'user' : 'bot'"
                   :key="node.id"
                 >
@@ -44,7 +44,17 @@
                     }"
                   >
                     <v-col cols="auto" v-if="!fromUser(node)">
-                      <img height="40" width="40" :src="avatar" mr-1 />
+                      <img 
+                        v-if="shouldShowAvatar(node, (index > 0) ? allNodes[index - 1].node : null)"
+                        height="40"
+                        width="40"
+                        :src="avatar"
+                        mr-1
+                      />
+                      <div
+                        v-else
+                        style="width: 40px; height: 40px;" 
+                      />
                     </v-col>
                     <v-col class="chat-bubble" cols="auto">
                       <component
@@ -316,6 +326,13 @@ export default {
     },
     chatbubbleColor(node) {
       return this.fromUser(node) ? 'secondary' : 'primary'
+    },
+    shouldShowAvatar(node, prevNode) {
+      if (prevNode) {
+        return node.reply !== prevNode.reply
+      } else {
+        return true
+      }
     },
     scrollToBottom: debounce(function () {
       this.$nextTick(() => {
