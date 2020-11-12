@@ -26,7 +26,9 @@ export default {
             !trimmedInput || trimmedInput === ''
               ? this.upil.symbols.UNRESOLVED
               : trimmedInput
-          return this.upil.consume(this.node.event, finalInput)
+          if (finalInput !== this.stateInputValue) {
+            return this.upil.consume(this.node.event, finalInput)
+          }
         }
       }, 100),
     }
