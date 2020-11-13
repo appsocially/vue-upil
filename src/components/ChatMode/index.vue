@@ -30,22 +30,39 @@
                 class="v-content__wrap fill-height"
               >
                 <v-col
-                  class="my-1 bubble-container"
-                  cols="12"
                   v-for="({ node, componentType }, index) in allNodes"
+                  :class="{
+                    'my-1': true,
+                    'bubble-container': true,
+                    'grp-with-prev-msg': shouldGroupWithPrevMessage(
+                      node,
+                      (index - 1 >= 0) ? allNodes[index - 1].node : null,
+                      (index + 1 < allNodes.length) ? allNodes[index + 1].node : null,
+                    ),
+                    'grp-with-next-msg': shouldGroupWithNextMessage(
+                      node,
+                      (index - 1 >= 0) ? allNodes[index - 1].node : null,
+                      (index + 1 < allNodes.length) ? allNodes[index + 1].node : null,
+                    )
+                  }"
+                  cols="12"
                   :data-side="fromUser(node) ? 'user' : 'bot'"
                   :key="node.id"
                 >
                   <v-row
                     dense
                     :class="{
-                      'pa-1': true,
+                      'px-1': true,
                       'flex-row-reverse': fromUser(node),
                     }"
                   >
-                    <v-col cols="auto" v-if="!fromUser(node)">
+                    <v-col class="py-0" cols="auto" v-if="!fromUser(node)" style="height: 40px;">
                       <img 
-                        v-if="shouldShowAvatar(node, (index > 0) ? allNodes[index - 1].node : null)"
+                        v-if="!shouldGroupWithPrevMessage(
+                          node,
+                          (index - 1 >= 0) ? allNodes[index - 1].node : null,
+                          (index + 1 < allNodes.length) ? allNodes[index + 1].node : null,
+                        )"
                         height="40"
                         width="40"
                         :src="avatar"
@@ -56,7 +73,7 @@
                         style="width: 40px; height: 40px;" 
                       />
                     </v-col>
-                    <v-col class="chat-bubble" cols="auto">
+                    <v-col class="chat-bubble py-0" cols="auto">
                       <component
                         v-if="upil"
                         :node="node"
@@ -327,11 +344,18 @@ export default {
     chatbubbleColor(node) {
       return this.fromUser(node) ? 'secondary' : 'primary'
     },
-    shouldShowAvatar(node, prevNode) {
+    shouldGroupWithPrevMessage(node, prevNode, nextNode) {
       if (prevNode) {
-        return node.reply !== prevNode.reply
+        return node.reply === prevNode.reply
       } else {
-        return true
+        return false
+      }
+    },
+    shouldGroupWithNextMessage(node, prevNode, nextNode) {
+      if (nextNode) {
+        return node.reply === nextNode.reply
+      } else {
+        return false
       }
     },
     scrollToBottom: debounce(function () {
@@ -440,6 +464,28 @@ export default {
 
 .bubble-container {
   position: relative;
+}
+
+/* Group this message with prev-message (no padding-top and modify border-radius) */
+#conversation-container .bubble-container.grp-with-prev-msg {
+  padding-top: 0;
+}
+#conversation-container .bubble-container.grp-with-prev-msg[data-side='bot'] .v-sheet {
+  border-top-left-radius: 5px;
+}
+#conversation-container .bubble-container.grp-with-prev-msg[data-side='user'] .v-sheet {
+  border-top-right-radius: 5px;
+}
+
+/* Group this message with next-message (no padding-bottom and modify border-radius) */
+#conversation-container .bubble-container.grp-with-next-msg {
+  padding-bottom: 0;
+}
+#conversation-container .bubble-container.grp-with-next-msg[data-side='bot'] .v-sheet {
+  border-bottom-left-radius: 5px;
+}
+#conversation-container .bubble-container.grp-with-next-msg[data-side='user'] .v-sheet {
+  border-bottom-right-radius: 5px;
 }
 
 #bottom-bar {
