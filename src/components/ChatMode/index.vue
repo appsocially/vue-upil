@@ -34,16 +34,8 @@
                   :class="{
                     'my-1': true,
                     'bubble-container': true,
-                    'grp-with-prev-msg': shouldGroupWithPrevMessage(
-                      node,
-                      (index - 1 >= 0) ? allNodes[index - 1].node : null,
-                      (index + 1 < allNodes.length) ? allNodes[index + 1].node : null,
-                    ),
-                    'grp-with-next-msg': shouldGroupWithNextMessage(
-                      node,
-                      (index - 1 >= 0) ? allNodes[index - 1].node : null,
-                      (index + 1 < allNodes.length) ? allNodes[index + 1].node : null,
-                    )
+                    'grp-with-prev-msg': shouldGroupWithPrevMessage(allNodes, index),
+                    'grp-with-next-msg': shouldGroupWithNextMessage(allNodes, index)
                   }"
                   cols="12"
                   :data-side="fromUser(node) ? 'user' : 'bot'"
@@ -58,11 +50,7 @@
                   >
                     <v-col class="py-0" cols="auto" v-if="!fromUser(node)" style="height: 40px;">
                       <img 
-                        v-if="!shouldGroupWithPrevMessage(
-                          node,
-                          (index - 1 >= 0) ? allNodes[index - 1].node : null,
-                          (index + 1 < allNodes.length) ? allNodes[index + 1].node : null,
-                        )"
+                        v-if="!shouldGroupWithPrevMessage(allNodes, index)"
                         height="40"
                         width="40"
                         :src="avatar"
@@ -344,14 +332,20 @@ export default {
     chatbubbleColor(node) {
       return this.fromUser(node) ? 'secondary' : 'primary'
     },
-    shouldGroupWithPrevMessage(node, prevNode, nextNode) {
+    shouldGroupWithPrevMessage(allNodes, currentNodeIndex) {
+      let node = allNodes[currentNodeIndex].node
+      let prevNode = (currentNodeIndex - 1 >= 0) ? allNodes[currentNodeIndex - 1].node : null
+
       if (prevNode) {
         return node.reply === prevNode.reply
       } else {
         return false
       }
     },
-    shouldGroupWithNextMessage(node, prevNode, nextNode) {
+    shouldGroupWithNextMessage(allNodes, currentNodeIndex) {
+      let node = allNodes[currentNodeIndex].node
+      let nextNode = (currentNodeIndex + 1 < allNodes.length) ? allNodes[currentNodeIndex + 1].node : null
+
       if (nextNode) {
         return node.reply === nextNode.reply
       } else {
@@ -442,7 +436,7 @@ export default {
   -webkit-tap-highlight-color: yellow;
 } */
 
-#conversation-container >>> .v-sheet {
+#conversation-container >>> .upil-text-bubble {
   border-radius: 15px;
 }
 
@@ -470,10 +464,10 @@ export default {
 #conversation-container .bubble-container.grp-with-prev-msg {
   padding-top: 0;
 }
-#conversation-container .bubble-container.grp-with-prev-msg[data-side='bot'] .v-sheet {
+#conversation-container .bubble-container.grp-with-prev-msg[data-side='bot'] .upil-text-bubble {
   border-top-left-radius: 5px;
 }
-#conversation-container .bubble-container.grp-with-prev-msg[data-side='user'] .v-sheet {
+#conversation-container .bubble-container.grp-with-prev-msg[data-side='user'] .upil-text-bubble {
   border-top-right-radius: 5px;
 }
 
@@ -481,10 +475,10 @@ export default {
 #conversation-container .bubble-container.grp-with-next-msg {
   padding-bottom: 0;
 }
-#conversation-container .bubble-container.grp-with-next-msg[data-side='bot'] .v-sheet {
+#conversation-container .bubble-container.grp-with-next-msg[data-side='bot'] .upil-text-bubble {
   border-bottom-left-radius: 5px;
 }
-#conversation-container .bubble-container.grp-with-next-msg[data-side='user'] .v-sheet {
+#conversation-container .bubble-container.grp-with-next-msg[data-side='user'] .upil-text-bubble {
   border-bottom-right-radius: 5px;
 }
 
