@@ -114,3 +114,23 @@ BasicMultiSelect.args = {
       RUN favColor
   `,
 }
+
+export const BasicTemplateMultipleLineReply = chatmodeTemplate.bind({})
+BasicTemplateMultipleLineReply.args = {
+  templateText: `
+    DIALOG getName
+      TEMPLATE "Hi I'm a chat bot!"
+      TEMPLATE "These"
+      TEMPLATE "are"
+      TEMPLATE "multiple"
+      TEMPLATE "separate"
+      TEMPLATE "chats"
+      TEMPLATE 
+        "What's your name?"
+        >>name
+      /TEMPLATE
+      TEMPLATE "Welcome \${name}"
+    /DIALOG
+    RUN getName
+  `,
+}

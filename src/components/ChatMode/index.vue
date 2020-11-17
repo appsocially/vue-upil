@@ -30,23 +30,46 @@
                 class="v-content__wrap fill-height"
               >
                 <v-col
-                  class="my-1 bubble-container"
+                  v-for="({ node, componentType }, index) in allNodes"
+                  :class="{
+                    'my-1': true,
+                    'bubble-container': true,
+                    'grp-with-prev-msg': shouldGroupWithPrevMessage(
+                      allNodes,
+                      index
+                    ),
+                    'grp-with-next-msg': shouldGroupWithNextMessage(
+                      allNodes,
+                      index
+                    ),
+                  }"
                   cols="12"
-                  v-for="{ node, componentType } in allNodes"
                   :data-side="fromUser(node) ? 'user' : 'bot'"
                   :key="node.id"
                 >
                   <v-row
                     dense
                     :class="{
-                      'pa-1': true,
+                      'px-1': true,
                       'flex-row-reverse': fromUser(node),
                     }"
                   >
-                    <v-col cols="auto" v-if="!fromUser(node)">
-                      <img height="40" width="40" :src="avatar" mr-1 />
+                    <v-col
+                      class="py-0"
+                      cols="auto"
+                      v-if="!fromUser(node)"
+                      style="height: 40px;"
+                    >
+                      <img
+                        v-if="!shouldGroupWithPrevMessage(allNodes, index)"
+                        height="40"
+                        width="40"
+                        :src="avatar"
+                        mr-1
+                      />
+                      <div v-else style="width: 40px; height: 40px;" />
                     </v-col>
-                    <v-col class="chat-bubble" cols="auto">
+                    <v-col class="chat-bubble py-0" cols="auto">
                       <component
                         v-if="upil"
                         :node="node"
@@ -317,6 +340,30 @@ export default {
     chatbubbleColor(node) {
       return this.fromUser(node) ? 'secondary' : 'primary'
     },
+    shouldGroupWithPrevMessage(allNodes, currentNodeIndex) {
+      let node = allNodes[currentNodeIndex].node
+      let prevNode =
+        currentNodeIndex - 1 >= 0 ? allNodes[currentNodeIndex - 1].node : null
+
+      if (prevNode) {
+        return node.reply === prevNode.reply
+      } else {
+        return false
+      }
+    },
+    shouldGroupWithNextMessage(allNodes, currentNodeIndex) {
+      let node = allNodes[currentNodeIndex].node
+      let nextNode =
+        currentNodeIndex + 1 < allNodes.length
+          ? allNodes[currentNodeIndex + 1].node
+          : null
+
+      if (nextNode) {
+        return node.reply === nextNode.reply
+      } else {
+        return false
+      }
+    },
     scrollToBottom: debounce(function () {
       this.$nextTick(() => {
         const conversationContainer = this.$refs.conversationContainer
@@ -401,7 +448,7 @@ export default {
   -webkit-tap-highlight-color: yellow;
 } */
 
-#conversation-container >>> .v-sheet {
+#conversation-container >>> .upil-text-bubble {
   border-radius: 15px;
 }
 
@@ -423,6 +470,36 @@ export default {
 
 .bubble-container {
   position: relative;
+}
+
+/* Group this message with prev-message (no padding-top and modify border-radius) */
+#conversation-container .bubble-container.grp-with-prev-msg {
+  padding-top: 0;
+}
+#conversation-container
+  .bubble-container.grp-with-prev-msg[data-side='bot']
+  .upil-text-bubble {
+  border-top-left-radius: 5px;
+}
+#conversation-container
+  .bubble-container.grp-with-prev-msg[data-side='user']
+  .upil-text-bubble {
+  border-top-right-radius: 5px;
+}
+
+/* Group this message with next-message (no padding-bottom and modify border-radius) */
+#conversation-container .bubble-container.grp-with-next-msg {
+  padding-bottom: 0;
+}
+#conversation-container
+  .bubble-container.grp-with-next-msg[data-side='bot']
+  .upil-text-bubble {
+  border-bottom-left-radius: 5px;
+}
+#conversation-container
+  .bubble-container.grp-with-next-msg[data-side='user']
+  .upil-text-bubble {
+  border-bottom-right-radius: 5px;
 }
 
 #bottom-bar {
