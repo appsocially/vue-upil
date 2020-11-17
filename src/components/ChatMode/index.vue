@@ -34,8 +34,14 @@
                   :class="{
                     'my-1': true,
                     'bubble-container': true,
-                    'grp-with-prev-msg': shouldGroupWithPrevMessage(allNodes, index),
-                    'grp-with-next-msg': shouldGroupWithNextMessage(allNodes, index)
+                    'grp-with-prev-msg': shouldGroupWithPrevMessage(
+                      allNodes,
+                      index
+                    ),
+                    'grp-with-next-msg': shouldGroupWithNextMessage(
+                      allNodes,
+                      index
+                    ),
                   }"
                   cols="12"
                   :data-side="fromUser(node) ? 'user' : 'bot'"
@@ -48,18 +54,20 @@
                       'flex-row-reverse': fromUser(node),
                     }"
                   >
-                    <v-col class="py-0" cols="auto" v-if="!fromUser(node)" style="height: 40px;">
-                      <img 
+                    <v-col
+                      class="py-0"
+                      cols="auto"
+                      v-if="!fromUser(node)"
+                      style="height: 40px;"
+                    >
+                      <img
                         v-if="!shouldGroupWithPrevMessage(allNodes, index)"
                         height="40"
                         width="40"
                         :src="avatar"
                         mr-1
                       />
-                      <div
-                        v-else
-                        style="width: 40px; height: 40px;" 
-                      />
+                      <div v-else style="width: 40px; height: 40px;" />
                     </v-col>
                     <v-col class="chat-bubble py-0" cols="auto">
                       <component
@@ -334,7 +342,8 @@ export default {
     },
     shouldGroupWithPrevMessage(allNodes, currentNodeIndex) {
       let node = allNodes[currentNodeIndex].node
-      let prevNode = (currentNodeIndex - 1 >= 0) ? allNodes[currentNodeIndex - 1].node : null
+      let prevNode =
+        currentNodeIndex - 1 >= 0 ? allNodes[currentNodeIndex - 1].node : null
 
       if (prevNode) {
         return node.reply === prevNode.reply
@@ -344,7 +353,10 @@ export default {
     },
     shouldGroupWithNextMessage(allNodes, currentNodeIndex) {
       let node = allNodes[currentNodeIndex].node
-      let nextNode = (currentNodeIndex + 1 < allNodes.length) ? allNodes[currentNodeIndex + 1].node : null
+      let nextNode =
+        currentNodeIndex + 1 < allNodes.length
+          ? allNodes[currentNodeIndex + 1].node
+          : null
 
       if (nextNode) {
         return node.reply === nextNode.reply
@@ -464,10 +476,14 @@ export default {
 #conversation-container .bubble-container.grp-with-prev-msg {
   padding-top: 0;
 }
-#conversation-container .bubble-container.grp-with-prev-msg[data-side='bot'] .upil-text-bubble {
+#conversation-container
+  .bubble-container.grp-with-prev-msg[data-side='bot']
+  .upil-text-bubble {
   border-top-left-radius: 5px;
 }
-#conversation-container .bubble-container.grp-with-prev-msg[data-side='user'] .upil-text-bubble {
+#conversation-container
+  .bubble-container.grp-with-prev-msg[data-side='user']
+  .upil-text-bubble {
   border-top-right-radius: 5px;
 }
 
@@ -475,10 +491,14 @@ export default {
 #conversation-container .bubble-container.grp-with-next-msg {
   padding-bottom: 0;
 }
-#conversation-container .bubble-container.grp-with-next-msg[data-side='bot'] .upil-text-bubble {
+#conversation-container
+  .bubble-container.grp-with-next-msg[data-side='bot']
+  .upil-text-bubble {
   border-bottom-left-radius: 5px;
 }
-#conversation-container .bubble-container.grp-with-next-msg[data-side='user'] .upil-text-bubble {
+#conversation-container
+  .bubble-container.grp-with-next-msg[data-side='user']
+  .upil-text-bubble {
   border-bottom-right-radius: 5px;
 }
 
