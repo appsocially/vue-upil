@@ -1,6 +1,11 @@
 <template>
   <v-card :color="cardColor" class="upil-text-bubble v-sheet--outlined">
-    <v-card-text px-3 class="break-all preformatted grey--text text--lighten-3">
+    <v-card-text px-3 :class="{
+      'break-all': true,
+      'preformatted': true,
+      'black--text': !reply,
+      'white--text': !!reply,
+    }">
       <slot />
     </v-card-text>
   </v-card>
@@ -22,7 +27,7 @@ export default {
   },
   computed: {
     cardColor() {
-      return this.reply === true ? 'secondary' : 'primary'
+      return this.reply === true ? '#E73F87' : '#F1F0F0'
     },
   },
 }
