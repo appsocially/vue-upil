@@ -1,5 +1,5 @@
 <template>
-  <v-card :color="cardColor" class="upil-text-bubble">
+  <v-card :color="cardColor" class="upil-text-bubble v-sheet--outlined">
     <v-card-text px-3 class="break-all preformatted grey--text text--lighten-3">
       <slot />
     </v-card-text>
