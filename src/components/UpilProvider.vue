@@ -154,9 +154,31 @@ export default {
       this.stateWrapper.inputState = this.store.getState().input
       this.updateNodes(this.store.getState().nodes)
     },
-    updateNodes: debounce(function (nodes) {
-      this.nodes = nodes
+    updateNodes: debounce(async function (nodes) {
+      if (nodes.length > this.nodes.length) {
+        const newNodes = nodes.slice(this.nodes.length, nodes.length)
+        console.log({newNodes, l: nodes.length, ol:  this.nodes.length});
+        for (let node of newNodes) {
+          // no deplay for user-reply
+          let delay = (node.reply) ? 0 : 1000
+          await this.addNodeAfterDelay(node, delay)
+        }
+      } else {
+        this.nodes = nodes
+      }
     }, 100),
+    addNodeAfterDelay(node, delay) {
+      if (delay > 0) {
+        return new Promise((resolve) => {
+          setTimeout(() => {
+            this.nodes = [...this.nodes, node]
+            resolve()
+          }, delay)
+        });
+      } else {
+        this.nodes = [...this.nodes, node]
+      }
+    },
     calculateComponentType(node, current = false) {
       const { reply } = node
       const asStatementComponent = current || reply !== true
