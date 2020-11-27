@@ -59,6 +59,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    botTypingDurationInMsPerMessage: {
+      type: Number,
+      default: 1000,
+    },
   },
   provide() {
     return {
@@ -155,12 +159,11 @@ export default {
       this.updateNodes(this.store.getState().nodes)
     },
     updateNodes: debounce(async function (nodes) {
-      if (nodes.length > this.nodes.length) {
+      if (nodes.length > this.nodes.length && this.botTypingDurationInMsPerMessage) {
         const newNodes = nodes.slice(this.nodes.length, nodes.length)
-        console.log({newNodes, l: nodes.length, ol:  this.nodes.length});
         for (let node of newNodes) {
           // no deplay for user-reply
-          let delay = (node.reply) ? 0 : 1000
+          let delay = (node.reply) ? 0 : this.botTypingDurationInMsPerMessage
           await this.addNodeAfterDelay(node, delay)
         }
       } else {
