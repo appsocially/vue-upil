@@ -13,7 +13,7 @@
     @eventWithLabel="$emit('eventWithLabel', $event)"
     v-bind="$attrs"
   >
-    <template v-slot="{ allNodes, currentNode, scenarioEnded, state }">
+    <template v-slot="{ allNodes, currentNode, scenarioEnded, state, botTyping }">
       <div>
         <div
           v-resize="calculateWindowHeight"
@@ -40,7 +40,8 @@
                     ),
                     'grp-with-next-msg': shouldGroupWithNextMessage(
                       allNodes,
-                      index
+                      index,
+                      botTyping
                     ),
                   }"
                   cols="12"
@@ -83,6 +84,51 @@
                     </v-col>
                   </v-row>
                 </v-col>
+                <!-- bot's typing bubble -->
+                <v-col 
+                  v-if="botTyping"
+                  :class="{
+                    'my-1': true,
+                    'bubble-container': true,
+                    'grp-with-prev-msg': (allNodes.length > 0) 
+                      ? !allNodes[allNodes.length - 1].reply
+                      : false,
+                    'grp-with-next-msg': false,
+                  }"
+                  cols="12"
+                  data-side="bot"
+                  key="bot-typing"
+                >
+                  <v-row
+                    dense
+                    :class="{
+                      'px-1': true,
+                      'flex-row-reverse': false,
+                    }"
+                  >
+                    <v-col
+                      class="py-0"
+                      cols="auto"
+                      style="height: 40px;"
+                    >
+                      <img
+                        v-if="!(
+                          (allNodes.length > 0) 
+                          ? !allNodes[allNodes.length - 1].reply
+                          : false
+                        )"
+                        height="40"
+                        width="40"
+                        :src="avatar"
+                        mr-1
+                      />
+                      <div v-else style="width: 40px; height: 40px;" />
+                    </v-col>
+                    <v-col class="chat-bubble py-0" cols="auto">
+                      <TypingBubble />
+                    </v-col>
+                  </v-row>
+                </v-col>
               </transition-group>
             </v-col>
           </v-row>
@@ -122,6 +168,7 @@
 import { VCol, VRow } from 'vuetify/lib'
 import { Resize } from 'vuetify/lib/directives'
 import UpilProvider from '@/components/UpilProvider'
+import TypingBubble from '@/components/ChatMode/components/TypingBubble'
 import { NODE_TYPES } from '@/enums'
 import debounce from 'lodash.debounce'
 import goTo from 'vuetify/es5/services/goto'
@@ -145,6 +192,7 @@ export default {
     VCol,
     VRow,
     UpilProvider,
+    TypingBubble,
   },
   directives: {
     Resize,
@@ -351,7 +399,7 @@ export default {
         return false
       }
     },
-    shouldGroupWithNextMessage(allNodes, currentNodeIndex) {
+    shouldGroupWithNextMessage(allNodes, currentNodeIndex, botTyping) {
       let node = allNodes[currentNodeIndex].node
       let nextNode =
         currentNodeIndex + 1 < allNodes.length
@@ -360,6 +408,8 @@ export default {
 
       if (nextNode) {
         return node.reply === nextNode.reply
+      } else if (botTyping && !node.reply) {
+        return true
       } else {
         return false
       }

@@ -7,6 +7,7 @@
       :sendInput="upil.consume"
       :scenarioEnded="scenarioEnded"
       :state="stateWrapper.inputState"
+      :botTyping="botTyping"
     />
   </span>
 </template>
@@ -80,6 +81,7 @@ export default {
       store: null,
       listenerUnsubscribeArray: [],
       scenarioEnded: false,
+      botTyping: false,
     }
   },
   computed: {
@@ -164,8 +166,12 @@ export default {
         for (let node of newNodes) {
           // no deplay for user-reply
           let delay = (node.reply) ? 0 : this.botTypingDurationInMsPerMessage
-          await this.addNodeAfterDelay(node, delay)
+          if (delay) {
+            this.botTyping = true
+          }
+          await this.addNodeAfterDelay(node, delay)  
         }
+        this.botTyping = false
       } else {
         this.nodes = nodes
       }
