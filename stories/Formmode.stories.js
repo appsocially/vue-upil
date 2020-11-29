@@ -1,6 +1,5 @@
 import FormMode from '@/components/FormMode'
 import { UPILCore } from '@appsocially/userpil-core'
-import konicaScript from '@/upilScript'
 
 export default {
   title: 'Modes/Formmode',
@@ -104,11 +103,4 @@ BasicMultiSelect.args = {
       /DIALOG
       RUN favColor
   `,
-}
-
-console.log('konicaScript', konicaScript)
-
-export const Konika = formmodeTemplate.bind({})
-Konika.args = {
-  templateText: konicaScript,
 }
