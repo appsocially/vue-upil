@@ -13,7 +13,7 @@
     @eventWithLabel="$emit('eventWithLabel', $event)"
     v-bind="$attrs"
   >
-    <template v-slot="{ allNodes, currentNode, scenarioEnded, state, botTyping }">
+    <template v-slot="{ allNodes, currentNode, scenarioEnded, state, botTyping, botTypingNodeId }">
       <div>
         <div
           v-resize="calculateWindowHeight"
@@ -85,6 +85,7 @@
                   </v-row>
                 </v-col>
                 <!-- bot's typing bubble -->
+                <!-- we use `botTypingNodeId` as a key to remove transition-out animation when we hide this component -->
                 <v-col 
                   v-if="botTyping"
                   :class="{
@@ -97,7 +98,7 @@
                   }"
                   cols="12"
                   data-side="bot"
-                  key="bot-typing"
+                  :key="botTypingNodeId"
                 >
                   <v-row
                     dense

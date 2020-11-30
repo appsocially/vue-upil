@@ -8,6 +8,7 @@
       :scenarioEnded="scenarioEnded"
       :state="stateWrapper.inputState"
       :botTyping="botTyping"
+      :botTypingNodeId="botTypingNodeId"
     />
   </span>
 </template>
@@ -82,6 +83,7 @@ export default {
       listenerUnsubscribeArray: [],
       scenarioEnded: false,
       botTyping: false,
+      botTypingNodeId: null,
     }
   },
   computed: {
@@ -166,27 +168,30 @@ export default {
         for (let node of newNodes) {
           // no deplay for user-reply
           let delay = (node.reply) ? 0 : this.botTypingDurationInMsPerMessage
-          if (delay) {
-            this.botTyping = true
-          }
-          await this.addNodeAfterDelay(node, delay)  
+          await this.addNodeAfterDelay(node, delay)
         }
-        this.botTyping = false
       } else {
         this.nodes = nodes
       }
     }, 100),
-    addNodeAfterDelay(node, delay) {
+    async addNodeAfterDelay(node, delay) {
       if (delay > 0) {
-        return new Promise((resolve) => {
-          setTimeout(() => {
-            this.nodes = [...this.nodes, node]
-            resolve()
-          }, delay)
-        });
+        await this.waitFor(1000)
+        this.botTyping = true
+        this.botTypingNodeId = node.id
+        
+        await this.waitFor(delay)
+        this.botTyping = false
+        this.botTypingNodeId = null
+        this.nodes = [...this.nodes, node]
       } else {
         this.nodes = [...this.nodes, node]
       }
+    },
+    async waitFor(ms) {
+      return new Promise((resolve) => {
+        setTimeout(() => resolve(), ms)
+      })
     },
     calculateComponentType(node, current = false) {
       const { reply } = node
