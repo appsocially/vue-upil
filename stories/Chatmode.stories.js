@@ -134,3 +134,21 @@ BasicTemplateMultipleLineReply.args = {
     RUN getName
   `,
 }
+
+export const SuperLongTemplates = chatmodeTemplate.bind({})
+SuperLongTemplates.args = {
+  templateText: `
+    DIALOG getName
+      TEMPLATE "AAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCC"
+      TEMPLATE "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
+      TEMPLATE "日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語"
+      TEMPLATE "ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム "
+      TEMPLATE 
+        "What's your name?"
+        >>name
+      /TEMPLATE
+      TEMPLATE "Welcome \${name}"
+    /DIALOG
+    RUN getName
+  `,
+}
