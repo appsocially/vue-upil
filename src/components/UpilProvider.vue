@@ -8,7 +8,6 @@
       :scenarioEnded="scenarioEnded"
       :state="stateWrapper.inputState"
       :botTyping="botTyping"
-      :botTypingNodeId="botTypingNodeId"
     />
   </span>
 </template>
@@ -63,7 +62,7 @@ export default {
     },
     botTypingDurationInMsPerMessage: {
       type: Number,
-      default: 1000,
+      default: 250,
     },
   },
   provide() {
@@ -83,7 +82,6 @@ export default {
       listenerUnsubscribeArray: [],
       scenarioEnded: false,
       botTyping: false,
-      botTypingNodeId: null,
     }
   },
   computed: {
@@ -176,13 +174,9 @@ export default {
     }, 100),
     async addNodeAfterDelay(node, delay) {
       if (delay > 0) {
-        await this.waitFor(1000)
         this.botTyping = true
-        this.botTypingNodeId = node.id
-        
         await this.waitFor(delay)
         this.botTyping = false
-        this.botTypingNodeId = null
         this.nodes = [...this.nodes, node]
       } else {
         this.nodes = [...this.nodes, node]

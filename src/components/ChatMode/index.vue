@@ -13,7 +13,7 @@
     @eventWithLabel="$emit('eventWithLabel', $event)"
     v-bind="$attrs"
   >
-    <template v-slot="{ allNodes, currentNode, scenarioEnded, state, botTyping, botTypingNodeId }">
+    <template v-slot="{ allNodes, currentNode, scenarioEnded, state }">
       <div>
         <div
           v-resize="calculateWindowHeight"
@@ -40,8 +40,7 @@
                     ),
                     'grp-with-next-msg': shouldGroupWithNextMessage(
                       allNodes,
-                      index,
-                      botTyping
+                      index
                     ),
                   }"
                   cols="12"
@@ -81,52 +80,6 @@
                         :transform="transformReplyVariablesLocale"
                         @consume="onConsume"
                       />
-                    </v-col>
-                  </v-row>
-                </v-col>
-                <!-- bot's typing bubble -->
-                <!-- we use `botTypingNodeId` as a key to remove transition-out animation when we hide this component -->
-                <v-col 
-                  v-if="botTyping"
-                  :class="{
-                    'my-1': true,
-                    'bubble-container': true,
-                    'grp-with-prev-msg': (allNodes.length > 0) 
-                      ? !allNodes[allNodes.length - 1].reply
-                      : false,
-                    'grp-with-next-msg': false,
-                  }"
-                  cols="12"
-                  data-side="bot"
-                  :key="botTypingNodeId"
-                >
-                  <v-row
-                    dense
-                    :class="{
-                      'px-1': true,
-                      'flex-row-reverse': false,
-                    }"
-                  >
-                    <v-col
-                      class="py-0"
-                      cols="auto"
-                      style="height: 40px;"
-                    >
-                      <img
-                        v-if="!(
-                          (allNodes.length > 0) 
-                          ? !allNodes[allNodes.length - 1].reply
-                          : false
-                        )"
-                        height="40"
-                        width="40"
-                        :src="avatar"
-                        mr-1
-                      />
-                      <div v-else style="width: 40px; height: 40px;" />
-                    </v-col>
-                    <v-col class="chat-bubble py-0" cols="auto">
-                      <TypingBubble />
                     </v-col>
                   </v-row>
                 </v-col>
@@ -400,7 +353,7 @@ export default {
         return false
       }
     },
-    shouldGroupWithNextMessage(allNodes, currentNodeIndex, botTyping) {
+    shouldGroupWithNextMessage(allNodes, currentNodeIndex) {
       let node = allNodes[currentNodeIndex].node
       let nextNode =
         currentNodeIndex + 1 < allNodes.length
@@ -409,8 +362,6 @@ export default {
 
       if (nextNode) {
         return node.reply === nextNode.reply
-      } else if (botTyping && !node.reply) {
-        return true
       } else {
         return false
       }
