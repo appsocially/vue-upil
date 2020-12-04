@@ -122,7 +122,6 @@
 import { VCol, VRow } from 'vuetify/lib'
 import { Resize } from 'vuetify/lib/directives'
 import UpilProvider from '@/components/UpilProvider'
-import TypingBubble from '@/components/ChatMode/components/TypingBubble'
 import { NODE_TYPES } from '@/enums'
 import debounce from 'lodash.debounce'
 import goTo from 'vuetify/es5/services/goto'
@@ -146,7 +145,6 @@ export default {
     VCol,
     VRow,
     UpilProvider,
-    TypingBubble,
   },
   directives: {
     Resize,
