@@ -1,5 +1,5 @@
 # vue-upil
-
+ 
 This repository provides vue components that allow you to easily use UPIL in your vue projects! See https://upil.org/ for details about the UPIL language and application development.
 
 # Components
