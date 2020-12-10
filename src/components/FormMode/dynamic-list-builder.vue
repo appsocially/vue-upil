@@ -31,6 +31,10 @@
 import { VCombobox, VChip, VIcon } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 
+const arrayCompare = (left, right) =>
+  left.length === right.length &&
+  left.map((lValue, index) => lValue === right[index]).every((c) => c)
+
 export default {
   mixins: [widgeti18nMixin],
   components: {
@@ -81,11 +85,12 @@ export default {
   watch: {
     stateInputValue: {
       immediate: true,
-      handler(stateInputValue) {
+      handler(stateInputValue, oldValue) {
         if (!this.inputValue) {
           this.inputValue = stateInputValue
         } else {
-          if (this.$refs.input) {
+          const changed = !arrayCompare(stateInputValue, oldValue)
+          if (changed && this.$refs.input) {
             this.$refs.input.focus()
           }
         }
