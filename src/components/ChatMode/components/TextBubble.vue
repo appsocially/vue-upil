@@ -1,6 +1,6 @@
 <template>
   <v-card :color="cardColor" class="upil-text-bubble">
-    <v-card-text px-3 class="break-all preformatted grey--text text--lighten-3">
+    <v-card-text px-3 class="preformatted grey--text text--lighten-3">
       <slot />
     </v-card-text>
   </v-card>
@@ -29,7 +29,4 @@ export default {
 </script>
 
 <style scoped>
-.break-all {
-  word-break: break-all;
-}
 </style>

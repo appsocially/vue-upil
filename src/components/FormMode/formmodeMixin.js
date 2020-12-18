@@ -114,14 +114,15 @@ export default {
         this.transferStateDebounced(upil)
       })
     },
-    calculateRules(nodeWrapper) {
-      const hasInputType =
-        nodeWrapper &&
-        nodeWrapper.node &&
-        nodeWrapper.node.input &&
-        nodeWrapper.node.input.type
+    calculateRules(node) {
+      const hasInputType = node && node.input && node.input.type
       if (hasInputType) {
-        return this.types[nodeWrapper.node.input.type] || []
+        const rules = this.types[node.input.type] || []
+        if (Array.isArray(rules)) {
+          return rules
+        } else {
+          return rules(this.locale)
+        }
       } else {
         return []
       }

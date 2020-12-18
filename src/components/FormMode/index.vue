@@ -29,13 +29,14 @@
               <v-col cols="12">
                 <keep-alive>
                   <component
+                    :key="`${node.id}-widget`"
                     @consume="onConsume"
                     :is="node.component"
                     :node="node"
                     :upil="upil"
                     :state="state"
                     :locale="locale"
-                    :rules="calculateRules(node)"
+                    :rules="node.rules"
                   />
                 </keep-alive>
               </v-col>
@@ -68,7 +69,7 @@ export default {
   },
   computed: {
     finalNodes() {
-      return this.inputNodes.map(({ text, args, options, ...rest }) => ({
+      return this.inputNodes.map(({ text, args, options, node, ...rest }) => ({
         component: this.override(
           { args, ...rest },
           calculateComponent({ args, ...rest })
@@ -83,6 +84,8 @@ export default {
         }),
         options: this.calculateOptions({ options, args }),
         args,
+        rules: this.calculateRules(node),
+        node,
         ...rest,
       }))
     },

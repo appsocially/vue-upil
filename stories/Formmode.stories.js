@@ -31,7 +31,10 @@ const formmodeTemplate = (args) => {
       startUpil() {
         this.upil = new UPILCore()
 
-        this.upil.startRaw(this.templateText, {})
+        this.upil.startRaw(this.templateText, {
+          mode: 'form',
+          resetOnInputUpdate: true,
+        })
       },
     },
     mounted() {
