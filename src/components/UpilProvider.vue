@@ -67,7 +67,7 @@ export default {
     },
     botTypingDurationInMsPerMessage: {
       type: Number,
-      default: 400,
+      default: 0,
     },
   },
   provide() {

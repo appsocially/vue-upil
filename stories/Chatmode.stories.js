@@ -5,14 +5,14 @@ import TruffleLogo from './truffle_logo.png'
 export default {
   title: 'Modes/Chatmode',
   args: {
-    botTypingDurationInMsPerMessage: 400,
+    botTypingDurationInMsPerMessage: 0,
     templateText: '',
   },
   argTypes: {
     botTypingDurationInMsPerMessage: {
       control: {
         type: 'select',
-        options: [200, 400, 600, 800, 1000, 2000],
+        options: [0, 200, 400, 600, 800, 1000, 2000],
       },
     },
     templateText: {
