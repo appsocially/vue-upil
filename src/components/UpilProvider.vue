@@ -7,6 +7,7 @@
       :sendInput="upil.consume"
       :scenarioEnded="scenarioEnded"
       :state="stateWrapper.inputState"
+      :botTyping="botTyping"
     />
   </span>
 </template>
@@ -30,6 +31,11 @@ const defaultReplyComponentsMap = {
   // [NODE_TYPES.SELECT]: () => import('@/components/DefaultReplySelect'),
   // [NODE_TYPES.MULTISELECT]: () => import('@/components/DefaultReplyMultiSelect')
 }
+
+const waitFor = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(), ms)
+  })
 
 export default {
   mixins: [i18nMixin],
@@ -59,6 +65,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    botTypingDurationInMsPerMessage: {
+      type: Number,
+      default: 0,
+    },
   },
   provide() {
     return {
@@ -76,6 +86,8 @@ export default {
       store: null,
       listenerUnsubscribeArray: [],
       scenarioEnded: false,
+      botTyping: false,
+      typingPromise: Promise.resolve(),
     }
   },
   computed: {
@@ -154,8 +166,23 @@ export default {
       this.stateWrapper.inputState = this.store.getState().input
       this.updateNodes(this.store.getState().nodes)
     },
-    updateNodes: debounce(function (nodes) {
-      this.nodes = nodes
+    updateNodes: debounce(async function (nodes) {
+      if (
+        nodes.length > this.nodes.length &&
+        this.botTypingDurationInMsPerMessage
+      ) {
+        const newNodes = nodes.slice(this.nodes.length, nodes.length)
+        this.typingPromise = newNodes.reduce(async (memo, newNode) => {
+          this.botTyping = true
+          const delay = newNode.reply ? 0 : this.botTypingDurationInMsPerMessage
+          await memo
+          await waitFor(delay)
+          this.nodes = [...this.nodes, newNode]
+          this.botTyping = false
+        }, this.typingPromise)
+      } else {
+        this.nodes = nodes
+      }
     }, 100),
     calculateComponentType(node, current = false) {
       const { reply } = node

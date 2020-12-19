@@ -5,9 +5,16 @@ import TruffleLogo from './truffle_logo.png'
 export default {
   title: 'Modes/Chatmode',
   args: {
+    botTypingDurationInMsPerMessage: 0,
     templateText: '',
   },
   argTypes: {
+    botTypingDurationInMsPerMessage: {
+      control: {
+        type: 'select',
+        options: [0, 200, 400, 600, 800, 1000, 2000],
+      },
+    },
     templateText: {
       control: {
         type: 'text',
@@ -22,7 +29,7 @@ const chatmodeTemplate = (args) => {
     components: {
       ChatMode,
     },
-    template: ` <ChatMode v-if="upil" :upil="upil" key="Template" :avatar="TruffleLogo"/>`,
+    template: ` <ChatMode v-if="upil" :upil="upil" :key="botTypingDurationInMsPerMessage" :avatar="TruffleLogo" :botTypingDurationInMsPerMessage="botTypingDurationInMsPerMessage" />`,
     data() {
       return {
         upil: null,
@@ -40,6 +47,9 @@ const chatmodeTemplate = (args) => {
       this.startUpil()
     },
     watch: {
+      botTypingDurationInMsPerMessage() {
+        this.startUpil()
+      },
       templateText() {
         this.startUpil()
       },
@@ -148,6 +158,10 @@ SuperLongTemplates.args = {
         >>name
       /TEMPLATE
       TEMPLATE "Welcome \${name}"
+      TEMPLATE "AAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCCAAAAAAAAAAAAAABBBBBBBBBBBBBBBCCCCCCCCCCCCCCCC"
+      TEMPLATE "Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum Lorem Ipsum "
+      TEMPLATE "日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語日本語"
+      TEMPLATE "ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム ロレム イプサム "
     /DIALOG
     RUN getName
   `,
