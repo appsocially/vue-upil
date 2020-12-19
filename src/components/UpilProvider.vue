@@ -32,6 +32,11 @@ const defaultReplyComponentsMap = {
   // [NODE_TYPES.MULTISELECT]: () => import('@/components/DefaultReplyMultiSelect')
 }
 
+const waitFor = (ms) =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(), ms)
+  })
+
 export default {
   mixins: [i18nMixin],
   props: {
@@ -82,6 +87,7 @@ export default {
       listenerUnsubscribeArray: [],
       scenarioEnded: false,
       botTyping: false,
+      typingPromise: Promise.resolve(),
     }
   },
   computed: {
@@ -161,32 +167,23 @@ export default {
       this.updateNodes(this.store.getState().nodes)
     },
     updateNodes: debounce(async function (nodes) {
-      if (nodes.length > this.nodes.length && this.botTypingDurationInMsPerMessage) {
+      if (
+        nodes.length > this.nodes.length &&
+        this.botTypingDurationInMsPerMessage
+      ) {
         const newNodes = nodes.slice(this.nodes.length, nodes.length)
-        for (let node of newNodes) {
-          // no deplay for user-reply
-          let delay = (node.reply) ? 0 : this.botTypingDurationInMsPerMessage
-          await this.addNodeAfterDelay(node, delay)
-        }
+        this.typingPromise = newNodes.reduce(async (memo, newNode) => {
+          this.botTyping = true
+          const delay = newNode.reply ? 0 : this.botTypingDurationInMsPerMessage
+          await memo
+          await waitFor(delay)
+          this.nodes = [...this.nodes, newNode]
+          this.botTyping = false
+        }, this.typingPromise)
       } else {
         this.nodes = nodes
       }
     }, 100),
-    async addNodeAfterDelay(node, delay) {
-      if (delay > 0) {
-        this.botTyping = true
-        await this.waitFor(delay)
-        this.botTyping = false
-        this.nodes = [...this.nodes, node]
-      } else {
-        this.nodes = [...this.nodes, node]
-      }
-    },
-    async waitFor(ms) {
-      return new Promise((resolve) => {
-        setTimeout(() => resolve(), ms)
-      })
-    },
     calculateComponentType(node, current = false) {
       const { reply } = node
       const asStatementComponent = current || reply !== true
