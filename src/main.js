@@ -6,6 +6,7 @@ import CurrentSelect from '@/components/ChatMode/overrides/Current_Select'
 import CurrentTemplate from '@/components/ChatMode/overrides/Current_Template'
 import { substituteNodeText, setupListeners } from '@/utils'
 import FormMode from '@/components/FormMode'
+import textInputMixin from '@/components/FormMode/text-input-mixin'
 import WizardMode from '@/components/WizardMode'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 
@@ -30,4 +31,5 @@ export {
   FormMode,
   WizardMode,
   widgeti18nMixin,
+  textInputMixin,
 }
