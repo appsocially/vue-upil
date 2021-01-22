@@ -21,10 +21,10 @@
     html-tags "^3.1.0"
     svg-tags "^1.0.0"
 
-"@appsocially/userpil-core@^1.1.10":
-  version "1.1.10"
-  resolved "https://registry.yarnpkg.com/@appsocially/userpil-core/-/userpil-core-1.1.10.tgz#3c7a8b3d25c70d5177586dae19f11532b3a53260"
-  integrity sha512-JzAYijhLoh2UA6BpaEEFyCl7muB7qJgjLLuXRMZergakNt1+jvC7AjsSzhxx+l+Poecqd1y/L2tpf9AGX1OhxA==
+"@appsocially/userpil-core@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@appsocially/userpil-core/-/userpil-core-1.2.0.tgz#63d0c67d1447d87a8b51aab7d99008f5766458ff"
+  integrity sha512-OihHPkBeWPTj9qIH6uvy0ZtHUh8PUbvEghoDSAAHLeffkYyFMa02F7etrxaKmLGxXqPE2jJHY+9m+LKQYWmC1Q==
   dependencies:
     "@types/ajv" "^1.0.0"
     "@types/redux" "^3.6.0"
