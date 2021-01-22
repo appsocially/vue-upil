@@ -171,14 +171,16 @@ export default {
         nodes.length > this.nodes.length &&
         this.botTypingDurationInMsPerMessage
       ) {
+        await this.typingPromise
         const newNodes = nodes.slice(this.nodes.length, nodes.length)
         this.typingPromise = newNodes.reduce(async (memo, newNode) => {
+          await memo
           this.botTyping = true
           const delay = newNode.reply ? 0 : this.botTypingDurationInMsPerMessage
-          await memo
-          await waitFor(delay)
+          const newPromise = waitFor(delay)
           this.nodes = [...this.nodes, newNode]
           this.botTyping = false
+          return newPromise
         }, this.typingPromise)
       } else {
         this.nodes = nodes
