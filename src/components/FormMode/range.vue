@@ -13,6 +13,18 @@
 import { VSelect } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 
+// https://stackoverflow.com/questions/9539513/is-there-a-reliable-way-in-javascript-to-obtain-the-number-of-decimal-places-of
+function decimalPlaces(n) {
+  function hasFraction(n) {
+    return Math.abs(Math.round(n) - n) > 1e-10
+  }
+
+  let count = 0
+  // multiply by increasing powers of 10 until the fractional part is ~ 0
+  while (hasFraction(n * 10 ** count) && isFinite(10 ** count)) count++
+  return count
+}
+
 export default {
   mixins: [widgeti18nMixin],
   components: {
@@ -49,11 +61,18 @@ export default {
     default() {
       return this.localeArgLookup('default')
     },
+    step() {
+      return this.localeArgLookup('step') || 1
+    },
     items() {
-      const range = Array.from(Array(this.max - this.min + 1).keys())
+      const fixedLength = decimalPlaces(this.step)
+      const totalItems = Math.ceil((this.max - this.min + 1) / this.step)
+      const range = Array.from(Array(totalItems).keys())
       return range.map((i) => ({
-        text: `${i + this.min}${this.localeArgLookup('unit') || ''}`,
-        value: i + this.min,
+        text: `${(i * this.step + this.min).toFixed(fixedLength)}${
+          this.localeArgLookup('unit') || ''
+        }`,
+        value: i * this.step + this.min,
       }))
     },
     numericModel: {

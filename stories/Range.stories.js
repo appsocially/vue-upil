@@ -36,6 +36,8 @@ export default {
     mode: 'FormMode',
     min: 10,
     max: 20,
+    step: 1,
+    unit: ' minutes',
     listeners: {},
   },
   argTypes: {
@@ -69,6 +71,21 @@ export default {
           max: 100,
           step: 1,
         },
+      },
+    },
+    step: {
+      control: {
+        type: 'number',
+        options: {
+          min: 1,
+          max: 100,
+          step: 0.1,
+        },
+      },
+    },
+    unit: {
+      control: {
+        type: 'text',
       },
     },
     listeners: {
@@ -113,7 +130,8 @@ const rangeTemplate = (args) => {
               min: ${this.min ? this.min : '10'},
               max: ${this.max ? this.max : '20'},
               ${this.defaultValue ? `default: ${this.defaultValue},` : ''}
-              unit: " minutes",
+              step: "${this.step}",
+              unit: "${this.unit}",
               i18n: {
                 ja: {
                   text: "何分掛かった？",
@@ -140,7 +158,7 @@ const rangeTemplate = (args) => {
           `
       },
       argsSignature() {
-        return `${this.mode}-${this.min}-${this.max}-${this.unit}`
+        return `${this.mode}-${this.min}-${this.max}-${this.unit}-${this.step}`
       },
       transformTextVariables() {
         return ({ value, key: variableName, locale }) => {
@@ -213,4 +231,10 @@ export const RangeChatJa = rangeTemplate.bind({})
 RangeChatJa.args = {
   mode: 'ChatMode',
   locale: 'ja',
+}
+
+export const RangeStep = rangeTemplate.bind({})
+RangeStep.args = {
+  mode: 'FormMode',
+  step: 0.1,
 }
