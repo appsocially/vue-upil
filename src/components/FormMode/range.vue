@@ -66,7 +66,10 @@ export default {
     },
     items() {
       const fixedLength = decimalPlaces(this.step)
-      const totalItems = Math.ceil((this.max - this.min + 1) / this.step)
+      const totalItems = Math.ceil(
+        (this.max - this.min + this.step) / this.step
+      )
+      debugger
       const range = Array.from(Array(totalItems).keys())
       return range.map((i) => ({
         text: `${(i * this.step + this.min).toFixed(fixedLength)}${

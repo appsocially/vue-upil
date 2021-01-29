@@ -130,7 +130,7 @@ const rangeTemplate = (args) => {
               min: ${this.min ? this.min : '10'},
               max: ${this.max ? this.max : '20'},
               ${this.defaultValue ? `default: ${this.defaultValue},` : ''}
-              step: "${this.step}",
+              step: ${this.step},
               unit: "${this.unit}",
               i18n: {
                 ja: {
