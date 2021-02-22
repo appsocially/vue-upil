@@ -101,3 +101,28 @@ BasicMultiSelect.args = {
       RUN favColor
   `,
 }
+
+export const VariableInWizardText = wizardmodeTemplate.bind({})
+VariableInWizardText.args = {
+  templateText: `
+    DIALOG getName
+      TEMPLATE 
+        {
+          formText: "First Name"
+        }
+        "What's your name?"
+        >>name
+      /TEMPLATE
+      TEMPLATE "Welcome \${name}"
+      TEMPLATE 
+        {
+          formText: "\${name} please enter your age"
+        }
+        "What's your age?"
+        >>age
+      /TEMPLATE
+      TEMPLATE "\${age} is not that old!"
+      /DIALOG
+    RUN getName
+  `,
+}

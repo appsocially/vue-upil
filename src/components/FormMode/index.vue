@@ -81,6 +81,8 @@ export default {
             ? this.calculateFormText({ args })
             : this.calculateText({ text, args }),
           searchForLinks: false,
+          transformTextVariables: this.transformTextVariables,
+          calculateVariable: this.calculateVariable({ args }),
         }),
         options: this.calculateOptions({ options, args }),
         args,

@@ -52,6 +52,10 @@ export default {
     locale: {
       type: String,
     },
+    transformTextVariables: {
+      type: Function,
+      default: ({ value }) => value,
+    },
   },
   watch: {
     upil: {
