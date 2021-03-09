@@ -1,5 +1,7 @@
 import debounce from 'lodash.debounce'
 import i18nMixin from '@/components/i18nMixin'
+import { observableDiff, applyChange } from 'deep-diff'
+import Vue from 'vue'
 
 const isLoadingEventType = (event) => {
   const isPending = event.status === 'PENDING'
@@ -13,6 +15,35 @@ export const isMissingValue = (node, state, upil) => {
   const missingState = currentValue === undefined || currentValue === null
   const isUnresolved = currentValue === upil.symbols.UNRESOLVED
   return missingState || isUnresolved
+}
+
+const handleNewProperty = (thisNodes, path, rhs) => {
+  const lastIndex = path.length - 1
+  const finalObject = path.reduce((memo, val, index) => {
+    if (index !== lastIndex) {
+      return memo[val]
+    } else {
+      return memo
+    }
+  }, thisNodes)
+
+  Vue.set(finalObject, path[lastIndex], rhs)
+}
+
+const handleNewElement = (thisNodes, path, index, rhs) => {
+  const finalObject = path.reduce((memo, val) => {
+    return memo[val]
+  }, thisNodes)
+
+  finalObject.splice(index, 0, rhs)
+}
+
+const handleDeleteElement = (thisNodes, path, index) => {
+  const finalObject = path.reduce((memo, val) => {
+    return memo[val]
+  }, thisNodes)
+
+  finalObject.splice(index, 1)
 }
 
 export default {
@@ -103,7 +134,47 @@ export default {
   },
   methods: {
     updateNodes(nodes) {
-      this.nodes = nodes
+      observableDiff(this.nodes, nodes, (d) => {
+        // Apply all changes except to the name property...
+        console.log('d', d)
+        if (d.kind === 'A') {
+          const {
+            index,
+            item: { kind, rhs },
+            path,
+          } = d
+          switch (kind) {
+            case 'N': {
+              if (path) {
+                handleNewElement(this.nodes, path, index, rhs)
+              } else {
+                this.nodes.splice(index, 0, nodes[index])
+              }
+              break
+            }
+
+            case 'D': {
+              if (path) {
+                handleDeleteElement(this.nodes, path, index)
+              } else {
+                this.nodes.splice(index, 1)
+              }
+              break
+            }
+          }
+        } else if (d.kind === 'N') {
+          handleNewProperty(this.nodes, d.path, d.rhs)
+        } else {
+          applyChange(this.nodes, nodes, d)
+        }
+
+        // if (d.kind === 'E') {
+        //   const {
+        //     path: [index],
+        //   } = d
+        //   this.nodes.splice(index, 1, nodes[index])
+        // }
+      })
     },
     transferState(upil) {
       const state = upil.UpilStore.getState()

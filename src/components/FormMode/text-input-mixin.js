@@ -45,13 +45,9 @@ export default {
   watch: {
     stateInputValue: {
       immediate: true,
-      handler(stateInputValue, oldValue) {
+      handler(stateInputValue) {
         if (!this.inputValue) {
           this.inputValue = stateInputValue
-        } else if (stateInputValue !== oldValue) {
-          if (this.$refs.text) {
-            this.$refs.text.focus()
-          }
         }
       },
     },

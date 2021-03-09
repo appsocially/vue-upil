@@ -10,6 +10,7 @@
     small-chips
     multiple
     dense
+    autofocus
     ref="input"
   >
     <template v-slot:selection="{ attrs, item, parent, selected }">
@@ -30,10 +31,6 @@
 <script>
 import { VCombobox, VChip, VIcon } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
-
-const arrayCompare = (left, right) =>
-  left.length === right.length &&
-  left.map((lValue, index) => lValue === right[index]).every((c) => c)
 
 export default {
   mixins: [widgeti18nMixin],
@@ -85,14 +82,9 @@ export default {
   watch: {
     stateInputValue: {
       immediate: true,
-      handler(stateInputValue, oldValue) {
+      handler(stateInputValue) {
         if (!this.inputValue) {
           this.inputValue = stateInputValue
-        } else {
-          const changed = !arrayCompare(stateInputValue, oldValue)
-          if (changed && this.$refs.input) {
-            this.$refs.input.focus()
-          }
         }
       },
     },
