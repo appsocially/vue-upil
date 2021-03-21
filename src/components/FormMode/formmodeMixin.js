@@ -135,8 +135,7 @@ export default {
   methods: {
     updateNodes(nodes) {
       observableDiff(this.nodes, nodes, (d) => {
-        // Apply all changes except to the name property...
-        console.log('d', d)
+        // console.log('d', d)
         if (d.kind === 'A') {
           const {
             index,
@@ -167,13 +166,6 @@ export default {
         } else {
           applyChange(this.nodes, nodes, d)
         }
-
-        // if (d.kind === 'E') {
-        //   const {
-        //     path: [index],
-        //   } = d
-        //   this.nodes.splice(index, 1, nodes[index])
-        // }
       })
     },
     transferState(upil) {
@@ -184,7 +176,7 @@ export default {
     },
     patchState(stateInput) {
       observableDiff(this.state, stateInput, (d) => {
-        console.log('state d', d)
+        // console.log('state d', d)
         if (d.kind === 'N') {
           handleNewProperty(this.state, d.path, d.rhs)
         } else {

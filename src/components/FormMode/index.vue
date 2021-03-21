@@ -5,21 +5,21 @@
       v-for="node in finalNodes"
       :key="node.id"
       :class="{
-        'upil-missing-value-node': node.isMissingValue,
-        'upil-has-value-node': !node.isMissingValue,
+        'upil-missing-value-node': isMissingValue(node),
+        'upil-has-value-node': !isMissingValue(node),
       }"
     >
-      <v-col cols="12" :class="`elevation-${node.isMissingValue ? 10 : 0}`">
+      <v-col cols="12" :class="`elevation-${isMissingValue(node) ? 10 : 0}`">
         <v-sheet
-          :color="node.isMissingValue ? 'info darken-2' : null"
-          :dark="node.isMissingValue"
+          :color="isMissingValue(node) ? 'info darken-2' : null"
+          :dark="isMissingValue(node)"
         >
           <v-alert
             dense
             type="info"
             class="my-0"
             tile
-            v-if="node.isMissingValue"
+            v-if="isMissingValue(node)"
             >{{ finalMissingValueText }}</v-alert
           >
           <div class="alert-placeholder" v-else />
@@ -74,7 +74,6 @@ export default {
           { args, ...rest },
           calculateComponent({ args, ...rest })
         ),
-        isMissingValue: isMissingValue(rest, this.state, this.upil),
         text: substituteNodeText({
           inputState: this.state,
           text: this.calculateFormText({ args })
@@ -90,6 +89,16 @@ export default {
         node,
         ...rest,
       }))
+    },
+    missingValues() {
+      return this.inputNodes.filter((node) =>
+        isMissingValue(node, this.state, this.upil)
+      )
+    },
+  },
+  methods: {
+    isMissingValue(node) {
+      return this.missingValues.some((n) => n.id === node.id)
     },
   },
 }
