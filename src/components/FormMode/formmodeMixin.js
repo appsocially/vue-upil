@@ -133,6 +133,9 @@ export default {
     },
   },
   methods: {
+    isMissingValue(node) {
+      return this.missingValueNodes.some((n) => n.id === node.id)
+    },
     updateNodes(nodes) {
       observableDiff(this.nodes, nodes, (d) => {
         // console.log('d', d)

@@ -55,7 +55,7 @@
 import { VRow, VCol, VCardText, VSheet, VDivider, VAlert } from 'vuetify/lib'
 import { substituteNodeText } from '@/utils'
 import { calculateComponent } from './widget-selection'
-import formmodeMixin, { isMissingValue } from './formmodeMixin'
+import formmodeMixin from './formmodeMixin'
 
 export default {
   mixins: [formmodeMixin],
@@ -89,16 +89,6 @@ export default {
         node,
         ...rest,
       }))
-    },
-    missingValues() {
-      return this.inputNodes.filter((node) =>
-        isMissingValue(node, this.state, this.upil)
-      )
-    },
-  },
-  methods: {
-    isMissingValue(node) {
-      return this.missingValues.some((n) => n.id === node.id)
     },
   },
 }
