@@ -178,9 +178,19 @@ export default {
     },
     transferState(upil) {
       const state = upil.UpilStore.getState()
-      this.state = state.input
+      this.patchState(state.input)
       this.events = state.emittedEvents
       this.updateNodes(state.nodes)
+    },
+    patchState(stateInput) {
+      observableDiff(this.state, stateInput, (d) => {
+        console.log('state d', d)
+        if (d.kind === 'N') {
+          handleNewProperty(this.state, d.path, d.rhs)
+        } else {
+          applyChange(this.state, stateInput, d)
+        }
+      })
     },
     runSetup(upil) {
       // Begin state syncing between upil core and provider
