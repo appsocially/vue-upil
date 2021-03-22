@@ -78,6 +78,15 @@ export default {
     },
   },
   watch: {
+    stateInputValue: {
+      immediate: true,
+      handler(stateInputValue) {
+        if (!this.inputValue) {
+          this.inputValue = stateInputValue
+        }
+      },
+    },
+
     inputValue(inputValue) {
       const value =
         !inputValue || inputValue.length === 0
