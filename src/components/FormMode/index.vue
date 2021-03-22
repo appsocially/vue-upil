@@ -27,18 +27,15 @@
             <v-row justify="center" no-gutters class="no-wrap">
               <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
               <v-col cols="12">
-                <keep-alive>
-                  <component
-                    :key="`${node.id}-widget`"
-                    @consume="onConsume"
-                    :is="calculateComponent(node)"
-                    :node="node"
-                    :upil="upil"
-                    :state="state"
-                    :locale="locale"
-                    :rules="node.rules"
-                  />
-                </keep-alive>
+                <component
+                  @consume="onConsume"
+                  :is="node.component"
+                  :node="node"
+                  :upil="upil"
+                  :state="state"
+                  :locale="locale"
+                  :rules="node.rules"
+                />
               </v-col>
             </v-row>
           </v-card-text>
@@ -69,6 +66,7 @@ export default {
   computed: {
     finalNodes() {
       return this.inputNodes.map(({ text, args, options, node, ...rest }) => ({
+        component: this.calculateComponent(node),
         text: substituteNodeText({
           inputState: this.state,
           text: this.calculateFormText({ args })

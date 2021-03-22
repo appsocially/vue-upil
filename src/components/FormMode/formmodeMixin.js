@@ -21,6 +21,7 @@ export default {
   mixins: [i18nMixin],
   data() {
     return {
+      components: {},
       nodes: [],
       state: {},
       events: [],
@@ -105,7 +106,17 @@ export default {
   },
   methods: {
     calculateComponent(node) {
-      return this.override(node, calculateComponent(node))
+      const preCalculated = this.components[node.id]
+      if (preCalculated) {
+        return preCalculated
+      } else {
+        const calculatedComponent = this.override(
+          node,
+          calculateComponent(node)
+        )
+        this.components[node.id] = calculatedComponent
+        return calculatedComponent
+      }
     },
     isMissingValue(node) {
       this.missingValueNodes.some((n) => n.id === node.id)
