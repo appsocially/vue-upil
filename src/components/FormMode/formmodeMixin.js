@@ -15,6 +15,8 @@ export const isMissingValue = (node, state, upil) => {
   return missingState || isUnresolved
 }
 
+import { calculateComponent } from './widget-selection'
+
 export default {
   mixins: [i18nMixin],
   data() {
@@ -102,6 +104,12 @@ export default {
     },
   },
   methods: {
+    calculateComponent(node) {
+      return this.override(node, calculateComponent(node))
+    },
+    isMissingValue(node) {
+      this.missingValueNodes.some((n) => n.id === node.id)
+    },
     updateNodes(nodes) {
       this.nodes = nodes
     },
