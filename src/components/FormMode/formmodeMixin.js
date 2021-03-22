@@ -15,10 +15,13 @@ export const isMissingValue = (node, state, upil) => {
   return missingState || isUnresolved
 }
 
+import { calculateComponent } from './widget-selection'
+
 export default {
   mixins: [i18nMixin],
   data() {
     return {
+      components: {},
       nodes: [],
       state: {},
       events: [],
@@ -102,6 +105,22 @@ export default {
     },
   },
   methods: {
+    calculateComponent(node) {
+      const preCalculated = this.components[node.id]
+      if (preCalculated) {
+        return preCalculated
+      } else {
+        const calculatedComponent = this.override(
+          node,
+          calculateComponent(node)
+        )
+        this.components[node.id] = calculatedComponent
+        return calculatedComponent
+      }
+    },
+    isMissingValue(node) {
+      return this.missingValueNodes.some((n) => n.id === node.id)
+    },
     updateNodes(nodes) {
       this.nodes = nodes
     },

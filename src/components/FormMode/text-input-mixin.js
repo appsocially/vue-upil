@@ -42,20 +42,6 @@ export default {
       return inputValue === this.upil.symbols.UNRESOLVED ? '' : inputValue
     },
   },
-  watch: {
-    stateInputValue: {
-      immediate: true,
-      handler(stateInputValue, oldValue) {
-        if (!this.inputValue) {
-          this.inputValue = stateInputValue
-        } else if (stateInputValue !== oldValue) {
-          if (this.$refs.text) {
-            this.$refs.text.focus()
-          }
-        }
-      },
-    },
-  },
   methods: {
     compositionEnded() {
       this.waitingOnIme = false

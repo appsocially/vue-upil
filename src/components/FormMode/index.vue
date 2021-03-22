@@ -5,21 +5,21 @@
       v-for="node in finalNodes"
       :key="node.id"
       :class="{
-        'upil-missing-value-node': node.isMissingValue,
-        'upil-has-value-node': !node.isMissingValue,
+        'upil-missing-value-node': isMissingValue(node),
+        'upil-has-value-node': !isMissingValue(node),
       }"
     >
-      <v-col cols="12" :class="`elevation-${node.isMissingValue ? 10 : 0}`">
+      <v-col cols="12" :class="`elevation-${isMissingValue(node) ? 10 : 0}`">
         <v-sheet
-          :color="node.isMissingValue ? 'info darken-2' : null"
-          :dark="node.isMissingValue"
+          :color="isMissingValue(node) ? 'info darken-2' : null"
+          :dark="isMissingValue(node)"
         >
           <v-alert
             dense
             type="info"
             class="my-0"
             tile
-            v-if="node.isMissingValue"
+            v-if="isMissingValue(node)"
             >{{ finalMissingValueText }}</v-alert
           >
           <div class="alert-placeholder" v-else />
@@ -27,18 +27,15 @@
             <v-row justify="center" no-gutters class="no-wrap">
               <v-col cols="12" class="upil-node-text">{{ node.text }}</v-col>
               <v-col cols="12">
-                <keep-alive>
-                  <component
-                    :key="`${node.id}-widget`"
-                    @consume="onConsume"
-                    :is="node.component"
-                    :node="node"
-                    :upil="upil"
-                    :state="state"
-                    :locale="locale"
-                    :rules="node.rules"
-                  />
-                </keep-alive>
+                <component
+                  @consume="onConsume"
+                  :is="node.component"
+                  :node="node"
+                  :upil="upil"
+                  :state="state"
+                  :locale="locale"
+                  :rules="node.rules"
+                />
               </v-col>
             </v-row>
           </v-card-text>
@@ -54,8 +51,7 @@
 <script>
 import { VRow, VCol, VCardText, VSheet, VDivider, VAlert } from 'vuetify/lib'
 import { substituteNodeText } from '@/utils'
-import { calculateComponent } from './widget-selection'
-import formmodeMixin, { isMissingValue } from './formmodeMixin'
+import formmodeMixin from './formmodeMixin'
 
 export default {
   mixins: [formmodeMixin],
@@ -70,11 +66,7 @@ export default {
   computed: {
     finalNodes() {
       return this.inputNodes.map(({ text, args, options, node, ...rest }) => ({
-        component: this.override(
-          { args, ...rest },
-          calculateComponent({ args, ...rest })
-        ),
-        isMissingValue: isMissingValue(rest, this.state, this.upil),
+        component: this.calculateComponent(node),
         text: substituteNodeText({
           inputState: this.state,
           text: this.calculateFormText({ args })

@@ -5,7 +5,7 @@
         <template v-for="(node, index) in finalNodes">
           <v-stepper-step
             :key="`${node.id}-header`"
-            :complete="!node.isMissingValue"
+            :complete="!isMissingValue(node)"
             :step="index + 1"
             >{{ node.headerText }}</v-stepper-step
           >
@@ -31,16 +31,14 @@
                       {{ node.text }}
                     </v-col>
                     <v-col cols="12">
-                      <keep-alive>
-                        <component
-                          :is="node.component"
-                          :node="node"
-                          :upil="upil"
-                          :state="state"
-                          :locale="locale"
-                          :rules="calculateRules(node)"
-                        />
-                      </keep-alive>
+                      <component
+                        :is="node.component"
+                        :node="node"
+                        :upil="upil"
+                        :state="state"
+                        :locale="locale"
+                        :rules="calculateRules(node)"
+                      />
                     </v-col>
                   </v-row>
                 </v-card-text>
@@ -51,7 +49,7 @@
                 <v-btn
                   color="primary"
                   v-if="currentNodeIndex !== finalNodes.length"
-                  :disabled="node.isMissingValue"
+                  :disabled="isMissingValue(node)"
                   @click="nextStep"
                   >Continue</v-btn
                 >
@@ -79,10 +77,7 @@ import {
 } from 'vuetify/lib'
 import { substituteNodeText } from '@/utils'
 import VueScrollTo from 'vue-scrollto'
-import { calculateComponent } from '@/components/FormMode/widget-selection'
-import formmodeMixin, {
-  isMissingValue,
-} from '@/components/FormMode/formmodeMixin'
+import formmodeMixin from '@/components/FormMode/formmodeMixin'
 
 export default {
   mixins: [formmodeMixin],
@@ -110,15 +105,11 @@ export default {
   },
   computed: {
     finalNodes() {
-      return this.inputNodes.map(({ text, args, options, ...rest }) => {
+      return this.inputNodes.map(({ node, text, args, options, ...rest }) => {
         const formText = this.calculateFormText({ args })
         const baseText = this.calculateText({ args, text })
         return {
-          component: this.override(
-            { args, ...rest },
-            calculateComponent({ args, ...rest })
-          ),
-          isMissingValue: isMissingValue(rest, this.state, this.upil),
+          component: this.calculateComponent(node),
           headerText: substituteNodeText({
             inputState: this.state,
             text: formText ? formText : baseText,
@@ -135,6 +126,7 @@ export default {
           }),
           options: this.calculateOptions({ options, args }),
           args,
+          node,
           ...rest,
         }
       })
