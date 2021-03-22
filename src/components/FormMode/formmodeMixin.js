@@ -119,7 +119,7 @@ export default {
       }
     },
     isMissingValue(node) {
-      this.missingValueNodes.some((n) => n.id === node.id)
+      return this.missingValueNodes.some((n) => n.id === node.id)
     },
     updateNodes(nodes) {
       this.nodes = nodes
