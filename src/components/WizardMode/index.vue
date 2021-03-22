@@ -5,7 +5,7 @@
         <template v-for="(node, index) in finalNodes">
           <v-stepper-step
             :key="`${node.id}-header`"
-            :complete="!node.isMissingValue"
+            :complete="!isMissingValue(node)"
             :step="index + 1"
             >{{ node.headerText }}</v-stepper-step
           >
@@ -49,7 +49,7 @@
                 <v-btn
                   color="primary"
                   v-if="currentNodeIndex !== finalNodes.length"
-                  :disabled="node.isMissingValue"
+                  :disabled="isMissingValue(node)"
                   @click="nextStep"
                   >Continue</v-btn
                 >
@@ -77,9 +77,7 @@ import {
 } from 'vuetify/lib'
 import { substituteNodeText } from '@/utils'
 import VueScrollTo from 'vue-scrollto'
-import formmodeMixin, {
-  isMissingValue,
-} from '@/components/FormMode/formmodeMixin'
+import formmodeMixin from '@/components/FormMode/formmodeMixin'
 
 export default {
   mixins: [formmodeMixin],
@@ -112,7 +110,6 @@ export default {
         const baseText = this.calculateText({ args, text })
         return {
           component: this.calculateComponent(node),
-          isMissingValue: isMissingValue(rest, this.state, this.upil),
           headerText: substituteNodeText({
             inputState: this.state,
             text: formText ? formText : baseText,
