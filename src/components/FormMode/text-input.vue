@@ -6,7 +6,6 @@
       :rules="rules"
       @update:error="onUpdateError"
       auto-grow
-      ref="text"
       @compositionstart="waitingOnIme = true"
       @compositionend="compositionEnded"
     />
