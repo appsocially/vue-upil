@@ -115,6 +115,40 @@ BasicSelect.args = {
   `,
 }
 
+export const BasicSelectOptions = formmodeTemplate.bind({})
+BasicSelectOptions.args = {
+  templateText: `
+      DIALOG favColor
+        SELECT
+          {
+            formText: "Favorite color",
+            selectType: "options"
+          }
+          "Please choose your favorite color"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          -("Green1", "green1")
+          -("Green2", "green2")
+          -("Green3", "green3")
+          -("Green4", "green4")
+          -("Green5", "green5")
+          -("Green6", "green6")
+          -("Green7", "green7")
+          -("Green8", "green8")
+          -("Green9", "green9")
+          -("Green10", "green10")
+          -("Green11", "green11")
+          -("Green12", "green12")
+          -("Green13", "green13")
+          >>color
+        /SELECT
+        TEMPLATE "\${color} is a great color!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
 export const PreloadedSelect = formmodeTemplate.bind({})
 PreloadedSelect.args = {
   templateText: `
