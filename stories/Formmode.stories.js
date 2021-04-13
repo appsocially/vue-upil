@@ -7,11 +7,18 @@ export default {
   args: {
     templateText: '',
     listeners: {},
+    defaultSelectType: 'default',
   },
   argTypes: {
     templateText: {
       control: {
         type: 'text',
+      },
+    },
+    defaultSelectType: {
+      control: {
+        type: 'select',
+        options: ['default', 'options'],
       },
     },
     listeners: {
@@ -40,6 +47,7 @@ const formmodeTemplate = (args) => {
         this.upil.startRaw(this.templateText, {
           mode: 'form',
           resetOnInputUpdate: true,
+          defaultSelectType: this.defaultSelectType,
         })
       },
     },
@@ -48,6 +56,9 @@ const formmodeTemplate = (args) => {
     },
     watch: {
       templateText() {
+        this.startUpil()
+      },
+      defaultSelectType() {
         this.startUpil()
       },
     },

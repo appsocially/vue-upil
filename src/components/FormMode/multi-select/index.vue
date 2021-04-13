@@ -1,7 +1,7 @@
 <template>
   <component
     :is="selectType"
-    v-bind="{ ...$props, ...$attrs }"
+    v-bind="{ ...$props, ...$attrs, state }"
     v-on="$listeners"
   />
 </template>
@@ -16,14 +16,24 @@ const selectTypeMap = {
 
 export default {
   mixins: [widgeti18nMixin],
+  props: {
+    state: {
+      type: Object,
+    },
+  },
   components: {
     default: () => import('./multi-select'),
     options: () => import('./options'),
   },
   computed: {
+    settings() {
+      return this.state.settings
+    },
     selectType() {
+      const defaultSelectType =
+        this.settings.defaultSelectType || selectTypeMap.default
       return selectTypeMap[
-        this.localeArgLookup('selectType') || selectTypeMap.default
+        this.localeArgLookup('selectType') || defaultSelectType
       ]
     },
   },
