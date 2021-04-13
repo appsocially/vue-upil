@@ -44,7 +44,7 @@ export default {
         if (index !== undefined) {
           this.onSubmit(this.node.options[index].value)
         } else {
-          this.onSubmit(undefined)
+          this.onSubmit(this.upil.symbols.UNRESOLVED)
         }
       },
       get() {

@@ -46,7 +46,7 @@ export default {
             indexArray.map((index) => this.node.options[index].value)
           )
         } else {
-          this.onSubmit(undefined)
+          this.onSubmit(this.upil.symbols.UNRESOLVED)
         }
       },
       get() {
