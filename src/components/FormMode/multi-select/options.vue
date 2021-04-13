@@ -50,19 +50,18 @@ export default {
         }
       },
       get() {
-        const index = this.upil.findOptionIndex(
-          this.node.options,
-          this.state[this.inputName]
-        )
-        return index
+        const currentState = this.state[this.inputName]
+        if (Array.isArray(currentState) && currentState.length > 0) {
+          return currentState.map((value) =>
+            this.upil.findOptionIndex(this.node.options, value)
+          )
+        } else {
+          return []
+        }
       },
     },
   },
   methods: {
-    getOriginalValues() {
-      const selectedOption = this.items.find()
-      return selectedOption.value
-    },
     onSubmit(input) {
       return this.upil.consume(this.node.event, input)
     },

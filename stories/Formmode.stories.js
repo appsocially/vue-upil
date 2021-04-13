@@ -176,6 +176,34 @@ PreloadedSelect.args = {
   },
 }
 
+export const PreloadedSelectOptions = formmodeTemplate.bind({})
+PreloadedSelectOptions.args = {
+  templateText: `
+      DIALOG favColor
+        SELECT
+          {
+            formText: "Favorite color",
+            selectType: "options"
+          }
+          "Please choose your favorite color"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          >>color
+        /SELECT
+        TEMPLATE "\${color} is a great color!"
+      /DIALOG
+      RUN favColor
+  `,
+  listeners: {
+    'preload-input': async () => {
+      return {
+        color: 'green',
+      }
+    },
+  },
+}
+
 export const BasicMultiSelect = formmodeTemplate.bind({})
 BasicMultiSelect.args = {
   templateText: `
@@ -237,6 +265,34 @@ PreloadedMultiSelect.args = {
         MULTI_SELECT
           {
             formText: "Favorite colors"
+          }
+          "Please choose all of your favorite colors"
+          -("Color red", "red")
+          -("Color blue", "blue")
+          -("Color green", "green")
+          >>colors
+        /MULTI_SELECT
+        TEMPLATE "Those are all great colors!"
+      /DIALOG
+      RUN favColor
+  `,
+  listeners: {
+    'preload-input': async () => {
+      return {
+        colors: ['green', 'blue'],
+      }
+    },
+  },
+}
+
+export const PreloadedMultiSelectOptions = formmodeTemplate.bind({})
+PreloadedMultiSelectOptions.args = {
+  templateText: `
+      DIALOG favColor
+        MULTI_SELECT
+          {
+            formText: "Favorite colors",
+            selectType: "options"
           }
           "Please choose all of your favorite colors"
           -("Color red", "red")
