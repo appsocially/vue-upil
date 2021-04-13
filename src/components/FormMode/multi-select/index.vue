@@ -17,7 +17,7 @@ const selectTypeMap = {
 export default {
   mixins: [widgeti18nMixin],
   components: {
-    default: () => import('./select'),
+    default: () => import('./multi-select'),
     options: () => import('./options'),
   },
   computed: {

@@ -196,6 +196,40 @@ BasicMultiSelect.args = {
   `,
 }
 
+export const BasicMultiSelectOptions = formmodeTemplate.bind({})
+BasicMultiSelectOptions.args = {
+  templateText: `
+      DIALOG favColor
+        MULTI_SELECT
+          {
+            formText: "Favorite colors",
+            selectType: "options"
+          }
+          "Please choose all of your favorite colors"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          -("Green1", "green1")
+          -("Green2", "green2")
+          -("Green3", "green3")
+          -("Green4", "green4")
+          -("Green5", "green5")
+          -("Green6", "green6")
+          -("Green7", "green7")
+          -("Green8", "green8")
+          -("Green9", "green9")
+          -("Green10", "green10")
+          -("Green11", "green11")
+          -("Green12", "green12")
+          -("Green13", "green13")
+          >>colors
+        /MULTI_SELECT
+        TEMPLATE "Those are all great colors!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
 export const PreloadedMultiSelect = formmodeTemplate.bind({})
 PreloadedMultiSelect.args = {
   templateText: `
