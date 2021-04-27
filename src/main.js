@@ -9,6 +9,7 @@ import FormMode from '@/components/FormMode'
 import textInputMixin from '@/components/FormMode/text-input-mixin'
 import WizardMode from '@/components/WizardMode'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
+import formmodeWrapperMixin from '@/components/ChatMode/overrides/formmodeWrapperMixin'
 
 const ChatBot = {
   ChatMode,
@@ -32,4 +33,5 @@ export {
   WizardMode,
   widgeti18nMixin,
   textInputMixin,
+  formmodeWrapperMixin,
 }
