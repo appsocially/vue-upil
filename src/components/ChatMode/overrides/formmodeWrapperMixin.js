@@ -31,7 +31,11 @@ const formmodeWrapperMixin = {
       return this.hasValue && this.event
     },
     hasValue() {
-      return this.inputValue && this.inputValue !== this.upil.symbols.UNRESOLVED
+      return (
+        this.inputValue !== null &&
+        this.inputValue !== undefined &&
+        this.inputValue !== this.upil.symbols.UNRESOLVED
+      )
     },
   },
   methods: {
