@@ -1,5 +1,5 @@
 <template>
-  <v-chip-group column v-model="selectValue" active-class="primary">
+  <v-chip-group column v-model="selectValue" active-class="primary" class="upil-select-options">
     <v-chip v-for="{ text, value } in items" :key="value">{{ text }}</v-chip>
   </v-chip-group>
 </template>
@@ -68,4 +68,8 @@ export default {
 }
 </script>
 
-<style></style>
+<style scoped>
+.upil-select-options >>> .v-slide-group__wrapper {
+  touch-action: auto !important;
+}
+</style>
