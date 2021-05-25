@@ -3,12 +3,13 @@
     multiple
     class="upil-multi-select"
     full-width
-    hide-details
+    hide-details="auto"
     v-model="userInput"
     :items="simpleOptions"
     :label="placeholder"
     append-outer-icon="mdi-send"
     @click:append-outer="onSubmit"
+    :messages="hint"
     dense
   ></v-select>
 </template>
@@ -41,6 +42,9 @@ export default {
     }
   },
   computed: {
+    hint() {
+      return this.localeArgLookup('hint')
+    },
     placeholder() {
       return this.localeArgLookup('placeholder') || this.placeholderText
     },

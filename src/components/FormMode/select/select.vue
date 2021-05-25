@@ -1,11 +1,13 @@
 <template>
-  <v-select v-model="selectValue" :items="items" />
+  <v-select v-model="selectValue" :items="items" :messages="hint" />
 </template>
 
 <script>
 import { VSelect } from 'vuetify/lib'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
+  mixins: [widgeti18nMixin],
   components: {
     VSelect,
   },
@@ -24,6 +26,9 @@ export default {
     },
   },
   computed: {
+    hint(){
+      return this.localeArgLookup('hint')
+    },
     items() {
       return this.node.options.map(({ text, value }) => ({
         text,

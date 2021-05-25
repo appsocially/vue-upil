@@ -12,6 +12,7 @@
     :rules="rules"
     @update:error="onUpdateError"
     :type="inputType"
+    :messages="hint"
   />
 </template>
 
@@ -50,6 +51,9 @@ export default {
   computed: {
     placeholder() {
       return this.localeArgLookup('placeholder') || this.placeholderText
+    },
+    hint() {
+      return this.localeArgLookup('hint')
     },
     inputType() {
       return this.localeArgLookup('inputType') || ''

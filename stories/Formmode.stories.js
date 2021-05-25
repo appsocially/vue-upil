@@ -82,6 +82,24 @@ BasicTemplate.args = {
   `,
 }
 
+export const HintTemplate = formmodeTemplate.bind({})
+HintTemplate.args = {
+  templateText: `
+    DIALOG getName
+      TEMPLATE 
+        {
+          formText: "First Name",
+          hint: "John"
+        }
+        "What's your name?"
+        >>name
+      /TEMPLATE
+      TEMPLATE "Welcome \${name}"
+    /DIALOG
+    RUN getName
+  `,
+}
+
 export const PreloadedTemplate = formmodeTemplate.bind({})
 PreloadedTemplate.args = {
   templateText: `
@@ -113,6 +131,27 @@ BasicSelect.args = {
         SELECT
           {
             formText: "Favorite color"
+          }
+          "Please choose your favorite color"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          >>color
+        /SELECT
+        TEMPLATE "\${color} is a great color!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
+export const BasicSelectHint = formmodeTemplate.bind({})
+BasicSelectHint.args = {
+  templateText: `
+      DIALOG favColor
+        SELECT
+          {
+            formText: "Favorite color",
+            hint: "Choose one"
           }
           "Please choose your favorite color"
           -("Red", "red")
@@ -222,6 +261,27 @@ BasicMultiSelect.args = {
         MULTI_SELECT
           {
             formText: "Favorite colors"
+          }
+          "Please choose all of your favorite colors"
+          -("Color red", "red")
+          -("Color blue", "blue")
+          -("Color green", "green")
+          >>colors
+        /MULTI_SELECT
+        TEMPLATE "Those are all great colors!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
+export const BasicMultiSelectHint = formmodeTemplate.bind({})
+BasicMultiSelectHint.args = {
+  templateText: `
+      DIALOG favColor
+        MULTI_SELECT
+          {
+            formText: "Favorite colors",
+            hint: "Choose one or more"
           }
           "Please choose all of your favorite colors"
           -("Color red", "red")

@@ -4,6 +4,7 @@
       v-model="inputValue"
       :rows="1"
       :rules="rules"
+      :messages="hint"
       @update:error="onUpdateError"
       auto-grow
       @compositionstart="waitingOnIme = true"
@@ -15,9 +16,10 @@
 <script>
 import { VTextarea } from 'vuetify/lib'
 import textInputMixin from './text-input-mixin'
+import widgeti18nMixin from '@/components/widgeti18nMixin'
 
 export default {
-  mixins: [textInputMixin],
+  mixins: [textInputMixin, widgeti18nMixin],
   components: {
     VTextarea,
   },
@@ -30,6 +32,11 @@ export default {
   data() {
     return {
       isValid: this.rules.length === 0,
+    }
+  },
+  computed: {
+    hint(){
+      return this.localeArgLookup('hint')
     }
   },
   watch: {

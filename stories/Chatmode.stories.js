@@ -125,6 +125,63 @@ BasicMultiSelect.args = {
   `,
 }
 
+export const BasicTemplateWithHint = chatmodeTemplate.bind({})
+BasicTemplateWithHint.args = {
+  templateText: `
+    DIALOG getName
+      TEMPLATE
+        {
+          hint: "John"
+        }
+        "What's your name?"
+        >>name
+      /TEMPLATE
+      TEMPLATE "Welcome \${name}"
+    /DIALOG
+    RUN getName
+  `,
+}
+
+export const BasicSelectWithHint = chatmodeTemplate.bind({})
+BasicSelectWithHint.args = {
+  templateText: `
+      DIALOG favColor
+        SELECT
+          {
+            hint: "Select one"
+          }
+          "Please choose your favorite color"
+          -("Red", "red")
+          -("Blue", "blue")
+          -("Green", "green")
+          >>color
+        /SELECT
+        TEMPLATE "\${color} is a great color!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
+export const BasicMultiSelectWithHint = chatmodeTemplate.bind({})
+BasicMultiSelectWithHint.args = {
+  templateText: `
+      DIALOG favColor
+        MULTI_SELECT
+          {
+            hint: "Choose one or more"
+          }
+          "Please choose all of your favorite colors"
+          -("Color red", "red")
+          -("Color blue", "blue")
+          -("Color green", "green")
+          >>colors
+        /MULTI_SELECT
+        TEMPLATE "Those are all great colors!"
+      /DIALOG
+      RUN favColor
+  `,
+}
+
 export const BasicTemplateMultipleLineReply = chatmodeTemplate.bind({})
 BasicTemplateMultipleLineReply.args = {
   templateText: `
