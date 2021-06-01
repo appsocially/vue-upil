@@ -12,10 +12,12 @@
       <v-col cols="12" :class="`elevation-${isMissingValue(node) ? 10 : 0}`">
         <v-sheet
           v-bind="
-            calculateMissingValueContainerAttributes({
-              node,
-              isMissingValue: isMissingValue(node),
-            })
+            calculateMissingValueContainerAttributes
+              ? calculateMissingValueContainerAttributes({
+                  node,
+                  isMissingValue: isMissingValue(node),
+                })
+              : {}
           "
         >
           <v-alert
@@ -23,10 +25,12 @@
             tile
             v-if="isMissingValue(node)"
             v-bind="
-              calculateMissingValueAlertAttributes({
-                node,
-                isMissingValue: isMissingValue(node),
-              })
+              calculateMissingValueAlertAttributes
+                ? calculateMissingValueAlertAttributes({
+                    node,
+                    isMissingValue: isMissingValue(node),
+                  })
+                : {}
             "
             >{{ finalMissingValueText }}</v-alert
           >

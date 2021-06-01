@@ -7,7 +7,7 @@ import { setupListeners } from '@/utils'
 import './theming.css'
 
 export default {
-  title: 'Theming',
+  title: 'MissingValue Style Override',
   args: {
     mode: 'FormMode',
     themed: false,
@@ -49,7 +49,7 @@ const themingTemplate = (args) => {
     },
     template: `
     <div :id="themed ? 'themed' : null">
-      <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" />
+      <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :calculateMissingValueContainerAttributes="calculateMissingValueContainerAttributes || undefined" :calculateMissingValueAlertAttributes="calculateMissingValueAlertAttributes || undefined" />
     </div>
     `,
     data() {
@@ -84,21 +84,37 @@ const themingTemplate = (args) => {
   }
 }
 
-export const VuetifyThemeOverride = themingTemplate.bind({})
-VuetifyThemeOverride.args = {
-  vuetify: {
-    theme: {
-      themes: {
-        light: {
-          info: '#FF5722',
-          primary: '#D81B60',
-        },
-      },
-    },
-  },
+export const SimpleOverride = themingTemplate.bind({})
+SimpleOverride.args = {
+  calculateMissingValueContainerAttributes: ({ isMissingValue }) => ({
+    color: isMissingValue ? 'grey lighten-3' : undefined,
+  }),
+  calculateMissingValueAlertAttributes: () => ({
+    icon: 'mdi-alert-circle-outline',
+    class: 'my-0 grey lighten-2',
+  }),
 }
 
-export const CSSOverride = themingTemplate.bind({})
-CSSOverride.args = {
-  themed: true,
+export const PurpleOrangeLight = themingTemplate.bind({})
+PurpleOrangeLight.args = {
+  calculateMissingValueContainerAttributes: ({ isMissingValue }) => ({
+    color: isMissingValue ? 'purple lighten-3' : undefined,
+  }),
+  calculateMissingValueAlertAttributes: () => ({
+    icon: 'mdi-alert-circle-outline',
+    class: 'my-0 orange lighten-2',
+  }),
+}
+
+export const PurpleOrangeDark = themingTemplate.bind({})
+PurpleOrangeDark.args = {
+  calculateMissingValueContainerAttributes: ({ isMissingValue }) => ({
+    color: isMissingValue ? 'purple darken-2' : undefined,
+    dark: isMissingValue,
+  }),
+  calculateMissingValueAlertAttributes: () => ({
+    icon: 'mdi-alert-circle-outline',
+    class: 'my-0 orange darken-3',
+    dark: true,
+  }),
 }
