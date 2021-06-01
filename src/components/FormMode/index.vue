@@ -11,15 +11,23 @@
     >
       <v-col cols="12" :class="`elevation-${isMissingValue(node) ? 10 : 0}`">
         <v-sheet
-          :color="isMissingValue(node) ? 'info darken-2' : null"
-          :dark="isMissingValue(node)"
+          v-bind="
+            calculateMissingValueContainerAttributes({
+              node,
+              isMissingValue: isMissingValue(node),
+            })
+          "
         >
           <v-alert
             dense
-            type="info"
-            class="my-0"
             tile
             v-if="isMissingValue(node)"
+            v-bind="
+              calculateMissingValueAlertAttributes({
+                node,
+                isMissingValue: isMissingValue(node),
+              })
+            "
             >{{ finalMissingValueText }}</v-alert
           >
           <div class="alert-placeholder" v-else />
@@ -53,6 +61,20 @@ import { VRow, VCol, VCardText, VSheet, VDivider, VAlert } from 'vuetify/lib'
 import { substituteNodeText } from '@/utils'
 import formmodeMixin from './formmodeMixin'
 
+const defaultMissingValueContainerAttributes = ({ isMissingValue }) => {
+  return {
+    dark: isMissingValue,
+    color: isMissingValue ? 'info darken-2' : undefined,
+  }
+}
+
+const defaultMissingValueAlertAttributes = () => {
+  return {
+    type: 'info',
+    class: 'my-0',
+  }
+}
+
 export default {
   mixins: [formmodeMixin],
   components: {
@@ -62,6 +84,16 @@ export default {
     VSheet,
     VDivider,
     VAlert,
+  },
+  props: {
+    calculateMissingValueContainerAttributes: {
+      type: Function,
+      default: defaultMissingValueContainerAttributes,
+    },
+    calculateMissingValueAlertAttributes: {
+      type: Function,
+      default: defaultMissingValueAlertAttributes,
+    },
   },
   computed: {
     finalNodes() {

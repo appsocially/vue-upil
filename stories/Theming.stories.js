@@ -8,7 +8,11 @@ import './theming.css'
 
 export default {
   title: 'Theming',
-  args: { mode: 'FormMode', themed: false, listeners: {} },
+  args: {
+    mode: 'FormMode',
+    themed: false,
+    listeners: {},
+  },
   argTypes: {
     mode: {
       control: {
@@ -45,7 +49,7 @@ const themingTemplate = (args) => {
     },
     template: `
     <div :id="themed ? 'themed' : null">
-      <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" />
+      <component v-if="upil" :is="mode" :upil="upil" :key="mode" :avatar="TruffleLogo" :calculateMissingValueContainerAttributes="calculateMissingValueContainerAttributes" :calculateMissingValueAlertAttributes="calculateMissingValueAlertAttributes" />
     </div>
     `,
     data() {
@@ -97,4 +101,15 @@ VuetifyThemeOverride.args = {
 export const CSSOverride = themingTemplate.bind({})
 CSSOverride.args = {
   themed: true,
+}
+
+export const isMissingValueStyle = themingTemplate.bind({})
+isMissingValueStyle.args = {
+  calculateMissingValueContainerAttributes: ({ isMissingValue }) => ({
+    color: isMissingValue ? 'grey lighten-3' : undefined,
+  }),
+  calculateMissingValueAlertAttributes: () => ({
+    icon: 'mdi-alert-circle-outline',
+    class: 'my-0 grey lighten-2',
+  }),
 }
