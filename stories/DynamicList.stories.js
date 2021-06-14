@@ -42,12 +42,18 @@ const transformTextVariables = ({ value, key, locale }) => {
 
 export default {
   title: 'Widgets/Dynamic-list Widget',
-  args: { mode: 'FormMode', listeners: {}, locale: 'en' },
+  args: { mode: 'FormMode', listeners: {}, locale: 'en', editable: false },
   argTypes: {
     mode: {
       control: {
         type: 'select',
         options: ['FormMode', 'WizardMode', 'ChatMode'],
+      },
+    },
+    editable: {
+      control: {
+        type: 'radio',
+        options: [true, false],
       },
     },
     locale: {
@@ -63,36 +69,6 @@ export default {
 }
 
 const dynamicListTemplate = (args) => {
-  const birthdayTemplate = `
-  DIALOG jobsSearch
-    TEMPLATE dynamic-list
-    {
-      formText: "Job Openings",
-      i18n: {
-        ja: {
-          formText: "募集中の職種",
-          text: "今回募集する職種を教えてください。",
-          placeholder: "カンマで区切ると選択肢が出来上がります"
-        }
-      }
-    }
-    "Please list your available job types"
-    >>jobTypes
-    /TEMPLATE
-    TEMPLATE 
-    {
-      i18n: {
-        ja: {
-          text: "\${jobTypes}を見つけたらいいね！"
-        }
-      }
-    }
-    "I hope you find success in your search for \${jobTypes}!"
-    /TEMPLATE
-  /DIALOG
-  RUN jobsSearch
-  `
-
   return {
     props: Object.keys(args),
     components: {
@@ -107,15 +83,49 @@ const dynamicListTemplate = (args) => {
         TruffleLogo,
       }
     },
+    computed: {
+      birthdayTemplate() {
+        return `
+        DIALOG jobsSearch
+          TEMPLATE dynamic-list
+          {
+            formText: "Job Openings",
+            editable: ${this.editable},
+            i18n: {
+              ja: {
+                formText: "募集中の職種",
+                text: "今回募集する職種を教えてください。",
+                placeholder: "カンマで区切ると選択肢が出来上がります"
+              }
+            }
+          }
+          "Please list your available job types"
+          >>jobTypes
+          /TEMPLATE
+          TEMPLATE 
+          {
+            i18n: {
+              ja: {
+                text: "\${jobTypes}を見つけたらいいね！"
+              }
+            }
+          }
+          "I hope you find success in your search for \${jobTypes}!"
+          /TEMPLATE
+        /DIALOG
+        RUN jobsSearch
+        `
+      },
+    },
     methods: {
       startUpil() {
         this.upil = new UPILCore()
         setupListeners({ upil: this.upil, listeners: this.listeners })
 
         if (this.mode === 'ChatMode') {
-          this.upil.startRaw(birthdayTemplate, {})
+          this.upil.startRaw(this.birthdayTemplate, {})
         } else {
-          this.upil.startRaw(birthdayTemplate, {
+          this.upil.startRaw(this.birthdayTemplate, {
             mode: 'form',
             resetOnInputUpdate: true,
           })
@@ -129,6 +139,9 @@ const dynamicListTemplate = (args) => {
     },
     watch: {
       mode() {
+        this.startUpil()
+      },
+      editable() {
         this.startUpil()
       },
     },
