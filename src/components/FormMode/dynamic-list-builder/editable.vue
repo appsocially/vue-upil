@@ -1,29 +1,54 @@
 <template>
   <v-card>
     <v-text-field
+      hide-details
       v-model="newItemText"
       class="mx-1"
       append-outer-icon="mdi-plus"
       @click:append-outer="addItem"
-    ></v-text-field>
+    />
     <v-list>
       <template v-for="(input, index) in stateInputValue">
         <v-list-item :key="`listitem-${index}`">
           <v-list-item-content>
             <v-list-item-title>
-              {{ input }}
+              <template v-if="editingIndex === index">
+                <v-text-field
+                  class="mr-1"
+                  hide-details
+                  solo-inverted
+                  v-model="editItemTextField"
+                />
+              </template>
+              <template v-else>
+                {{ input }}
+              </template>
             </v-list-item-title>
           </v-list-item-content>
-          <v-list-item-action>
-            <v-btn large icon>
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
-          </v-list-item-action>
-          <v-list-item-action @click="removeItem(index)">
-            <v-btn large icon>
-              <v-icon>mdi-close</v-icon>
-            </v-btn>
-          </v-list-item-action>
+          <template v-if="editingIndex === index">
+            <v-list-item-action @click="editingIndex = null">
+              <v-btn large icon>
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-list-item-action>
+            <v-list-item-action @click="saveEditItem">
+              <v-btn large icon>
+                <v-icon>mdi-check</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </template>
+          <template v-else>
+            <v-list-item-action @click="editItem(index)">
+              <v-btn large icon>
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
+            </v-list-item-action>
+            <v-list-item-action @click="removeItem(index)">
+              <v-btn large icon>
+                <v-icon>mdi-close-circle-outline</v-icon>
+              </v-btn>
+            </v-list-item-action>
+          </template>
         </v-list-item>
         <v-divider
           v-if="index < stateInputValue.length - 1"
@@ -82,6 +107,7 @@ export default {
       inputValue: this.stateInputValue,
       newItemText: '',
       editingIndex: null,
+      editItemTextField: '',
     }
   },
   computed: {
@@ -104,6 +130,7 @@ export default {
       const isNonEmptyString =
         this.newItemText !== null && this.newItemText !== ''
       if (isNonEmptyString) {
+        this.editingIndex = null
         if (Array.isArray(this.inputValue)) {
           this.inputValue.push(this.newItemText)
         } else {
@@ -113,7 +140,16 @@ export default {
       }
     },
     removeItem(index) {
+      this.editingIndex = null
       this.inputValue.splice(index, 1)
+    },
+    editItem(index) {
+      this.editItemTextField = this.inputValue[index]
+      this.editingIndex = index
+    },
+    saveEditItem() {
+      this.inputValue[this.editingIndex] = this.editItemTextField
+      this.editingIndex = null
     },
   },
   watch: {
