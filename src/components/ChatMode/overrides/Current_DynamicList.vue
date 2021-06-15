@@ -7,6 +7,7 @@
         :state="state"
         :rules="rules"
         :locale="locale"
+        :isChatMode="true"
         @consume="onConsume"
       />
     </v-col>
