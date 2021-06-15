@@ -1,42 +1,35 @@
 <template>
   <v-card>
+    <v-text-field
+      v-model="newItemText"
+      class="mx-1"
+      append-outer-icon="mdi-plus"
+      @click:append-outer="addItem"
+    ></v-text-field>
     <v-list>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>
-            test
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-pencil</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>
-            test
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-pencil</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
-      <v-list-item>
-        <v-list-item-content>
-          <v-list-item-title>
-            test
-          </v-list-item-title>
-        </v-list-item-content>
-        <v-list-item-action>
-          <v-btn icon>
-            <v-icon color="grey lighten-1">mdi-pencil</v-icon>
-          </v-btn>
-        </v-list-item-action>
-      </v-list-item>
+      <template v-for="(input, index) in stateInputValue">
+        <v-list-item :key="`listitem-${index}`">
+          <v-list-item-content>
+            <v-list-item-title>
+              {{ input }}
+            </v-list-item-title>
+          </v-list-item-content>
+          <v-list-item-action>
+            <v-btn large icon>
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+          </v-list-item-action>
+          <v-list-item-action @click="removeItem(index)">
+            <v-btn large icon>
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-list-item-action>
+        </v-list-item>
+        <v-divider
+          v-if="index < stateInputValue.length - 1"
+          :key="`divider-${index}`"
+        ></v-divider>
+      </template>
     </v-list>
   </v-card>
 </template>
@@ -87,6 +80,8 @@ export default {
   data() {
     return {
       inputValue: this.stateInputValue,
+      newItemText: '',
+      editingIndex: null,
     }
   },
   computed: {
@@ -102,6 +97,23 @@ export default {
     stateInputValue() {
       const inputValue = this.state[this.inputName]
       return inputValue === this.upil.symbols.UNRESOLVED ? [] : inputValue
+    },
+  },
+  methods: {
+    addItem() {
+      const isNonEmptyString =
+        this.newItemText !== null && this.newItemText !== ''
+      if (isNonEmptyString) {
+        if (Array.isArray(this.inputValue)) {
+          this.inputValue.push(this.newItemText)
+        } else {
+          this.inputValue = [this.newItemText]
+        }
+        this.newItemText = ''
+      }
+    },
+    removeItem(index) {
+      this.inputValue.splice(index, 1)
     },
   },
   watch: {

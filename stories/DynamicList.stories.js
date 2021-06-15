@@ -163,6 +163,19 @@ DynamicListPreLoaded.args = {
   },
 }
 
+export const DynamicListPreLoadedEditable = dynamicListTemplate.bind({})
+DynamicListPreLoadedEditable.args = {
+  mode: 'FormMode',
+  editable: true,
+  listeners: {
+    'preload-input': async () => {
+      return {
+        jobTypes: ['Kitchen', 'Chef', 'Line Cook'],
+      }
+    },
+  },
+}
+
 export const DynamicListChat = dynamicListTemplate.bind({})
 DynamicListChat.args = {
   mode: 'ChatMode',
