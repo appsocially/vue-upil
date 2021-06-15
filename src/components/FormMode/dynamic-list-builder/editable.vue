@@ -74,6 +74,8 @@ import {
 } from 'vuetify/lib'
 import widgeti18nMixin from '@/components/widgeti18nMixin'
 
+const isNonEmptyString = (input) => (input || '').trim() !== ''
+
 export default {
   mixins: [widgeti18nMixin],
   components: {
@@ -133,17 +135,15 @@ export default {
   },
   methods: {
     addItem() {
-      const isNonEmptyString =
-        this.newItemText !== null && this.newItemText !== ''
-      if (isNonEmptyString) {
+      if (isNonEmptyString(this.newItemText)) {
         this.editingIndex = null
         if (Array.isArray(this.inputValue)) {
-          this.inputValue = [this.newItemText].concat(this.inputValue)
+          this.inputValue = [this.newItemText.trim()].concat(this.inputValue)
         } else {
-          this.inputValue = [this.newItemText]
+          this.inputValue = [this.newItemText.trim()]
         }
-        this.newItemText = ''
       }
+      this.newItemText = ''
     },
     removeItem(index) {
       this.editingIndex = null
@@ -154,10 +154,12 @@ export default {
       this.editingIndex = index
     },
     saveEditItem() {
-      this.inputValue = this.inputValue.map((item, i) =>
-        i === this.editingIndex ? this.editItemTextField : item
-      )
-      this.editingIndex = null
+      if (isNonEmptyString(this.editItemTextField)) {
+        this.inputValue = this.inputValue.map((item, i) =>
+          i === this.editingIndex ? this.editItemTextField.trim() : item
+        )
+        this.editingIndex = null
+      }
     },
   },
   watch: {
