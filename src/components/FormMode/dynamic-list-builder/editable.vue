@@ -61,6 +61,9 @@
 
 <script>
 import {
+  VTextField,
+  VDivider,
+  VCard,
   VList,
   VListItem,
   VListItemContent,
@@ -74,6 +77,9 @@ import widgeti18nMixin from '@/components/widgeti18nMixin'
 export default {
   mixins: [widgeti18nMixin],
   components: {
+    VCard,
+    VTextField,
+    VDivider,
     VList,
     VListItem,
     VListItemContent,
