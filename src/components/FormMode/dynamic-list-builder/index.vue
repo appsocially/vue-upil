@@ -16,13 +16,19 @@ const dynamicListBuilderType = {
 
 export default {
   mixins: [widgeti18nMixin],
+  props: {
+    isChatMode: {
+      type: Boolean,
+      default: false,
+    },
+  },
   components: {
     default: () => import('./default'),
     editable: () => import('./editable'),
   },
   computed: {
     dynamicListBuilderType() {
-      return this.localeArgLookup('editable') === true
+      return this.localeArgLookup('editable') === true && !this.isChatMode
         ? dynamicListBuilderType.editable
         : dynamicListBuilderType.default
     },
