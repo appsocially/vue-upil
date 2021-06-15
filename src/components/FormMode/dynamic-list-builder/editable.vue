@@ -138,7 +138,7 @@ export default {
       if (isNonEmptyString) {
         this.editingIndex = null
         if (Array.isArray(this.inputValue)) {
-          this.inputValue.push(this.newItemText)
+          this.inputValue = [this.newItemText].concat(this.inputValue)
         } else {
           this.inputValue = [this.newItemText]
         }
@@ -147,14 +147,16 @@ export default {
     },
     removeItem(index) {
       this.editingIndex = null
-      this.inputValue.splice(index, 1)
+      this.inputValue = this.inputValue.filter((_, i) => i !== index)
     },
     editItem(index) {
       this.editItemTextField = this.inputValue[index]
       this.editingIndex = index
     },
     saveEditItem() {
-      this.inputValue.splice(this.editingIndex, 1, this.editItemTextField)
+      this.inputValue = this.inputValue.map((item, i) =>
+        i === this.editingIndex ? this.editItemTextField : item
+      )
       this.editingIndex = null
     },
   },
