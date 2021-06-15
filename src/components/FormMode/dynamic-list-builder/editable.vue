@@ -8,7 +8,7 @@
       @click:append-outer="addItem"
     />
     <v-list>
-      <template v-for="(input, index) in stateInputValue">
+      <template v-for="(input, index) in inputValue">
         <v-list-item :key="`listitem-${index}`">
           <v-list-item-content>
             <v-list-item-title>
@@ -51,7 +51,7 @@
           </template>
         </v-list-item>
         <v-divider
-          v-if="index < stateInputValue.length - 1"
+          v-if="index < inputValue.length - 1"
           :key="`divider-${index}`"
         ></v-divider>
       </template>
@@ -148,7 +148,7 @@ export default {
       this.editingIndex = index
     },
     saveEditItem() {
-      this.inputValue[this.editingIndex] = this.editItemTextField
+      this.inputValue.splice(this.editingIndex, 1, this.editItemTextField)
       this.editingIndex = null
     },
   },
@@ -161,7 +161,6 @@ export default {
         }
       },
     },
-
     inputValue(inputValue) {
       const value =
         !inputValue || inputValue.length === 0

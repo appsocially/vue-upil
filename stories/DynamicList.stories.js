@@ -151,6 +151,9 @@ const dynamicListTemplate = (args) => {
 export const DynamicListEmpty = dynamicListTemplate.bind({})
 DynamicListEmpty.args = { mode: 'FormMode' }
 
+export const DynamicListEditableEmpty = dynamicListTemplate.bind({})
+DynamicListEditableEmpty.args = { mode: 'FormMode', editable: true }
+
 export const DynamicListPreLoaded = dynamicListTemplate.bind({})
 DynamicListPreLoaded.args = {
   mode: 'FormMode',
