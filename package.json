@@ -1,6 +1,6 @@
 {
   "name": "@appsocially/vue-upil",
-  "version": "0.1.0",
+  "version": "2.10.3-beta",
   "license": "ISC",
   "private": false,
   "main": "./dist/vue-upil.common.js",
@@ -25,7 +25,7 @@
     "vue-scrollto": "^2.18.2"
   },
   "devDependencies": {
-    "@appsocially/userpil-core": "^1.2.0",
+    "@appsocially/userpil-core": "^1.2.3-rc.1",
     "@babel/core": "^7.11.1",
     "@mdi/font": "^5.5.55",
     "@storybook/addon-actions": "^6.0.5",
